@@ -666,7 +666,7 @@ const Home = () => {
                   <div className="row-item">Inspector</div>
                   <div className="row-item">Date & Time</div>
 
-                  {/* <div className="row-item">Company Name</div> */}
+                  <div className="row-item">Issue Fixed By</div>
                   <div className="row-item">Building Name</div>
                   <div className="row-item">Floor</div>
                   <div className="row-item">Location</div>
@@ -714,9 +714,7 @@ const Home = () => {
                         </div>
                       </div>
 
-                      {/* <div className="row-item font">
-                        {item?.checkedby?.companyName}
-                      </div> */}
+                      <div className="row-item font">{"Muddasir Nazir"}</div>
                       <div className="row-item font">
                         {
                           item?.controlpointId?.tagIds[tagindex]?.location

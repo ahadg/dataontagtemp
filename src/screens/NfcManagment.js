@@ -314,7 +314,7 @@ const NfcManagment = () => {
                         className={`block flex aic abs ${hide ? "show" : ""}`}
                       >
                         <div className="manue flex aic col anim">
-                          {companies.map((item, index) => (
+                          {['All',...companies].map((item, index) => (
                             <div
                               key={index}
                               className="slt flex aic"

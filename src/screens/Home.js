@@ -342,7 +342,7 @@ const Home = () => {
                                 >
                                   {selectedState4
                                     ? selectedState4.title
-                                    : "Search Requirments"}
+                                    : "Assign User to fix"}
                                 </span>
                               </div>
                             </div>
@@ -467,13 +467,13 @@ const Home = () => {
                     </div>
                     <div className={`block flex aic abs ${hide ? "show" : ""}`}>
                       <div className="manue flex aic col anim">
-                        {["None", ...companies].map((item, index) => (
+                        {["All", ...companies].map((item, index) => (
                           <div
                             key={index}
                             className="slt flex aic"
                             onClick={(e) => {
                               setHide(!hide);
-                              if (item == "None") {
+                              if (item == "All") {
                                 setselectedcompany(null);
                               } else {
                                 setselectedcompany(item);

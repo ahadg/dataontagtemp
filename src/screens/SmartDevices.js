@@ -282,7 +282,7 @@ const SmartDevices = () => {
                       <div className="icon flex aic jc">
                         <HistoryIcon />
                       </div>
-                      <div className="lbl">Connect Now</div>
+                      <div className="lbl">Check History</div>
                     </button>
                   </div>
                 </div>

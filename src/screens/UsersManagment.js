@@ -58,17 +58,33 @@ const UsersManagment = () => {
   const [selecteduser,setselecteduser] = useState({})
 
   useEffect(() => {
+    console.log('selectedCompany',selectedCompany)
+    let listtobefiltered = [...userList]
+    if(selectedCompany){
+      listtobefiltered = listtobefiltered.filter(
+        (item) => {
+          console.log('item',item)
+          if(item?.userType == "companyadmin" || item?.userType == "superadmin" ||  item?.userType == "maintaineradmin"){
+          return item?.companyName == selectedCompany.companyName
+          }
+          else {
+            return item.createdBy?.companyName == selectedCompany.companyName
+          }
+        }
+      );
+    }
     if (search != undefined) {
-      const searchedids = userList.filter((item) => {
+      listtobefiltered = listtobefiltered.filter((item) => {
         if (
           item.userName.search(search) > -1
         ) {
           return true;
         }
       });
-      setfilteruserList([...searchedids]);
+      
     }
-  }, [search]);
+    setfilteruserList([...listtobefiltered]);
+  }, [search,selectedCompany]);
   console.log('gr',groupsearch)
   useEffect(() => {
     if(groupsearch == "" || groupsearch == " "){

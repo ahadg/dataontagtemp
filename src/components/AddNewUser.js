@@ -51,7 +51,7 @@ const AddNewUser = ({ setOpen,companyfilter,getusers }) => {
     // else if(password){
     //   return toast.error("your password was'nt matched.");
     // }
-    else if(!selectedCompany2){
+    else if(selectedrole.title == "Company user" && !selectedCompany2 || selectedrole.title == "Maintenance user" && !selectedCompany2){
       return toast.error("Please select a company.");
     }
     else if(!selectedrole){
@@ -141,6 +141,10 @@ const AddNewUser = ({ setOpen,companyfilter,getusers }) => {
   }, []);
   return (
     <div className="add-new-user flex flex-col">
+    {loading ? (
+        <Loader loader_color={true} />
+      ) : (
+      <>
       <div className="asd-header flex aic jc">
         <div className="lbl s16 b6 font">CREATE NEW USER</div>
       </div>
@@ -274,7 +278,7 @@ const AddNewUser = ({ setOpen,companyfilter,getusers }) => {
           </div>
           <div className="txt-field flex flex-col">
             <div className="lbl s12 font">{selectedrole?.value != "companyadmin" ? "Select Company" : "Input company"}</div>
-            { selectedrole?.value != "companyadmin" ?
+            { selectedrole?.value != "companyadmin" && selectedrole?.value != "superadmin" &&  selectedrole?.value != "maintaineradmin" ?
             <div className="dropDown flex aic jc flex-col rel">
               <div className="category flex aic">
                 <div
@@ -345,7 +349,9 @@ const AddNewUser = ({ setOpen,companyfilter,getusers }) => {
         onClick={() => createnewuser()}
         className="btn cleanbtn button s14 font">Create User</button>
       </div>
-    </div>
+      </>
+      )}
+    </div> 
   );
 };
 

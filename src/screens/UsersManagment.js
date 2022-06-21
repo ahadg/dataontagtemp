@@ -524,7 +524,7 @@ const UsersManagment = () => {
                     </div>
                   </div>
                   <div className="row-item font">{item.userName}</div>
-                  <div className="row-item font">{item.createdBy ? item.createdBy?.companyName : item.CompanyName}</div>
+                  <div className="row-item font">{item.userType == "companyadmin" || item.userType == "superadmin" || item.userType == "maintaineruser" ? item.companyName : item.createdBy ? item.createdBy?.companyName : item.CompanyName}</div>
                   <div className="row-item font">{item.email}</div>
                   <div className="row-item font">{item.mobile}</div>
                   <div className="row-item font">{item.userType}</div>

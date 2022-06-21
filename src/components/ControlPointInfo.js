@@ -1,10 +1,27 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 import { CopyIcon, CloseIcon } from "../svg";
-import { ToastContainer, toast } from 'react-toastify';
-const ControlPointInfo = ({ setOpen3,selectedcontrolpoint,theinspection }) => {
-  console.log('selectedcontrolpoint',selectedcontrolpoint)
-  console.log('theinspection',theinspection)
+import { ToastContainer, toast } from "react-toastify";
+const ControlPointInfo = ({
+  setOpen3,
+  selectedcontrolpoint,
+  theinspection,
+}) => {
+  console.log("selectedcontrolpoint", selectedcontrolpoint);
+  console.log("theinspection", theinspection);
+
+  const CopyFun = () => {
+    toast("Successfully Tag ID Copied!", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+    setOpen3(false);
+  };
   return (
     <div className="control-point-info  flex flex-col">
       <div className="check-point-header flex jc">
@@ -26,33 +43,42 @@ const ControlPointInfo = ({ setOpen3,selectedcontrolpoint,theinspection }) => {
             <img src="./images/image4.png" className="img" />
           </div>
           <div className="right flex aic jc">
-           {selectedcontrolpoint.controlpointId.controlpointname}
+            {selectedcontrolpoint.controlpointId.controlpointname}
           </div>
         </div>
         <div className="check-points-item flex aic">
           <div className="left flex">Control point description :</div>
-          <div className="right flex"> {selectedcontrolpoint.controlpointId.controlpointname}</div>
+          <div className="right flex">
+            {" "}
+            {selectedcontrolpoint.controlpointId.controlpointname}
+          </div>
         </div>
         <div className="check-points-item flex aic">
           <div className="left flex">Tag ID :</div>
           <div className="right flex aic">
             {theinspection.tagId}
-            <div className="copy-icon flex aic jc">
+            <div className="copy-icon flex aic jc" onClick={(e) => CopyFun()}>
               <CopyIcon />
             </div>
           </div>
         </div>
         <div className="check-points-item flex aic">
           <div className="left flex">Company :</div>
-          <div className="right flex">{selectedcontrolpoint.controlpointId?.createdBy?.companyName}</div>
+          <div className="right flex">
+            {selectedcontrolpoint.controlpointId?.createdBy?.companyName}
+          </div>
         </div>
         <div className="check-points-item flex aic">
           <div className="left flex">Company Address :</div>
-          <div className="right flex">{selectedcontrolpoint.controlpointId?.createdBy?.companyAddress}</div>
+          <div className="right flex">
+            {selectedcontrolpoint.controlpointId?.createdBy?.companyAddress}
+          </div>
         </div>
         <div className="check-points-item flex aic">
           <div className="left flex">Inspector :</div>
-          <div className="right flex">{selectedcontrolpoint?.checkedby?.userName}</div>
+          <div className="right flex">
+            {selectedcontrolpoint?.checkedby?.userName}
+          </div>
         </div>
         <div className="check-points-item flex aic">
           <div className="left flex">Last Inspection :</div>
@@ -60,18 +86,17 @@ const ControlPointInfo = ({ setOpen3,selectedcontrolpoint,theinspection }) => {
         </div>
         <div className="check-points-item flex aic">
           <div className="left flex">Location :</div>
-          <div className="right flex">{theinspection?.location
-                            ?.location}</div>
+          <div className="right flex">{theinspection?.location?.location}</div>
         </div>
         <div className="check-points-item flex aic">
           <div className="left flex">Building :</div>
-          <div className="right flex">{theinspection?.location
-                            ?.buildingname}</div>
+          <div className="right flex">
+            {theinspection?.location?.buildingname}
+          </div>
         </div>
         <div className="check-points-item flex aic">
           <div className="left flex">Floor :</div>
-          <div className="right flex">{theinspection?.location
-                            ?.floor}</div>
+          <div className="right flex">{theinspection?.location?.floor}</div>
         </div>
         <div className="check-points-item flex aic">
           <div className="left flex">Status :</div>
@@ -79,19 +104,21 @@ const ControlPointInfo = ({ setOpen3,selectedcontrolpoint,theinspection }) => {
         </div>
         <div className="check-points-item flex aic">
           <div className="left flex">Manufacturing :</div>
-          <div className="right flex ">{`${moment(Number(theinspection.manufacturingdate)).format("D")}-${moment(
-                          Number(theinspection.manufacturingdate)
-                        ).format("MM")}-${moment(Number(theinspection.manufacturingdate)).format(
-                          "YYYY"
-                        )}`}</div>
+          <div className="right flex ">{`${moment(
+            Number(theinspection.manufacturingdate)
+          ).format("D")}-${moment(
+            Number(theinspection.manufacturingdate)
+          ).format("MM")}-${moment(
+            Number(theinspection.manufacturingdate)
+          ).format("YYYY")}`}</div>
         </div>
         <div className="check-points-item flex aic">
           <div className="left flex">Expiry :</div>
-          <div className="right flex crrr">{`${moment(Number(theinspection.expirydate)).format("D")}-${moment(
-                          Number(theinspection.expirydate)
-                        ).format("MM")}-${moment(Number(theinspection.expirydate)).format(
-                          "YYYY"
-                        )}`}</div>
+          <div className="right flex crrr">{`${moment(
+            Number(theinspection.expirydate)
+          ).format("D")}-${moment(Number(theinspection.expirydate)).format(
+            "MM"
+          )}-${moment(Number(theinspection.expirydate)).format("YYYY")}`}</div>
         </div>
       </div>
     </div>

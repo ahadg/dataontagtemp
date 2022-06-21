@@ -29,6 +29,7 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
   useEffect(() => {
     document.addEventListener("click", () => {
       setShow(false);
+      setShowNotification(false);
     });
   }, []);
 

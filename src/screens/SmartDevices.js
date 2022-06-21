@@ -6,8 +6,12 @@ import Loader from "../components/Loader";
 import Modal from "../components/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
+import DeviceHistory from "../components/DeviceHistory";
 import AddSmartDevice from "../components/AddSmartDevice";
 import { ToastContainer, toast } from "react-toastify";
+import Datetime from "react-datetime";
+import "react-datetime/css/react-datetime.css";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import {
   FamilyTreeIcon,
   ArrowDownIcon,
@@ -74,6 +78,7 @@ const SmartDevices = () => {
     getdevices();
   }, []);
   const [open, setOpen] = useState(false);
+  const [open2, setOpen2] = useState(false);
 
   return (
     <div className="smart-devices">
@@ -145,55 +150,18 @@ const SmartDevices = () => {
                       </div>
                     </div>
                     {/* Second  */}
-                    <div className="dropDown flex aic jc flex-col rel flex-[0.3]">
-                      <div className="category flex aic">
-                        <div
-                          className="cbox cleanbtn flex aic rel"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setHide3(!hide3);
-                          }}
-                        >
-                          <div className="slt flex aic">
-                            <div className="unit-name flex aic font s14 b4">
-                              <span
-                                className="unit-eng flex aic font s14 b4"
-                                placeholder="Creation Date"
-                              >
-                                {selectedCompany3
-                                  ? selectedCompany3
-                                  : "Creation Date"}
-                              </span>
-                            </div>
-                          </div>
-
-                          <div>
-                            <ArrowDownIcon />
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className={`block flex aic abs ${hide3 ? "show" : ""}`}
-                      >
-                        <div className="manue flex aic col anim">
-                          {statusData3.map((item, index) => (
-                            <div
-                              key={index}
-                              className="slt flex aic"
-                              onClick={(e) => {
-                                setHide3(!hide3);
-                                setselectedcompany3(item.title);
-                              }}
-                            >
-                              <div className="unit-name flex aic font s14 b4">
-                                <span className="unit-eng flex aic font s14 b4">
-                                  {item.title}
-                                </span>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
+                    <div className="date-picker flex aic jc">
+                      <Datetime
+                        closeOnSelect={true}
+                        value={date ? date : new Date().getTime()}
+                        onChange={(value) => {
+                          setDate(new Date(value).getTime());
+                        }}
+                        timeFormat={false}
+                        dateFormat="DD-MM-YYYY"
+                        className="start-date cleanbtn"
+                      />
+                      <CalendarTodayIcon className="calender-icon" />
                     </div>
                     {/* Search Box */}
                     <div className="search-by flex">
@@ -278,11 +246,17 @@ const SmartDevices = () => {
                     <div className="btn-edit button flex aic jc">
                       <EditIcon />
                     </div>
-                    <button className="btn button cleanbtn cfff  b6 aic jc">
+                    <button
+                      className="btn button cleanbtn cfff  b6 aic jc"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setOpen2(true);
+                      }}
+                    >
                       <div className="icon flex aic jc">
                         <HistoryIcon />
                       </div>
-                      <div className="lbl">Check History</div>
+                      <div className="lbl">Check history</div>
                     </button>
                   </div>
                 </div>
@@ -308,6 +282,9 @@ const SmartDevices = () => {
           getdevices={getdevices}
           // setloading={setloading}
         />
+      </Modal>
+      <Modal open={open2} onClose={() => setOpen2(false)}>
+        <DeviceHistory setOpen2={setOpen2} />
       </Modal>
     </div>
   );

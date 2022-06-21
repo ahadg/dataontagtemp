@@ -1,0 +1,15 @@
+$themeColor: #00dc98;
+$themeColorHover: linear-gradient(89.96deg, #dffcf3 0.03%, #dffcf3 99.81%);
+$pageBackground: #fff;
+$lightButtonColor: #ffffff;
+$lightButtonBorderColor: #a0a0a0;
+$lightButtonColorHover: #f1f1f1;
+
+$red: #d80000;
+
+.color {
+  color: $themeColor;
+}
+.red {
+  color: $red;
+}

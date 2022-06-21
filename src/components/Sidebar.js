@@ -42,11 +42,11 @@ const Siderbar = ({ history }) => {
       slug: "/support-managment",
       icon: <SupportIcon />,
     },
-    {
-      label: "Task Managment",
-      slug: "/task-managment",
-      icon: <ProtectionIcon />,
-    },
+    // {
+    //   label: "Task Managment",
+    //   slug: "/task-managment",
+    //   icon: <ProtectionIcon />,
+    // },
     // { label: "Download", slug: "/download", icon: <AccountIcon /> },
   ];
 

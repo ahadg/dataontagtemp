@@ -187,18 +187,18 @@ const Home = () => {
       if (res.data.success == "true") {
         settblData(res.data.checks);
         setthe_checklists(res.data.checks);
-        let mod_companies = [];
-        res.data.checks.map((item, index) => {
-          if (
-            !mod_companies.includes(
-              item?.controlpointId?.createdBy?.companyName
-            )
-          ) {
-            mod_companies.push(item?.controlpointId?.createdBy?.companyName);
-          }
-        });
-        console.log("mod_companies", mod_companies);
-        setcompanies(mod_companies);
+        // let mod_companies = [];
+        // res.data.checks.map((item, index) => {
+        //   if (
+        //     !mod_companies.includes(
+        //       item?.controlpointId?.createdBy?.companyName
+        //     )
+        //   ) {
+        //     mod_companies.push(item?.controlpointId?.createdBy?.companyName);
+        //   }
+        // });
+        // console.log("mod_companies", mod_companies);
+        setcompanies(res.data.companies);
         setloading(false);
       }
     } catch (error) {

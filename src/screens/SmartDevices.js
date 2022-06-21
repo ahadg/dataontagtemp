@@ -31,6 +31,7 @@ const SmartDevices = () => {
   const [hide, setHide] = useState(false);
   const [hide2, setHide2] = useState(false);
   const [hide3, setHide3] = useState(false);
+  const [companies,setcompanies] = useState([])
   const [selectedCompany, setselectedcompany] = useState();
   const [selectedCompany2, setselectedcompany2] = useState();
   const [selectedCompany3, setselectedcompany3] = useState();
@@ -61,6 +62,7 @@ const SmartDevices = () => {
       console.log(res2);
       setDevices(res2.data.devices);
       setloading(false);
+      setcompanies(res2.data.companies)
     } catch (error) {
       console.log("error1", error);
       if (error.response) {
@@ -130,18 +132,18 @@ const SmartDevices = () => {
                         className={`block flex aic abs ${hide ? "show" : ""}`}
                       >
                         <div className="manue flex aic col anim">
-                          {statusData.map((item, index) => (
+                          {["All",...companies]?.map((item, index) => (
                             <div
                               key={index}
                               className="slt flex aic"
                               onClick={(e) => {
                                 setHide(!hide);
-                                setselectedcompany(item.title);
+                                setselectedcompany(item);
                               }}
                             >
                               <div className="unit-name flex aic font s14 b4">
                                 <span className="unit-eng flex aic font s14 b4">
-                                  {item.title}
+                                  {item}
                                 </span>
                               </div>
                             </div>

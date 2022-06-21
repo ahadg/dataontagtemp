@@ -38,6 +38,7 @@ const RfidManagment = () => {
   const [rfidlist, setrfidlist] = useState([]);
   const [filteredrfidlist, setfilteredrfidlist] = useState([]);
   const [selectedCompany, setselectedcompany] = useState();
+  const [companies,setcompanies] = useState([])
   const [selectedCompany2, setselectedcompany2] = useState();
   const [statusData, setStatusData] = useState([
     { id: 1, title: "History" },
@@ -238,7 +239,7 @@ const RfidManagment = () => {
                                 placeholder="Company Filter"
                               >
                                 {selectedCompany
-                                  ? selectedCompany.title
+                                  ? selectedCompany.companyName
                                   : "Company Filter"}
                               </span>
                             </div>
@@ -253,7 +254,7 @@ const RfidManagment = () => {
                         className={`block flex aic abs ${hide ? "show" : ""}`}
                       >
                         <div className="manue flex aic col anim">
-                          {statusData.map((item, index) => (
+                          {[{companyName :"All"},...companyfilter].map((item, index) => (
                             <div
                               key={index}
                               className="slt flex aic"
@@ -264,7 +265,7 @@ const RfidManagment = () => {
                             >
                               <div className="unit-name flex aic font s14 b4">
                                 <span className="unit-eng flex aic font s14 b4">
-                                  {item.title}
+                                  {item?.companyName}
                                 </span>
                               </div>
                             </div>

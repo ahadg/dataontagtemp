@@ -124,7 +124,7 @@ const NfcManagment = () => {
           //});
         });
       });
-      setcompanies(mod_companies);
+      //setcompanies(mod_companies);
       console.log("mod_companies", mod_companies);
       setmod_tagids([...temp_tagids]);
       setorg_tagids([...temp_tagids]);
@@ -148,6 +148,7 @@ const NfcManagment = () => {
       console.log("response_checks", res.data);
       if (res.data) {
         setfamilies(res.data.families);
+        setcompanies(res.data.companies);
         setloading(false);
       }
     } catch (error) {
@@ -177,8 +178,17 @@ const NfcManagment = () => {
   }, [value]);
 
   useEffect(() => {
+    let searchedids = [];
+    if(selectedCompany){
+      if(selectedCompany == "All"){
+        searchedids = [...org_tagids]
+      }
+      else {
+        searchedids = org_tagids.filter((item) => item?.family?.createdBy?.companyName == selectedCompany) 
+      }
+    }
     if (search != undefined) {
-      const searchedids = org_tagids.filter((item) => {
+      searchedids = org_tagids.filter((item) => {
         if (
           item.tagIds?.location.buildingname?.search(search) > -1 ||
           item.tagIds?.location.floor?.search(search) > -1 ||
@@ -190,9 +200,9 @@ const NfcManagment = () => {
         //   return item.tagIds.tagId.search(search) != -1;
         // }
       });
-      setmod_tagids([...searchedids]);
     }
-  }, [search]);
+    setmod_tagids([...searchedids]);
+  }, [search,selectedCompany]);
 
   const deletenfc = async () => {
     try {

@@ -24,6 +24,7 @@ import RfidInspection from "./screens/RfidInspection";
 import UserProfile from "./screens/UserProfile";
 import Resetuserinfo from "./screens/Resetuserinfo";
 import TaskManagment from "./screens/TaskManagment";
+import SyncfusionCalender from "./components/SyncfusionCalender";
 
 import io from "socket.io-client";
 import { ToastContainer } from "react-toastify";
@@ -55,8 +56,7 @@ function App() {
       console.log("socket_message", thedata);
       if (thedata.type == "rfidevent") {
         dispatch({ type: "RFID_INSPECTION", payload: thedata.message.id });
-      }
-      else if(thedata.type == "chat") {
+      } else if (thedata.type == "chat") {
         dispatch({ type: "MESSAGE_UPDATE", payload: thedata });
       }
     });
@@ -107,6 +107,11 @@ function App() {
               />
               <Route exact path="/task-managment" component={TaskManagment} />
               <Route exact path="/download" component={Download} />
+              <Route
+                exact
+                path="/syncfusion-calender"
+                component={SyncfusionCalender}
+              />
             </>
           ) : (
             <>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ArrowDownIcon, FireCaylinder } from "../svg";
+import { Link } from "react-router-dom";
 import Datetime from "react-datetime";
 import "react-datetime/css/react-datetime.css";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
@@ -7,7 +8,15 @@ import axios from "axios";
 import moment from "moment";
 import Loader from "./Loader";
 import { ToastContainer, toast } from "react-toastify";
-const AddNewNFCTag = ({ families, setfamilies, setOpen, setloading,companies,userList,getfamilies }) => {
+const AddNewNFCTag = ({
+  families,
+  setfamilies,
+  setOpen,
+  setloading,
+  companies,
+  userList,
+  getfamilies,
+}) => {
   const [gowithoutsubfamily, setgowithoutsubfamily] = useState(false);
   const [hide, setHide] = useState(false);
   const [hide2, setHide2] = useState(false);
@@ -27,8 +36,13 @@ const AddNewNFCTag = ({ families, setfamilies, setOpen, setloading,companies,use
     { id: 1, title: "NO" },
     { id: 2, title: "YES" },
   ]);
-  console.log('selectedfamily',selectedfamily)
-  const [checklists,setchecklists] = useState(['Maintainer Admin','Maintainer User','Company Admin','Company User'])
+  console.log("selectedfamily", selectedfamily);
+  const [checklists, setchecklists] = useState([
+    "Maintainer Admin",
+    "Maintainer User",
+    "Company Admin",
+    "Company User",
+  ]);
   const [buildingname, setbuildingname] = useState("");
   const [floor, setfloor] = useState("");
   const [location, setlocation] = useState("");
@@ -67,13 +81,13 @@ const AddNewNFCTag = ({ families, setfamilies, setOpen, setloading,companies,use
             location,
             buildingname,
           },
-          selectedchecklistname : selectedChecklist,
-          selectedUser : selectedUser?._id,
-          selectedCompany : selectedCompany,
-          gowithoutsubfamily : gowithoutsubfamily,
+          selectedchecklistname: selectedChecklist,
+          selectedUser: selectedUser?._id,
+          selectedCompany: selectedCompany,
+          gowithoutsubfamily: gowithoutsubfamily,
           startDate,
           endDate,
-          priority : selectedPriority
+          priority: selectedPriority,
         }
       );
       console.log("response_checks", res.data);
@@ -82,8 +96,7 @@ const AddNewNFCTag = ({ families, setfamilies, setOpen, setloading,companies,use
         setOpen(false);
         //setloading(false);
         setloader(false);
-        getfamilies()
-
+        getfamilies();
       }
     } catch (error) {
       console.log("error1", error);
@@ -187,11 +200,12 @@ const AddNewNFCTag = ({ families, setfamilies, setOpen, setloading,companies,use
               </div>
             </div>
             <div className="fields-row flex aic">
-              <div 
-              style={{
-                color : gowithoutsubfamily ? 'grey' : ''
-              }}
-              className="field-item-l flex flex-col">
+              <div
+                style={{
+                  color: gowithoutsubfamily ? "grey" : "",
+                }}
+                className="field-item-l flex flex-col"
+              >
                 <div className="lbl">Select ControlPoint Sub-Family</div>
                 <div className="dropDown flex aic jc flex-col rel">
                   <div className="category flex aic">
@@ -199,8 +213,8 @@ const AddNewNFCTag = ({ families, setfamilies, setOpen, setloading,companies,use
                       className="cbox cleanbtn flex aic rel"
                       onClick={(e) => {
                         e.stopPropagation();
-                        if(!gowithoutsubfamily){
-                        setHide2(!hide2);
+                        if (!gowithoutsubfamily) {
+                          setHide2(!hide2);
                         }
                       }}
                     >
@@ -250,7 +264,7 @@ const AddNewNFCTag = ({ families, setfamilies, setOpen, setloading,companies,use
                   </div>
                 </div>
               </div>
-              
+
               <div className="field-item-r flex flex-col">
                 <div className="lbl">Building Name</div>
                 <input
@@ -269,7 +283,9 @@ const AddNewNFCTag = ({ families, setfamilies, setOpen, setloading,companies,use
                   onClick={(e) => {
                     setgowithoutsubfamily(!gowithoutsubfamily);
                   }}
-                  className={`cleanbtn radio-btn rel ${gowithoutsubfamily ? "on" : ""}`}
+                  className={`cleanbtn radio-btn rel ${
+                    gowithoutsubfamily ? "on" : ""
+                  }`}
                 />
               </div>
             </div>
@@ -308,49 +324,49 @@ const AddNewNFCTag = ({ families, setfamilies, setOpen, setloading,companies,use
                   </div>
                   <div className={`block flex aic abs ${hide3 ? "show" : ""}`}>
                     <div className="manue flex aic col anim">
-                      {
-                        gowithoutsubfamily
-                        ?
-                        selectedfamily?.nonsubfamilycontrolpoints?.map((item, index) => (
-                          <div
-                            key={index}
-                            className="slt flex aic"
-                            onClick={(e) => {
-                              setHide3(!hide3);
-                              setSelectedcontrolpoint(item.controlpoint);
-                            }}
-                          >
-                            <div className="unit-name flex aic font s14 b4">
-                              <div className="icon-fire flex aic jc ">
-                                <FireCaylinder />
+                      {gowithoutsubfamily
+                        ? selectedfamily?.nonsubfamilycontrolpoints?.map(
+                            (item, index) => (
+                              <div
+                                key={index}
+                                className="slt flex aic"
+                                onClick={(e) => {
+                                  setHide3(!hide3);
+                                  setSelectedcontrolpoint(item.controlpoint);
+                                }}
+                              >
+                                <div className="unit-name flex aic font s14 b4">
+                                  <div className="icon-fire flex aic jc ">
+                                    <FireCaylinder />
+                                  </div>
+                                  <span className="unit-eng flex aic font s14 b4">
+                                    {item?.controlpoint?.controlpointname}
+                                  </span>
+                                </div>
                               </div>
-                              <span className="unit-eng flex aic font s14 b4">
-                                {item?.controlpoint?.controlpointname}
-                              </span>
-                            </div>
-                          </div>
-                        ))
-                        :
-                        selectedSubfamily?.controlpoints?.map((item, index) => (
-                          <div
-                            key={index}
-                            className="slt flex aic"
-                            onClick={(e) => {
-                              setHide3(!hide3);
-                              setSelectedcontrolpoint(item);
-                            }}
-                          >
-                            <div className="unit-name flex aic font s14 b4">
-                              <div className="icon-fire flex aic jc ">
-                                <FireCaylinder />
+                            )
+                          )
+                        : selectedSubfamily?.controlpoints?.map(
+                            (item, index) => (
+                              <div
+                                key={index}
+                                className="slt flex aic"
+                                onClick={(e) => {
+                                  setHide3(!hide3);
+                                  setSelectedcontrolpoint(item);
+                                }}
+                              >
+                                <div className="unit-name flex aic font s14 b4">
+                                  <div className="icon-fire flex aic jc ">
+                                    <FireCaylinder />
+                                  </div>
+                                  <span className="unit-eng flex aic font s14 b4">
+                                    {item.controlpointname}
+                                  </span>
+                                </div>
                               </div>
-                              <span className="unit-eng flex aic font s14 b4">
-                                {item.controlpointname}
-                              </span>
-                            </div>
-                          </div>
-                        ))
-                      }
+                            )
+                          )}
                     </div>
                   </div>
                 </div>
@@ -435,7 +451,7 @@ const AddNewNFCTag = ({ families, setfamilies, setOpen, setloading,companies,use
               </div>
             </div>
             <div className="fields-row flex aic">
-            <div className="field-item-l flex flex-col">
+              <div className="field-item-l flex flex-col">
                 <div className="lbl">Select Priority</div>
                 <div className="dropDown flex aic jc flex-col rel">
                   <div className="category flex aic">
@@ -468,7 +484,7 @@ const AddNewNFCTag = ({ families, setfamilies, setOpen, setloading,companies,use
                   </div>
                   <div className={`block flex aic abs ${hide7 ? "show" : ""}`}>
                     <div className="manue flex aic col anim">
-                      {["High",'Medium',"Low"].map((item, index) => (
+                      {["High", "Medium", "Low"].map((item, index) => (
                         <div
                           key={index}
                           className="slt flex aic"
@@ -629,7 +645,14 @@ const AddNewNFCTag = ({ families, setfamilies, setOpen, setloading,companies,use
               </div>
               <div className="field-item-r flex flex-col">
                 <div className="lbl">Expiry Date</div>
-                <div className="date-picker flex aic jc">
+                <Link
+                  to={"/syncfusion-calender"}
+                  className="txt-input b6 s18 flex aic jc pointer"
+                >
+                  Select Expiry Date
+                </Link>
+                {/* <div className="date-picker flex aic jc">
+                 
                   <Datetime
                     closeOnSelect={true}
                     value={endDate ? endDate : new Date().getTime()}
@@ -641,7 +664,7 @@ const AddNewNFCTag = ({ families, setfamilies, setOpen, setloading,companies,use
                     className="start-date cleanbtn"
                   />
                   <CalendarTodayIcon className="calender-icon" />
-                </div>
+                </div> */}
               </div>
             </div>
             <div className="fields-row flex aic">

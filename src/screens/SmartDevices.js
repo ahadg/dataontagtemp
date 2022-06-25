@@ -35,6 +35,7 @@ const SmartDevices = () => {
   const [selectedCompany, setselectedcompany] = useState();
   const [selectedCompany2, setselectedcompany2] = useState();
   const [selectedCompany3, setselectedcompany3] = useState();
+  const [search, setsearch] = useState(undefined);
   const [statusData, setStatusData] = useState([{ id: 1, title: "Singapore" }]);
   const [statusData2, setStatusData2] = useState([
     { id: 1, title: "West Region" },
@@ -52,7 +53,35 @@ const SmartDevices = () => {
   const dispatch = useDispatch();
   const { showRightbar } = useSelector((state) => state.generalReducers);
   const [devices, setDevices] = useState([]);
+  const [filtereddevices, setfiltereddevices] = useState([]);
   const [loading, setloading] = useState(true);
+  useEffect(() => {
+    let searchedids;
+    console.log('selectedCompany',selectedCompany)
+    if(selectedCompany){
+      if(selectedCompany == "All"){
+        searchedids = [...devices]
+      }
+      else {
+        searchedids = devices.filter((item) => item?.company?.companyName == selectedCompany) 
+      }
+      setfiltereddevices([...searchedids]);
+    }
+    if (search != undefined) {
+      searchedids = devices.filter((item) => {
+        if (
+          item.plugid.search(search) > -1
+        ) {
+          return true;
+        }
+      });
+      setfiltereddevices([...searchedids]);
+    }
+    else if(search == ''){
+      setfiltereddevices([...devices])
+    }
+    
+  }, [search,selectedCompany]);
   const getdevices = async (id) => {
     try {
       setloading(true);
@@ -61,6 +90,7 @@ const SmartDevices = () => {
       );
       console.log(res2);
       setDevices(res2.data.devices);
+      setfiltereddevices(res2.data.devices)
       setloading(false);
       setcompanies(res2.data.companies)
     } catch (error) {
@@ -170,6 +200,9 @@ const SmartDevices = () => {
                       <div className="search-box flex aic">
                         <input
                           type="text"
+                          onChange={(e) => {
+                            setsearch(e.target.value);
+                          }}
                           placeholder="Search Tag Id"
                           className="txt cleanbtn s16"
                         />
@@ -197,7 +230,7 @@ const SmartDevices = () => {
               </div>
             </div>
             <div className="devices-block flex">
-              {devices.map((item, index) => (
+              {filtereddevices.map((item, index) => (
                 <div
                   className="device-card flex flex-col pointer"
                   onClick={(e) => {

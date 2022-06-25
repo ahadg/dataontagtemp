@@ -72,7 +72,7 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
       users: [],
       groups : [],
       expiry: "",
-      showList : true,
+      showList : false,
       date : new Date().getTime()
     },
   ]);

@@ -83,14 +83,14 @@ const Siderbar = ({ history }) => {
             </NavLink>
           ))}
         </div>
-        <div className="links flex flex-col aic ">
+        {/* <div className="links flex flex-col aic ">
           <div className="item flex aic rel pointer" onClick={logout}>
             <div className="ico flex aic">
               <LogoutIcon />
             </div>
             <div className="lbl tip font s14 cfff abs anim">Logout</div>
           </div>
-        </div>
+        </div> */}
         {/* <div
          
           style={{ cursor: "pointer" }}

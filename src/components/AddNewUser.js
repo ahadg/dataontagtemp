@@ -23,13 +23,13 @@ const AddNewUser = ({ setOpen,companyfilter,getusers }) => {
   const [email, setemail] = useState("");
   const [mobile, setmobile] = useState("");
   const [password, setpassword] = useState("");
+  const [confirmpassword, setconfirmpassword] = useState("");
   const [companyRef, setselectedcompanyRef] = useState("");
   const [loading,setloading] = useState(false)
   const [companyName,setcompanyName] = useState(false)
 
   const createnewuser = async (id) => {
     let formData = new FormData();
-    setloading(true);
     const config = {
       header: {
         "content-type": "multipart/form-data",
@@ -47,6 +47,9 @@ const AddNewUser = ({ setOpen,companyfilter,getusers }) => {
     }
     else if(!password){
       return toast.error("Please input password.");
+    }
+    else if(password != confirmpassword){
+      return toast.error("Password confirmation does not matched.");
     }
     // else if(password){
     //   return toast.error("your password was'nt matched.");
@@ -215,6 +218,17 @@ const AddNewUser = ({ setOpen,companyfilter,getusers }) => {
             />
           </div>
           <div className="txt-field flex flex-col">
+            <div className="lbl s12 font">Confirm Password</div>
+            <input
+              type="password"
+              className="txt cleanbtn s12 font"
+              placeholder="Confirm Password"
+              onChange={(e) => setconfirmpassword(e.target.value)}
+            />
+          </div>
+        </div>
+        <div className="data-item flex  aic">
+        <div className="txt-field flex flex-col">
             <div className="lbl s12 font">Phone Number</div>
             <input
               type="number"

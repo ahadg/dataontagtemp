@@ -187,17 +187,6 @@ const Home = () => {
       if (res.data.success == "true") {
         settblData(res.data.checks);
         setthe_checklists(res.data.checks);
-        // let mod_companies = [];
-        // res.data.checks.map((item, index) => {
-        //   if (
-        //     !mod_companies.includes(
-        //       item?.controlpointId?.createdBy?.companyName
-        //     )
-        //   ) {
-        //     mod_companies.push(item?.controlpointId?.createdBy?.companyName);
-        //   }
-        // });
-        // console.log("mod_companies", mod_companies);
         setcompanies(res.data.companies);
         setloading(false);
       }
@@ -213,8 +202,36 @@ const Home = () => {
       }
     }
   };
+  const [userList,setuserList] = useState([])
+  const getusers = async () => {
+    try {
+      //setloading(true);
+      const res = await axios.get(
+        `${process.env.REACT_APP_END_URL}api/getallusers`
+      );
+      console.log("response_checks", res.data);
+      if (res.data) {
+        // setfamilies(res.data.families);
+        setuserList(res.data.users);
+        // setfilteruserList(res.data.users)
+        //setcompanyfilter(res.data.companies)
+      }
+    } catch (error) {
+      console.log("error1", error);
+      if (error.response) {
+        if (error.response.data) {
+          console.log("error", error.response.data);
+          return toast.error(error.response.data.error);
+        }
+      } else {
+        return toast.error("Error in server");
+      }
+    }
+  };
+
   useEffect(() => {
     getallchecks();
+    getusers()
   }, []);
   useEffect(() => {
     if (value) {
@@ -341,7 +358,7 @@ const Home = () => {
                                   placeholder="Search Requirments"
                                 >
                                   {selectedState4
-                                    ? selectedState4.title
+                                    ? selectedState4.userName
                                     : "Assign User to fix"}
                                 </span>
                               </div>
@@ -357,7 +374,7 @@ const Home = () => {
                           }`}
                         >
                           <div className="manue flex aic col anim">
-                            {statusData.map((item, index) => (
+                            {userList.map((item, index) => (
                               <div
                                 key={index}
                                 className="slt flex aic"
@@ -368,7 +385,7 @@ const Home = () => {
                               >
                                 <div className="unit-name flex aic font s14 b4">
                                   <span className="unit-eng flex aic font s14 b4">
-                                    {item.title}
+                                    {item.userName}
                                   </span>
                                 </div>
                               </div>

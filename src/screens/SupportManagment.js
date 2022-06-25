@@ -240,9 +240,9 @@ const Users = () => {
               <div className="left-box flex flex-col">
                 <div className="left-hdr flex aic">
                   <div className="left-tag">Requests</div>
-                  <div className="masg-numb flex aic jc">
+                  {/* <div className="masg-numb flex aic jc">
                     <div className="numb">{allemessages.length}</div>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="lists flex flex-col">
                   {masgTypes.map((item, index) => (
@@ -445,9 +445,9 @@ const Users = () => {
               <div className="left-box flex flex-col">
                 <div className="left-hdr flex aic">
                   <div className="left-tag">Requests</div>
-                  <div className="masg-numb flex aic jc">
+                  {/* <div className="masg-numb flex aic jc">
                     <div className="numb">28</div>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="lists flex flex-col">
                   {masgTypes2.map((item, index) => (

@@ -77,7 +77,7 @@ const Login = ({ history }) => {
               });
             }}
             onChange={(e) => setpassword(e.target.value)}
-            type="text"
+            type="password"
             className="iput font s14 c000"
           />
         </div>

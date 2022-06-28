@@ -2077,7 +2077,7 @@
   dependencies:
     "@syncfusion/ej2-file-utils" "~20.1.55"
 
-"@syncfusion/ej2-data@~20.1.55":
+"@syncfusion/ej2-data@^20.1.55", "@syncfusion/ej2-data@~20.1.55":
   version "20.1.55"
   resolved "https://registry.yarnpkg.com/@syncfusion/ej2-data/-/ej2-data-20.1.55.tgz#0da1e1ebdbfa3b5760cd85661b67d823bebb4676"
   integrity sha512-iPFnJOjXlOHTP6EV1Qlk4XSympesryDjOMTIB6uYtuUVrHJM87Zk1Wgat7LPyYSB8olVbmPfnDHgCPEOJ8O5vw==

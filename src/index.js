@@ -5,6 +5,10 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import store from "./store";
+import { registerLicense } from '@syncfusion/ej2-base';
+
+// Registering Syncfusion license key
+registerLicense('ORg4AjUWIQA/Gnt2VVhhQlFac1pJWnxLfUx0RWFbb1d6dlBMYVlBNQtUQF1hS35VdEZiWHpfcnRRRmZZ');
 
 ReactDOM.render(
   <Provider store={store}>

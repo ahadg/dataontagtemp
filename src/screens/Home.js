@@ -3,7 +3,7 @@ import { Header, Rightbar } from "../components";
 import Dialog from "@mui/material/Dialog";
 import Lottie from "react-lottie";
 import LoadPage from "../components/LoadPage.json";
-
+import { useDispatch, useSelector } from "react-redux";
 import {
   FilterIcon,
   ArrowDownIcon,
@@ -34,6 +34,7 @@ const Home = () => {
       preserveAspectRatio: "xMidYMid slice",
     },
   };
+  const user = useSelector((state) => state.generalReducers.user);
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
   const [open3, setOpen3] = useState(false);
@@ -41,7 +42,7 @@ const Home = () => {
   const [hide2, setHide2] = useState(false);
   const [hide3, setHide3] = useState(false);
   const [hide4, setHide4] = useState(false);
-  const [selectedState4, setSelectedState4] = useState();
+  const [selectedUser, setSelectedUser] = useState();
   const [companies, setcompanies] = useState([]);
   const [selectedcompany, setselectedcompany] = useState("");
   const [buildings, setbuildings] = useState([]);
@@ -58,7 +59,7 @@ const Home = () => {
   const [the_buildingcheck, setthe_buildingcheck] = useState([]);
   const [checklists, setchecklists] = useState([]);
   const [theinspection, settheinspections] = useState({});
-  const [selectedcontrolpoint, setselectedcontrolpoint] = useState({});
+  const [selectedcheck, setselectedcheck] = useState({});
   const handleClose = () => {
     setOpen(false);
     setOpen2(false);
@@ -69,19 +70,19 @@ const Home = () => {
   const [value, setValue] = React.useState([null, null]);
   console.log("date", value);
   const [tblData, settblData] = useState([
-    {
-      id: "3F10065769234",
-      inspector: "Muddasir Nazir",
-      dataTime: "21 Jan 2021 at 2:31pm",
-      desc: "CO2 fire extinguisher n.1 – 2kg",
-      compName: "ShiningStarMedia.AI",
-      buildName: "Building No.1",
-      floor: "7",
-      location: "Main Door",
-      dateManuFect: "01 Jan 2019",
-      dateExpiry: "01 Jan 2023",
-      status: "No Issue",
-    },
+    // {
+    //   id: "3F10065769234",
+    //   inspector: "Muddasir Nazir",
+    //   dataTime: "21 Jan 2021 at 2:31pm",
+    //   desc: "CO2 fire extinguisher n.1 – 2kg",
+    //   compName: "ShiningStarMedia.AI",
+    //   buildName: "Building No.1",
+    //   floor: "7",
+    //   location: "Main Door",
+    //   dateManuFect: "01 Jan 2019",
+    //   dateExpiry: "01 Jan 2023",
+    //   status: "No Issue",
+    // },
   ]);
   console.log("tblData", tblData);
   const filterdatabycompany = () => {
@@ -229,6 +230,38 @@ const Home = () => {
     }
   };
 
+  const sendfixrequest = async (issue,checkdesc,details) => {
+    try {
+      let message; 
+      if(issue){
+        message  = `${checkdesc} : ${issue}`
+      }
+      else {
+        message  = `There is a problem on: ${checkdesc}`
+      }
+      const res = await axios.post(
+        `${process.env.REACT_APP_END_URL}api/sendnotification`,{
+          touser : selectedUser._id,
+          title : `Checkpoint issue on ${selectedcheck?.controlpointId?.familyId?.deviceName}`,
+          message : message,
+          details,
+          buttons : [{id : "solve_it", text : "SOLVE IT"}]
+        }
+      );
+      console.log("sendfixrequest", res.data);
+    } catch (error) {
+      console.log("error1", error);
+      if (error.response) {
+        if (error.response.data) {
+          console.log("error", error.response.data);
+          return toast.error(error.response.data.error);
+        }
+      } else {
+        return toast.error("Error in server");
+      }
+    }
+  };
+
   useEffect(() => {
     getallchecks();
     getusers()
@@ -253,7 +286,7 @@ const Home = () => {
   console.log("checklist", checklists);
 
   const CheckPointStatus = () => {
-    console.log("selectedcontrolpoint", selectedcontrolpoint);
+    console.log("selectedcheck", selectedcheck);
 
     return (
       <div className="check-point flex flex-col">
@@ -274,7 +307,7 @@ const Home = () => {
           <div className="info-item flex flex-col">
             <div className="lbl s16 b6 font">Company Name</div>
             <div className="tag s14 font">
-              {selectedcontrolpoint.checkedby.companyName}
+              {selectedcheck.checkedby.companyName}
             </div>
           </div>
           <div className="info-item flex flex-col">
@@ -323,7 +356,7 @@ const Home = () => {
                 <div className="item-header flex aic">
                   <div className="header-left flex flex-col">
                     <div className="tag b6 font">Check {index + 1}</div>
-                    <div className="des s12 b5 font">CO2 fire extinguisher</div>
+                    <div className="des s12 b5 font">{item.checkDesc}</div>
                   </div>
                   <div className="header-right flex aic">
                     <div className="status-icon flex aic jc red">
@@ -341,7 +374,9 @@ const Home = () => {
                       </div>
                     </div>
                     <div className="issue-action flex aic">
-                      <div className="btn-fix button">Fix Now</div>
+                      <div 
+                      onClick={() => sendfixrequest(item.issue,item.checkDesc,{checkid : selectedcheck._id,index})}
+                      className="btn-fix button">Fix Now</div>
                       <div className="dropDown flex aic jc flex-col rel">
                         <div className="category flex aic">
                           <div
@@ -357,8 +392,8 @@ const Home = () => {
                                   className="unit-eng flex aic font s14 b4"
                                   placeholder="Search Requirments"
                                 >
-                                  {selectedState4
-                                    ? selectedState4.userName
+                                  {selectedUser
+                                    ? selectedUser.userName
                                     : "Assign User to fix"}
                                 </span>
                               </div>
@@ -380,7 +415,7 @@ const Home = () => {
                                 className="slt flex aic"
                                 onClick={(e) => {
                                   setHide4(!hide4);
-                                  setSelectedState4(item);
+                                  setSelectedUser(item);
                                 }}
                               >
                                 <div className="unit-name flex aic font s14 b4">
@@ -632,8 +667,8 @@ const Home = () => {
                               className="unit-eng flex aic font s14 b4"
                               placeholder="Search Requirments"
                             >
-                              {selectedState4
-                                ? selectedState4.title
+                              {selectedUser
+                                ? selectedUser.title
                                 : "Search Requirments"}
                             </span>
                           </div>
@@ -653,7 +688,7 @@ const Home = () => {
                             className="slt flex aic"
                             onClick={(e) => {
                               setHide4(!hide4);
-                              setSelectedState4(item);
+                              setSelectedUser(item);
                             }}
                           >
                             <div className="unit-name flex aic font s14 b4">
@@ -713,7 +748,7 @@ const Home = () => {
                       </div>
                       {/* <div className="row-item font">{item.tagId}</div> */}
                       <div className="row-item font">
-                        {item.checkedby.userName}
+                        {item?.checkedby?.userName}
                       </div>
                       <div
                         className="row-item font"
@@ -758,7 +793,7 @@ const Home = () => {
                           settheinspections(
                             item?.controlpointId?.tagIds[tagindex]
                           );
-                          setselectedcontrolpoint(item);
+                          setselectedcheck(item);
                         }}
                       >
                         <div
@@ -777,7 +812,7 @@ const Home = () => {
                           settheinspections(
                             item?.controlpointId?.tagIds[tagindex]
                           );
-                          setselectedcontrolpoint(item);
+                          setselectedcheck(item);
                         }}
                         className="row-item font"
                       >
@@ -819,14 +854,14 @@ const Home = () => {
       >
         <ControlPointInfo
           setOpen3={setOpen3}
-          selectedcontrolpoint={selectedcontrolpoint}
+          selectedcheck={selectedcheck}
           theinspection={theinspection}
         />
       </Dialog> */}
       <Modal open={open3} onClose={() => setOpen3(false)}>
         <ControlPointInfo
           setOpen3={setOpen3}
-          selectedcontrolpoint={selectedcontrolpoint}
+          selectedcontrolpoint={selectedcheck}
           theinspection={theinspection}
         />
       </Modal>

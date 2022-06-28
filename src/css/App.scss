@@ -40,6 +40,19 @@ body {
   max-width: 674px !important;
 }
 
+.sync-calender-hdr {
+  padding: 20px;
+  .close-icon {
+    &:hover {
+      svg {
+        path {
+          stroke: red;
+        }
+      }
+    }
+  }
+}
+
 // scan
 .scann {
   position: absolute;

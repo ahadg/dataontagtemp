@@ -15,6 +15,7 @@ import {
   FireCaylinder,
   CameraIcon,
   ActionIcon,
+  CloseIcon,
 } from "../svg";
 import { ToastContainer, toast } from "react-toastify";
 import AddNewNFCTag from "../components/AddNewNFCTag_Controlpoint";
@@ -555,7 +556,17 @@ const NfcManagment = () => {
       </Modal>
 
       <Modal open={open5} onClose={() => setOpen5(false)}>
-        <SyncfusionCalender setOpen5={setOpen5} />
+        <div className="flex flex-col">
+          <div className="sync-calender-hdr flex aic je">
+            <div
+              className="close-icon flex aic jc pointer"
+              onClick={(e) => setOpen5(false)}
+            >
+              <CloseIcon />
+            </div>
+          </div>
+          <SyncfusionCalender setOpen5={setOpen5} />
+        </div>
       </Modal>
     </div>
   );

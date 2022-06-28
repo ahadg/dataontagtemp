@@ -25,12 +25,14 @@ import moment from "moment";
 import CloneNFCTag from "../components/CloneNFCTag_Controlpoint";
 import CustomDateRangeInputs from "../components/CustomDateRangeInputs";
 import NfcControlPointInfo from "../components/NfcControlPointInfo";
+import SyncfusionCalender from "../components/SyncfusionCalender";
 
 const NfcManagment = () => {
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
   const [open3, setOpen3] = useState(false);
   const [open4, setOpen4] = useState(false);
+  const [open5, setOpen5] = useState(false);
   const [value, setValue] = React.useState([null, null]);
   const [opennfctag, setopennfctag] = useState(false);
   const [edittagdata, setedittagdata] = useState("");
@@ -179,12 +181,13 @@ const NfcManagment = () => {
 
   useEffect(() => {
     let searchedids = [];
-    if(selectedCompany){
-      if(selectedCompany == "All"){
-        searchedids = [...org_tagids]
-      }
-      else {
-        searchedids = org_tagids.filter((item) => item?.family?.createdBy?.companyName == selectedCompany) 
+    if (selectedCompany) {
+      if (selectedCompany == "All") {
+        searchedids = [...org_tagids];
+      } else {
+        searchedids = org_tagids.filter(
+          (item) => item?.family?.createdBy?.companyName == selectedCompany
+        );
       }
     }
     if (search != undefined) {
@@ -202,7 +205,7 @@ const NfcManagment = () => {
       });
     }
     setmod_tagids([...searchedids]);
-  }, [search,selectedCompany]);
+  }, [search, selectedCompany]);
 
   const deletenfc = async () => {
     try {
@@ -324,7 +327,7 @@ const NfcManagment = () => {
                         className={`block flex aic abs ${hide ? "show" : ""}`}
                       >
                         <div className="manue flex aic col anim">
-                          {['All',...companies].map((item, index) => (
+                          {["All", ...companies].map((item, index) => (
                             <div
                               key={index}
                               className="slt flex aic"
@@ -506,6 +509,7 @@ const NfcManagment = () => {
           families={families}
           setfamilies={setfamilies}
           setOpen={setOpen}
+          setOpen5={setOpen5}
           setloading={setloading}
           getfamilies={getfamilies}
           companies={companies}
@@ -548,6 +552,10 @@ const NfcManagment = () => {
           selectedcontrolpoint={selectedcontrolpoint}
           theinspection={theinspection}
         />
+      </Modal>
+
+      <Modal open={open5} onClose={() => setOpen5(false)}>
+        <SyncfusionCalender setOpen5={setOpen5} />
       </Modal>
     </div>
   );

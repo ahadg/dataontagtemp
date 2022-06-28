@@ -8,10 +8,12 @@ import axios from "axios";
 import moment from "moment";
 import Loader from "./Loader";
 import { ToastContainer, toast } from "react-toastify";
+
 const AddNewNFCTag = ({
   families,
   setfamilies,
   setOpen,
+  setOpen5,
   setloading,
   companies,
   userList,
@@ -120,6 +122,7 @@ const AddNewNFCTag = ({
       setHide4(false);
     });
   }, []);
+
   return (
     <div className="create-new-nfc-taf flex">
       {loader ? (
@@ -645,12 +648,15 @@ const AddNewNFCTag = ({
               </div>
               <div className="field-item-r flex flex-col">
                 <div className="lbl">Expiry Date</div>
-                <Link
-                  to={"/syncfusion-calender"}
+                <div
+                  // to={"/syncfusion-calender"}
                   className="txt-input b6 s18 flex aic jc pointer"
+                  onClick={(e) => {
+                    setOpen5(true);
+                  }}
                 >
                   Select Expiry Date
-                </Link>
+                </div>
                 {/* <div className="date-picker flex aic jc">
                  
                   <Datetime

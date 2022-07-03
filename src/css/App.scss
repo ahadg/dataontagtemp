@@ -2280,6 +2280,7 @@ body {
 .create-new-nfc-taf {
   width: 700px;
   height: 100%;
+  min-height: 970px;
   overflow: hidden;
   // height: 450px;
   padding: 22px 16px;
@@ -2303,6 +2304,84 @@ body {
         justify-content: space-between;
         .mr-10 {
           margin-right: 10px;
+        }
+        .txt-field {
+          width: 100%;
+          margin-bottom: 25px;
+          .txt {
+            padding: 12px 8px;
+            height: 40px;
+            color: #5e5e5e;
+            border-radius: 6px;
+            border: 1px solid #e5e5e5;
+          }
+        }
+        .search-box {
+          .txt-box {
+            width: 100%;
+            .txt-b {
+              width: 100%;
+            }
+            svg {
+              path {
+                fill: $themeColor;
+              }
+            }
+          }
+          .list-box {
+            top: 38px;
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            box-shadow: 0px 0px 34px -10px rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+            visibility: hidden;
+            opacity: 0;
+            z-index: 2;
+            width: 100%;
+            padding: 8px 10px;
+            &.show {
+              display: flex;
+              visibility: visible;
+              opacity: 1;
+              @include dropDownAnim;
+            }
+            .txt-search {
+              border-bottom: 1px solid #eae9e9;
+              .txt-s {
+                padding: 10px;
+                width: 100%;
+              }
+              .icon {
+              }
+            }
+            .user-list {
+              height: 100px;
+              overflow-y: auto;
+              &::-webkit-scrollbar {
+                width: 4px;
+              }
+              .list-item {
+                padding: 6px 4px;
+                .name {
+                  flex: 1;
+                }
+                .action-icon {
+                  svg {
+                    width: 20px;
+                    height: 20px;
+                    path {
+                      fill: $themeColor;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        .data-item {
+          width: 100%;
+          justify-content: space-between;
         }
         .date-picker {
           border: 1px solid #e5e5e5;

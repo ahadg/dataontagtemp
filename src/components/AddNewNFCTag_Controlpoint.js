@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { ArrowDownIcon, FireCaylinder,  RoundAdd,
-  RoundRemoveIcon,SearchIcon } from "../svg";
+import {
+  ArrowDownIcon,
+  FireCaylinder,
+  RoundAdd,
+  RoundRemoveIcon,
+  SearchIcon,
+} from "../svg";
 import { Link } from "react-router-dom";
 import Datetime from "react-datetime";
 import "react-datetime/css/react-datetime.css";
@@ -19,7 +24,7 @@ const AddNewNFCTag = ({
   companies,
   userList,
   getfamilies,
-  syncfusionselected
+  syncfusionselected,
 }) => {
   const user = useSelector((state) => state.generalReducers.user);
   const [showList, setShowList] = useState(false);
@@ -53,7 +58,9 @@ const AddNewNFCTag = ({
   const [buildingname, setbuildingname] = useState("");
   const [floor, setfloor] = useState("");
   const [location, setlocation] = useState("");
-  const [manufacturingdate, setmanufacturingdate] = useState(new Date().getTime());
+  const [manufacturingdate, setmanufacturingdate] = useState(
+    new Date().getTime()
+  );
   const [endDate, setEndDate] = useState(new Date().getTime());
   const [tagId, settagId] = useState();
   const [loader, setloader] = useState(false);
@@ -72,7 +79,7 @@ const AddNewNFCTag = ({
       return toast.error("Please select start date.");
     } else if (!endDate) {
       return toast.error("Please select end date.");
-    } else if (!syncfusionselected){
+    } else if (!syncfusionselected) {
       return toast.error("Please select expiry date.");
     }
     try {
@@ -94,13 +101,16 @@ const AddNewNFCTag = ({
           selectedUser: selectedUser?._id,
           selectedCompany: selectedCompany,
           gowithoutsubfamily: gowithoutsubfamily,
-          startDate : syncfusionselected[0]?.StartTime,
-          endDate : syncfusionselected[0]?.EndTime,
-          syncfusiondetails : {
-               recurrencetype : syncfusionselected[0]?.RecurrenceRule?.split(";")[0]?.split("=")[1],
-               startDate : syncfusionselected[0]?.StartTime,
-               endDate : syncfusionselected[0]?.EndTime,
-               object : syncfusionselected
+          startDate: syncfusionselected[0]?.StartTime,
+          endDate: syncfusionselected[0]?.EndTime,
+          syncfusiondetails: {
+            recurrencetype:
+              syncfusionselected[0]?.RecurrenceRule?.split(";")[0]?.split(
+                "="
+              )[1],
+            startDate: syncfusionselected[0]?.StartTime,
+            endDate: syncfusionselected[0]?.EndTime,
+            object: syncfusionselected,
           },
           priority: selectedPriority,
           manufacturingdate,
@@ -400,66 +410,66 @@ const AddNewNFCTag = ({
               </div>
             </div>
             <div className="fields-row flex aic">
-              {
-              user.userType == "superadmin"
-              &&
-              <div className="field-item-l flex flex-col">
-                <div className="lbl">Select Company</div>
-                <div className="dropDown flex aic jc flex-col rel">
-                  <div className="category flex aic">
-                    <div
-                      className="cbox cleanbtn flex aic rel"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setHide4(!hide4);
-                      }}
-                    >
-                      <div className="slt flex aic">
-                        <div className="unit-name flex aic font s14 b4">
-                          <div className="icon-fire flex aic jc ">
-                            <FireCaylinder />
-                          </div>
-                          <span
-                            className="unit-eng flex aic font s14 b4"
-                            placeholder="Company Filter"
-                          >
-                            {selectedCompany
-                              ? selectedCompany
-                              : "Company Filter"}
-                          </span>
-                        </div>
-                      </div>
-                      <div>
-                        <ArrowDownIcon />
-                      </div>
-                    </div>
-                  </div>
-                  <div className={`block flex aic abs ${hide4 ? "show" : ""}`}>
-                    <div className="manue flex aic col anim">
-                      {companies.map((item, index) => (
-                        <div
-                          key={index}
-                          className="slt flex aic"
-                          onClick={(e) => {
-                            setHide4(!hide4);
-                            setSelectedCompany(item);
-                          }}
-                        >
+              {user.userType == "superadmin" && (
+                <div className="field-item-l flex flex-col">
+                  <div className="lbl">Select Company</div>
+                  <div className="dropDown flex aic jc flex-col rel">
+                    <div className="category flex aic">
+                      <div
+                        className="cbox cleanbtn flex aic rel"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setHide4(!hide4);
+                        }}
+                      >
+                        <div className="slt flex aic">
                           <div className="unit-name flex aic font s14 b4">
                             <div className="icon-fire flex aic jc ">
                               <FireCaylinder />
                             </div>
-                            <span className="unit-eng flex aic font s14 b4">
-                              {item}
+                            <span
+                              className="unit-eng flex aic font s14 b4"
+                              placeholder="Company Filter"
+                            >
+                              {selectedCompany
+                                ? selectedCompany
+                                : "Company Filter"}
                             </span>
                           </div>
                         </div>
-                      ))}
+                        <div>
+                          <ArrowDownIcon />
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className={`block flex aic abs ${hide4 ? "show" : ""}`}
+                    >
+                      <div className="manue flex aic col anim">
+                        {companies.map((item, index) => (
+                          <div
+                            key={index}
+                            className="slt flex aic"
+                            onClick={(e) => {
+                              setHide4(!hide4);
+                              setSelectedCompany(item);
+                            }}
+                          >
+                            <div className="unit-name flex aic font s14 b4">
+                              <div className="icon-fire flex aic jc ">
+                                <FireCaylinder />
+                              </div>
+                              <span className="unit-eng flex aic font s14 b4">
+                                {item}
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              }
+              )}
               <div className="field-item-r flex flex-col">
                 <div className="lbl">Location</div>
                 <input
@@ -477,7 +487,11 @@ const AddNewNFCTag = ({
                 <div className="date-picker flex aic jc pointer">
                   <Datetime
                     closeOnSelect={true}
-                    value={manufacturingdate ? manufacturingdate : new Date().getTime()}
+                    value={
+                      manufacturingdate
+                        ? manufacturingdate
+                        : new Date().getTime()
+                    }
                     onChange={(value) => {
                       setmanufacturingdate(new Date(value).getTime());
                     }}
@@ -488,12 +502,11 @@ const AddNewNFCTag = ({
                   <CalendarTodayIcon className="calender-icon" />
                 </div>
               </div>
-              </div>
+            </div>
             <div className="heading-tag-2 flex aic jc s16 font b6">
               <div>Manufacturing & Expiry date</div>
             </div>
             <div className="fields-row flex aic">
-           
               <div className="field-item-r flex flex-col">
                 <div className="lbl">Expiry Date</div>
                 <div
@@ -502,23 +515,28 @@ const AddNewNFCTag = ({
                   onClick={(e) => {
                     setOpen5(true);
                   }}
-                >{
-                  syncfusionselected ?
-                  `${moment((syncfusionselected[0]?.StartTime)).format("D")}-${moment(
-                    (syncfusionselected[0]?.StartTime)
-                  ).format("MM")}-${moment((syncfusionselected[0]?.StartTime)).format(
-                    "YYYY"
-                  )} -
-                  ${moment((syncfusionselected[0]?.EndTime)).format("D")}-${moment(
-                    (syncfusionselected[0]?.EndTime)
-                  ).format("MM")}-${moment((syncfusionselected[0]?.EndTime)).format(
-                    "YYYY"
-                  )},
-                  ${syncfusionselected[0]?.RecurrenceRule.split(";")[0].split("=")[1]}`
-                  :
-                  'Select Expiry Date'
-                }
-                  
+                >
+                  {syncfusionselected
+                    ? `${moment(syncfusionselected[0]?.StartTime).format(
+                        "D"
+                      )}-${moment(syncfusionselected[0]?.StartTime).format(
+                        "MM"
+                      )}-${moment(syncfusionselected[0]?.StartTime).format(
+                        "YYYY"
+                      )} -
+                  ${moment(syncfusionselected[0]?.EndTime).format(
+                    "D"
+                  )}-${moment(syncfusionselected[0]?.EndTime).format(
+                        "MM"
+                      )}-${moment(syncfusionselected[0]?.EndTime).format(
+                        "YYYY"
+                      )},
+                  ${
+                    syncfusionselected[0]?.RecurrenceRule.split(";")[0].split(
+                      "="
+                    )[1]
+                  }`
+                    : "Select Expiry Date"}
                 </div>
               </div>
               <div className="field-item-r flex flex-col">
@@ -531,62 +549,114 @@ const AddNewNFCTag = ({
                   //onChange={(e) => setlocation(e.target.value)}
                 />
               </div>
-            <div className="data-item flex aic">
-              <div className="txt-field flex flex-col">
-                <div className="lbl s12 font">User Selection</div>
-                <div
-                  className="search-box txt  flex flex-col rel pointer"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setShowList(!showList);
-                  }}
-                >
-                  <div className="txt-box flex aic">
-                    <div
-                      // type="text"
-                      className="flex aic txt-b s12 cleanbtn flex-wrap"
-                      // value={selectedUser}
-                    >
-                      {selectedUser?.map((item, index) => (
-                        <div className="flex s12">
-                          {item}, {""}
-                        </div>
-                      ))}
-                    </div>
-                    <div
-                      className="icon flex aic jc pointer"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setShowList(!showList);
-                      }}
-                    >
-                      <ArrowDownIcon />
-                    </div>
-                  </div>
+            </div>
+            <div className="fields-row flex aic">
+              <div className="data-item flex aic">
+                <div className="txt-field flex flex-col">
+                  <div className="lbl s12 font">User Selection</div>
                   <div
-                    className={`list-box flex flex-col abs ${
-                      showList ? "show" : ""
-                    }`}
+                    className="search-box txt  flex flex-col rel pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowList(!showList);
+                    }}
                   >
-                    <div
-                      className="txt-search flex aic"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <input
-                        type="text"
-                        className="txt-s cleanbtn"
-                        onChange={(e) => setsearch(e.target.value)}
-                      />
-                      <div className="icon flex aic jc">
-                        <SearchIcon />
+                    <div className="txt-box flex aic">
+                      <div
+                        // type="text"
+                        className="flex aic txt-b s12 cleanbtn flex-wrap"
+                        // value={selectedUser}
+                      >
+                        {selectedUser?.map((item, index) => (
+                          <div className="flex s12">
+                            {item}, {""}
+                          </div>
+                        ))}
+                      </div>
+                      <div
+                        className="icon flex aic jc pointer"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setShowList(!showList);
+                        }}
+                      >
+                        <ArrowDownIcon />
                       </div>
                     </div>
-                    <div className="user-list flex flex-col">
-                      {userList?.map((item, index) =>
-                        search ? (
-                          item.userName.search(search) > -1 && (
+                    <div
+                      className={`list-box flex flex-col abs ${
+                        showList ? "show" : ""
+                      }`}
+                    >
+                      <div
+                        className="txt-search flex aic"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <input
+                          type="text"
+                          className="txt-s cleanbtn"
+                          onChange={(e) => setsearch(e.target.value)}
+                        />
+                        <div className="icon flex aic jc">
+                          <SearchIcon />
+                        </div>
+                      </div>
+                      <div className="user-list flex flex-col">
+                        {userList?.map((item, index) =>
+                          search ? (
+                            item.userName.search(search) > -1 && (
+                              <div className="list-item flex aic">
+                                <div className="name s13 font b5">
+                                  {item.user}
+                                </div>
+                                {selectedUser?.includes(item.userName) ? (
+                                  <div
+                                    className="action-ico pointer"
+                                    onClick={(e) => {
+                                      const index = selectedUser.findIndex(
+                                        (item2) => {
+                                          // console.log('mod_selector',item)
+                                          // console.log('mod_selector',item.userName)
+                                          // console.log('mod_selector',item == item.userName)
+                                          return item2 == item.userName;
+                                        }
+                                      );
+                                      console.log("mod_selector", index);
+                                      const mod_selector = selectedUser.splice(
+                                        index,
+                                        1
+                                      );
+                                      console.log("mod_selector", mod_selector);
+                                      console.log("mod_selector", selectedUser);
+                                      setSelectedUser([...selectedUser]);
+                                    }}
+                                  >
+                                    <div className="action-icon">
+                                      <RoundRemoveIcon />
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <div
+                                    className="action-ico pointer"
+                                    onClick={(e) => {
+                                      setSelectedUser([
+                                        ...selectedUser,
+                                        item.userName,
+                                      ]);
+                                    }}
+                                  >
+                                    <div className="action-icon">
+                                      <RoundAdd />
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            )
+                          ) : (
                             <div className="list-item flex aic">
-                              <div className="name s13 font b5">{item.user}</div>
+                              <div className="name s13 font b5">
+                                {item.userName}
+                              </div>
                               {selectedUser?.includes(item.userName) ? (
                                 <div
                                   className="action-ico pointer"
@@ -609,7 +679,7 @@ const AddNewNFCTag = ({
                                     setSelectedUser([...selectedUser]);
                                   }}
                                 >
-                                  <div className="action-icon">
+                                  <div className="action-ico">
                                     <RoundRemoveIcon />
                                   </div>
                                 </div>
@@ -630,55 +700,14 @@ const AddNewNFCTag = ({
                               )}
                             </div>
                           )
-                        ) : (
-                          <div className="list-item flex aic">
-                            <div className="name s13 font b5">{item.userName}</div>
-                            {selectedUser?.includes(item.userName) ? (
-                              <div
-                                className="action-ico pointer"
-                                onClick={(e) => {
-                                  const index = selectedUser.findIndex((item2) => {
-                                    // console.log('mod_selector',item)
-                                    // console.log('mod_selector',item.userName)
-                                    // console.log('mod_selector',item == item.userName)
-                                    return item2 == item.userName;
-                                  });
-                                  console.log("mod_selector", index);
-                                  const mod_selector = selectedUser.splice(
-                                    index,
-                                    1
-                                  );
-                                  console.log("mod_selector", mod_selector);
-                                  console.log("mod_selector", selectedUser);
-                                  setSelectedUser([...selectedUser]);
-                                }}
-                              >
-                                <div className="action-ico">
-                                  <RoundRemoveIcon />
-                                </div>
-                              </div>
-                            ) : (
-                              <div
-                                className="action-ico pointer"
-                                onClick={(e) => {
-                                  setSelectedUser([...selectedUser, item.userName]);
-                                }}
-                              >
-                                <div className="action-icon">
-                                  <RoundAdd />
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        )
-                      )}
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-        </div>
             </div>
-            
+
             <div className="fields-row flex aic">
               <button
                 className="btn-cancle button cleanbtn"

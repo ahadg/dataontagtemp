@@ -14,7 +14,7 @@ import {
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import moment from 'moment'
+import moment from "moment";
 import { useHistory } from "react-router-dom";
 
 const Header = ({ title, hideRightbar, rightbarIcon }) => {
@@ -31,12 +31,12 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
     localStorage.removeItem("dataontag12344H");
     window.location.href = "/login";
   };
-  
+
   useEffect(() => {
-    // document.addEventListener("click", () => {
-    //   setShow(false);
-    //   setShowNotification(false);
-    // });
+    document.addEventListener("click", () => {
+      setShow(false);
+      setShowNotification(false);
+    });
   }, []);
   const getnotifications = async () => {
     try {
@@ -46,7 +46,7 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
       );
       console.log("getnotifications", res.data);
       if (res.data) {
-        setnotifications(res.data.notifcations)
+        setnotifications(res.data.notifcations);
       }
     } catch (error) {
       console.log("error1", error);
@@ -61,17 +61,14 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
     }
   };
   const updatereadstatus = async (id) => {
-    
     try {
       //setloading(true);
-      await axios.post(
-        `${process.env.REACT_APP_END_URL}api/updatereadstatus` ,{
-          id
-        }
-      );
-      let theindex = notifications.findIndex((item) => item._id == id)
-      notifications[theindex]['read'] = true
-      setnotifications([...notifications])
+      await axios.post(`${process.env.REACT_APP_END_URL}api/updatereadstatus`, {
+        id,
+      });
+      let theindex = notifications.findIndex((item) => item._id == id);
+      notifications[theindex]["read"] = true;
+      setnotifications([...notifications]);
     } catch (error) {
       console.log("error1", error);
       if (error.response) {
@@ -85,8 +82,8 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
     }
   };
   useEffect(() => {
-    getnotifications()
-  },[])
+    getnotifications();
+  }, []);
 
   return (
     <div className="header sticky flex aic">
@@ -115,14 +112,13 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
             }}
           >
             <BellIcon />
-            {
-              (notifications.filter((item) => item.read == false)).length == 0
-              ?
+            {notifications.filter((item) => item.read == false).length == 0 ? (
               ""
-              :
-              <div className="numb abs s9 cfff flex aic jc b5">{(notifications.filter((item) => item.read == false)).length}</div>
-            }
-           
+            ) : (
+              <div className="numb abs s9 cfff flex aic jc b5">
+                {notifications.filter((item) => item.read == false).length}
+              </div>
+            )}
           </button>
           <div
             className={`manue-notifications flex flex-col ${
@@ -136,7 +132,10 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
                   className={`left-tab flex ${
                     notiTab == "all" ? "active" : ""
                   }`}
-                  onClick={(e) => setNotiTab("all")}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setNotiTab("all");
+                  }}
                 >
                   All
                 </div>
@@ -144,7 +143,10 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
                   className={`left-tab flex ${
                     notiTab == "Unread" ? "active" : ""
                   }`}
-                  onClick={(e) => setNotiTab("Unread")}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setNotiTab("Unread");
+                  }}
                 >
                   Unread
                 </div>
@@ -155,82 +157,90 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
             </div>
             <div className="notifiaction-list flex flex-col">
               {/* <div className="list-item flex flex-col jc"> */}
-              {
-                notifications.map((item) => {
-                if(notiTab == "Unread" && item.read == false){
-                return <div 
-                onClick={() => {
-                  console.log('clicked')
-                  if(!item.read) {
-                    updatereadstatus(item._id)
-                  } 
-                }}
-                className="list-item flex flex-col jc">
-                <div className="meta flex flex aic">
-                  <div className="le flex aic jc">
-                    <div className="icon flex aic jc rel">
-                      <div className="ico flex aic jc">
-                        <Ball2Icon />
+              {notifications.map((item) => {
+                if (notiTab == "Unread" && item.read == false) {
+                  return (
+                    <div
+                      onClick={() => {
+                        console.log("clicked");
+                        if (!item.read) {
+                          updatereadstatus(item._id);
+                        }
+                      }}
+                      className="list-item flex flex-col jc"
+                    >
+                      <div className="meta flex flex aic">
+                        <div className="le flex aic jc">
+                          <div className="icon flex aic jc rel">
+                            <div className="ico flex aic jc">
+                              <Ball2Icon />
+                            </div>
+                            <div className="dot"></div>
+                          </div>
+                        </div>
+                        <div className="ri flex flex-col">
+                          <div className="ri-tag">{item.message}.</div>
+                          <div className="ri-date">
+                            {`${moment(item.createdAt).format("D")}-${moment(
+                              item.createdAt
+                            ).format("MM")}-${moment(item.createdAt).format(
+                              "YYYY"
+                            )}`}
+                            {" at "}
+                            {`${moment(item.createdAt).format("HH")}:${moment(
+                              item.createdAt
+                            ).format("mm")}`}
+                          </div>
+                        </div>
                       </div>
-                      <div className="dot"></div>
                     </div>
-                  </div>
-                  <div className="ri flex flex-col">
-                    <div className="ri-tag">{item.message}.</div>
-                      <div className="ri-date">{`${moment(item.createdAt).format("D")}-${moment(
-                          item.createdAt
-                        ).format("MM")}-${moment(item.createdAt).format(
-                          "YYYY"
-                        )}`}
-                        {' at '}
-                          {`${moment(item.createdAt).format("HH")}:${moment(
-                            item.createdAt
-                          ).format("mm")}`}
-                      
+                  );
+                } else if (notiTab == "all") {
+                  return (
+                    <div
+                      onClick={() => {
+                        if (item?.details?.checkid) {
+                          history.push(
+                            `/?checkid=${
+                              item?.details?.checkid
+                            }&random=${Math.random()}`
+                          );
+                        }
+                      }}
+                      className="list-item flex flex-col jc"
+                    >
+                      <div
+                        style={{ cursor: "pointer" }}
+                        className="meta flex flex aic"
+                      >
+                        <div className="le flex aic jc">
+                          <div className="icon flex aic jc rel">
+                            <div className="ico flex aic jc">
+                              <Ball2Icon />
+                            </div>
+                            {/* <div className="dot"></div> */}
+                          </div>
+                        </div>
+                        <div className="ri flex flex-col">
+                          <div className="ri-tag">{item.message}.</div>
+                          <div className="ri-date">
+                            {`${moment(item.createdAt).format("D")}-${moment(
+                              item.createdAt
+                            ).format("MM")}-${moment(item.createdAt).format(
+                              "YYYY"
+                            )}`}
+                            {" at "}
+                            {`${moment(item.createdAt).format("HH")}:${moment(
+                              item.createdAt
+                            ).format("mm")}`}
+                          </div>
+                        </div>
                       </div>
-                  </div> 
-                </div>
-                </div>
-                }
-                else if(notiTab == "all"){
-                  return <div 
-                  onClick={() => {
-                    if(item?.details?.checkid){
-                    history.push(`/?checkid=${item?.details?.checkid}&random=${Math.random()}`);
-                    }
-                  }}
-                  className="list-item flex flex-col jc">
-                <div 
-                 style={{cursor : 'pointer'}}
-                className="meta flex flex aic">
-                  <div className="le flex aic jc">
-                    <div className="icon flex aic jc rel">
-                      <div className="ico flex aic jc">
-                        <Ball2Icon />
-                      </div>
-                      {/* <div className="dot"></div> */}
                     </div>
-                  </div>
-                  <div className="ri flex flex-col">
-                    <div className="ri-tag">{item.message}.</div>
-                      <div className="ri-date">{`${moment(item.createdAt).format("D")}-${moment(
-                          item.createdAt
-                        ).format("MM")}-${moment(item.createdAt).format(
-                          "YYYY"
-                        )}`}
-                        {' at '}
-                          {`${moment(item.createdAt).format("HH")}:${moment(
-                            item.createdAt
-                          ).format("mm")}`}
-                      
-                      </div>
-                  </div> 
-                </div>
-                </div>
+                  );
                 }
-                })
-              }
-                {/* <div className="meta flex flex aic">
+              })}
+              {/* <div className="meta flex flex aic">
                   <div className="le flex aic jc">
                     <div className="icon flex aic jc rel">
                       <div className="ico flex aic jc">

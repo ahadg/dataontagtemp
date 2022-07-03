@@ -392,66 +392,6 @@ const EditUser = ({ setOpen,companyfilter,getusers,selecteduser }) => {
               </div>
             </div>
           </div>
-          <div className="txt-field flex flex-col">
-            <div className="lbl s12 font">Select admins</div>
-            { selectedrole?.value != "companyadmin" ?
-            <div className="dropDown flex aic jc flex-col rel">
-              <div className="category flex aic">
-                <div
-                  className="cbox cleanbtn flex aic rel"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setHide2(!hide2);
-                  }}
-                >
-                  <div className="slt flex aic">
-                    <div className="unit-name flex aic font s14 b4">
-                      <span
-                        className="unit-eng flex aic font s14 b4"
-                        placeholder="Company Filter"
-                      >
-                        {selectedCompany2
-                          ? selectedCompany2.companyName
-                          : "Company Filter"}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="flex aic jc">
-                    <ArrowDownIcon />
-                  </div>
-                </div>
-              </div>
-              <div className={`block flex aic abs ${hide2 ? "show" : ""}`}>
-                <div className="manue flex aic col anim">
-                  {companyfilter.map((item, index) => (
-                    <div
-                      key={index}
-                      className="slt flex aic"
-                      onClick={(e) => {
-                        setHide2(!hide2);
-                        setselectedcompany2(item);
-                      }}
-                    >
-                      <div className="unit-name flex aic font s14 b4">
-                        <span className="unit-eng flex aic font s14 b4">
-                          {item.companyName}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-            :
-            <input
-              type="text"
-              className="txt cleanbtn s12 font"
-              placeholder="Company name"
-              onChange={(e) => setcompanyName(e.target.value)}
-            />
-            }
-          </div>
         </div>
       </div>
       <div className="action flex aic">

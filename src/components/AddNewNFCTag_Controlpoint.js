@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { ArrowDownIcon, FireCaylinder } from "../svg";
+import { ArrowDownIcon, FireCaylinder,  RoundAdd,
+  RoundRemoveIcon,SearchIcon } from "../svg";
 import { Link } from "react-router-dom";
 import Datetime from "react-datetime";
 import "react-datetime/css/react-datetime.css";
@@ -21,11 +22,13 @@ const AddNewNFCTag = ({
   syncfusionselected
 }) => {
   const user = useSelector((state) => state.generalReducers.user);
+  const [showList, setShowList] = useState(false);
   const [gowithoutsubfamily, setgowithoutsubfamily] = useState(false);
   const [hide, setHide] = useState(false);
   const [hide2, setHide2] = useState(false);
   const [hide3, setHide3] = useState(false);
   const [hide4, setHide4] = useState(false);
+  const [search, setsearch] = useState("");
   const [hide5, setHide5] = useState(false);
   const [hide6, setHide6] = useState(false);
   const [hide7, setHide7] = useState(false);
@@ -519,61 +522,161 @@ const AddNewNFCTag = ({
                 </div>
               </div>
               <div className="field-item-r flex flex-col">
-                <div className="lbl">User Selection</div>
-                <div className="dropDown flex aic jc flex-col rel">
-                  <div className="category flex aic">
+                <div className="lbl">Days before</div>
+                <input
+                  type="text"
+                  className="txt-input cleanbtn"
+                  placeholder="Days before"
+                  //value={location}
+                  //onChange={(e) => setlocation(e.target.value)}
+                />
+              </div>
+            <div className="data-item flex aic">
+              <div className="txt-field flex flex-col">
+                <div className="lbl s12 font">User Selection</div>
+                <div
+                  className="search-box txt  flex flex-col rel pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowList(!showList);
+                  }}
+                >
+                  <div className="txt-box flex aic">
                     <div
-                      className="cbox cleanbtn flex aic rel"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setHide6(!hide6);
-                      }}
+                      // type="text"
+                      className="flex aic txt-b s12 cleanbtn flex-wrap"
+                      // value={selectedUser}
                     >
-                      <div className="slt flex aic">
-                        <div className="unit-name flex aic font s14 b4">
-                          {/* <div className="icon-fire flex aic jc ">
-                            <FireCaylinder />
-                          </div> */}
-                          <span
-                            className="unit-eng flex aic font s14 b4"
-                            placeholder="User Selection"
-                          >
-                            {selectedUser
-                              ? selectedUser.userName
-                              : "User Selection"}
-                          </span>
-                        </div>
-                      </div>
-                      <div>
-                        <ArrowDownIcon />
-                      </div>
-                    </div>
-                  </div>
-                  <div className={`block flex aic abs ${hide6 ? "show" : ""}`}>
-                    <div className="manue flex aic col anim">
-                      {userList.map((item, index) => (
-                        <div
-                          key={index}
-                          className="slt flex aic"
-                          onClick={(e) => {
-                            setHide6(!hide6);
-                            setSelectedUser(item);
-                          }}
-                        >
-                          <div className="unit-name flex aic font s14 b4">
-                            {/* <div className="icon-fire flex aic jc ">
-                              <FireCaylinder />
-                            </div> */}
-                            <span className="unit-eng flex aic font s14 b4">
-                              {item.userName}
-                            </span>
-                          </div>
+                      {selectedUser?.map((item, index) => (
+                        <div className="flex s12">
+                          {item}, {""}
                         </div>
                       ))}
+                    </div>
+                    <div
+                      className="icon flex aic jc pointer"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowList(!showList);
+                      }}
+                    >
+                      <ArrowDownIcon />
+                    </div>
+                  </div>
+                  <div
+                    className={`list-box flex flex-col abs ${
+                      showList ? "show" : ""
+                    }`}
+                  >
+                    <div
+                      className="txt-search flex aic"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <input
+                        type="text"
+                        className="txt-s cleanbtn"
+                        onChange={(e) => setsearch(e.target.value)}
+                      />
+                      <div className="icon flex aic jc">
+                        <SearchIcon />
+                      </div>
+                    </div>
+                    <div className="user-list flex flex-col">
+                      {userList?.map((item, index) =>
+                        search ? (
+                          item.userName.search(search) > -1 && (
+                            <div className="list-item flex aic">
+                              <div className="name s13 font b5">{item.user}</div>
+                              {selectedUser?.includes(item.userName) ? (
+                                <div
+                                  className="action-ico pointer"
+                                  onClick={(e) => {
+                                    const index = selectedUser.findIndex(
+                                      (item2) => {
+                                        // console.log('mod_selector',item)
+                                        // console.log('mod_selector',item.userName)
+                                        // console.log('mod_selector',item == item.userName)
+                                        return item2 == item.userName;
+                                      }
+                                    );
+                                    console.log("mod_selector", index);
+                                    const mod_selector = selectedUser.splice(
+                                      index,
+                                      1
+                                    );
+                                    console.log("mod_selector", mod_selector);
+                                    console.log("mod_selector", selectedUser);
+                                    setSelectedUser([...selectedUser]);
+                                  }}
+                                >
+                                  <div className="action-icon">
+                                    <RoundRemoveIcon />
+                                  </div>
+                                </div>
+                              ) : (
+                                <div
+                                  className="action-ico pointer"
+                                  onClick={(e) => {
+                                    setSelectedUser([
+                                      ...selectedUser,
+                                      item.userName,
+                                    ]);
+                                  }}
+                                >
+                                  <div className="action-icon">
+                                    <RoundAdd />
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          )
+                        ) : (
+                          <div className="list-item flex aic">
+                            <div className="name s13 font b5">{item.userName}</div>
+                            {selectedUser?.includes(item.userName) ? (
+                              <div
+                                className="action-ico pointer"
+                                onClick={(e) => {
+                                  const index = selectedUser.findIndex((item2) => {
+                                    // console.log('mod_selector',item)
+                                    // console.log('mod_selector',item.userName)
+                                    // console.log('mod_selector',item == item.userName)
+                                    return item2 == item.userName;
+                                  });
+                                  console.log("mod_selector", index);
+                                  const mod_selector = selectedUser.splice(
+                                    index,
+                                    1
+                                  );
+                                  console.log("mod_selector", mod_selector);
+                                  console.log("mod_selector", selectedUser);
+                                  setSelectedUser([...selectedUser]);
+                                }}
+                              >
+                                <div className="action-ico">
+                                  <RoundRemoveIcon />
+                                </div>
+                              </div>
+                            ) : (
+                              <div
+                                className="action-ico pointer"
+                                onClick={(e) => {
+                                  setSelectedUser([...selectedUser, item.userName]);
+                                }}
+                              >
+                                <div className="action-icon">
+                                  <RoundAdd />
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        )
+                      )}
                     </div>
                   </div>
                 </div>
               </div>
+        </div>
             </div>
             
             <div className="fields-row flex aic">

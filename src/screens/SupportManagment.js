@@ -35,6 +35,7 @@ const Users = () => {
   const {user,socket_message} = useSelector(state => state.generalReducers)
   const [filteredchats,setfilteredchats] = useState([])
   const [search,setsearch] = useState('')
+  
   const [masgTypes, setMasgTypes] = useState([
     { lbl: "All Requests", icon: <AllMailIcon />, numb: "28" },
     { lbl: "UnRead Requests", icon: <UnReadMailIcon />, numb: "28" },
@@ -47,25 +48,38 @@ const Users = () => {
   ]);
   console.log('selectReq',selectReq)
   const [usersChat, setUsersChat] = useState([
-    {
-      name: "Monal Wilden",
-      mail: "Monal78646@gmail.com",
-      time: "9 Min Ago",
-      numb: "5",
-      img: "./images/chat_user.png",
-      masg: "This is My Request How to Change The Password of an...",
-    },
+    // {
+    //   name: "Monal Wilden",
+    //   mail: "Monal78646@gmail.com",
+    //   time: "9 Min Ago",
+    //   numb: "5",
+    //   img: "./images/chat_user.png",
+    //   masg: "This is My Request How to Change The Password of an...",
+    // },
   ]);
   const [resolvedchats,setresolvedchats] = useState([])
   const [message,setmessage] = useState("")
+  console.log("selected chatt",selectedchat)
+  //console.log("chatt",usersChat)
+  console.log("chatt index",selectedchatuserindex)
   const sendmessage = async () => {
-    usersChat[selectedchatuserindex]['messages'] = [...usersChat[selectedchatuserindex]['messages'],{
+    console.log('selectedchat',selectedchat)
+    console.log('selectedchatuserindex',selectedchatuserindex)
+    allemessages[selectedchatuserindex]['messages'] = [...allemessages[selectedchatuserindex]['messages'],{
     created: Date.now(),
     message: message,
-    //unread: true
+    unread: true,
     user: user._id}]
     let sendto = ''
-    console.log('selectedchat.senderid',selectedchat.senderid,user._id)
+    // update selected user
+    // selectedchat.messages =  [...selectedchat.messages, {
+    //   created: Date.now(),
+    //   message: message,
+    //   //unread: true
+    //   user: user._id}]
+    // setselectedchat({...selectedchat})
+    setallmessages([...allemessages])
+    getmessagescount(allemessages)
     if(selectedchat.senderid._id == user._id){
       sendto = selectedchat.recieverid._id
     }
@@ -93,15 +107,38 @@ const Users = () => {
     }
   }
   const [allemessages,setallmessages] = useState([])
-  const [filteredmessages,setfilteredmessages] = useState([])
+  console.log("allemessages", allemessages);
+  const getmessagescount = (themessages) => {
+    readrequestcount.current = 0
+    unreadrequestscount.current = 0
+    resolvedissuescount.current = 0
+    themessages.map((item) => {
+         if(item.response == true){
+          readrequestcount.current = readrequestcount.current + 1
+         }
+         if(item.response == false){
+          unreadrequestscount.current = unreadrequestscount.current + 1
+         }
+         if(item.resolved == true){
+          resolvedissuescount.current = resolvedissuescount.current + 1
+         }
+      })
+  }
+  // useEffect(() => {
+  //   if(allemessages){
+  //   getmessagescount(allemessages)
+  //   }
+  // },[allemessages])
   const getusermessages = async () => {
     console.log("calledd");
+    setselectedchat({})
+    //setActiveChat(false);
     try {
       setloading(true)
       const res = await axios.get(`${process.env.REACT_APP_END_URL}api/getusermessages`);
       console.log("get_task_response", res.data);
       setallmessages(res.data.chat)
-      setfilteredmessages(res.data.chat)
+      //setUsersChat(res.data.chat)
       getmessagescount(res.data.chat)
       setloading(false)
     } catch (error) {
@@ -139,34 +176,21 @@ const Users = () => {
   const readrequestcount = useRef(0)
   const unreadrequestscount = useRef(0)
   const resolvedissuescount = useRef(0)
-  const getmessagescount = (themessages) => {
-    themessages.map((item) => {
-         if(item.response == true){
-          readrequestcount.current = readrequestcount.current + 1
-         }
-         if(item.response == false){
-          unreadrequestscount.current = unreadrequestscount.current + 1
-         }
-         if(item.resolved == true){
-          resolvedissuescount.current = resolvedissuescount.current + 1
-         }
-      })
-  }
 
-  console.log('usersChat',usersChat)
+
   useEffect(() => {
     if(socket_message){
-      let the_index = usersChat.findIndex((item) => item._id == socket_message.chatid)
+      let the_index = allemessages.findIndex((item) => item._id == socket_message.chatid)
       console.log('the_index',the_index)
       if(the_index > -1){
-      usersChat[the_index]['messages'] = [...usersChat[the_index]['messages'],{
+      allemessages[the_index]['messages'] = [...allemessages[the_index]['messages'],{
         unread : true,
         created: Date.now(),
         message: socket_message.message,
         //unread: true
         user: socket_message.senderid}]
-      console.log('usersChatupdated',usersChat)
-      setUsersChat([...usersChat])
+      console.log('allemessagesupdated',allemessages)
+      setallmessages([...allemessages])
     }
     else {
       getusermessages()
@@ -234,7 +258,7 @@ const Users = () => {
         <Loader loader_color={true} />
       ) :
       <div className="support-managment-p flex sidebar-gap">
-        {user.userType == "superadmin" || user.userType == "admin" ? (
+        {user.userType == "superadmin"  ? (
           <div className="container flex flex-col">
             <div className="chat-container flex">
               <div className="left-box flex flex-col">
@@ -358,6 +382,9 @@ const Users = () => {
                         </div>
                       </div>
                     </div>
+                    {
+                    !selectedchat?.resolved
+                      &&
                     <div className="chat-box-right flex flex-col aic jc">
                       <button 
                       onClick={() => updatechatissuestatus(selectedchat._id)}
@@ -368,14 +395,27 @@ const Users = () => {
                         Mark As Resolved
                       </button>
                     </div>
+                    }
                   </div>
                   <div className="users-chatting flex-col">
                     <div className="chat-date flex aic jc">
-                      <div className="date-tag">April 29, 2022</div>
+                      <div className="date-tag">
+                        {`
+                        ${moment((selectedchat.createdAt)).format("D")}-${moment(
+                          (selectedchat.createdAt)
+                        ).format("MM")}-${moment((selectedchat.createdAt)).format(
+                          "YYYY"
+                        )}`}
+                        {' at '}
+                        {`${moment((selectedchat.createdAt)).format("HH")}:${moment(
+                          (selectedchat.createdAt)
+                        ).format("mm")}`
+                      }
+                      </div>
                     </div>
                     <div className="chat-text flex flex-col">
                       {
-                        selectedchat.messages.map((item) => {
+                        selectedchat?.messages?.map((item) => {
                           console.log('theuserr',item)
                           if(item.user == user._id){
                            return <div className="sender-side flex">
@@ -430,8 +470,13 @@ const Users = () => {
                       type="text"
                       className="txt-box cleanbtn"
                       placeholder="Type a Message"
+                      onChange={(e) => {
+                        setmessage(e.target.value)
+                    }}
                     />
-                    <div className="btn-sent flex aic jc">
+                    <div 
+                    onClick={sendmessage}
+                    className="btn-sent flex aic jc">
                       <SentIcon />
                     </div>
                   </div>
@@ -547,6 +592,9 @@ const Users = () => {
                         </div>
                       </div>
                     </div>
+                    {
+                    !selectedchat?.resolved
+                      &&
                     <div className="chat-box-right flex flex-col aic jc">
                       <button 
                       onClick={() => updatechatissuestatus(selectedchat._id)}
@@ -557,14 +605,27 @@ const Users = () => {
                         Mark As Resolved
                       </button>
                     </div>
+                    }
                   </div>
                   <div className="users-chatting flex-col">
                     <div className="chat-date flex aic jc">
-                      <div className="date-tag">April 29, 2022</div>
+                      <div className="date-tag">
+                      {`
+                        ${moment((selectedchat?.createdAt)).format("D")}-${moment(
+                          (selectedchat?.createdAt)
+                        ).format("MM")}-${moment((selectedchat.createdAt)).format(
+                          "YYYY"
+                        )}`}
+                        {' at '}
+                        {`${moment((selectedchat.createdAt)).format("HH")}:${moment(
+                          (selectedchat.createdAt)
+                        ).format("mm")}`
+                      }
+                      </div>
                     </div>
                     <div className="chat-text flex flex-col">
                       {
-                        selectedchat.messages.map((item) => {
+                        selectedchat?.messages?.map((item) => {
                           console.log('theuserr',item)
                           if(item.user == user._id){
                            return <div className="sender-side flex">
@@ -579,7 +640,7 @@ const Users = () => {
                             <div className="recive-text flex">
                             {item.message}
                             </div>
-                            <div className="recive-time">23:23</div>
+                            <div className="recive-time">{moment(item.created).format('h:mm:ss')}</div>
                           </div> 
                           }
                         })
@@ -631,19 +692,19 @@ const Users = () => {
                       <ImgIcon />
                     </div> */}
                     </div>
-                    <input
-                      type="text"
-                      className="txt-box cleanbtn"
-                      placeholder="Type a Message"
-                      onChange={(e) => {
-                          setmessage(e.target.value)
-                      }}
-                    />
-                    <div 
-                    onClick={sendmessage}
-                    className="btn-sent flex aic jc">
-                      <SentIcon />
-                    </div>
+                      <input
+                        type="text"
+                        className="txt-box cleanbtn"
+                        placeholder="Type a Message"
+                        onChange={(e) => {
+                            setmessage(e.target.value)
+                        }}
+                      />
+                      <div 
+                      onClick={sendmessage}
+                      className="btn-sent flex aic jc">
+                        <SentIcon />
+                      </div>
                   </div>
                   }
                 </div>

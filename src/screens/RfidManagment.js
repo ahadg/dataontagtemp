@@ -60,7 +60,7 @@ const RfidManagment = () => {
       Role: "Super Admin",
     }
   ])
-
+  console.log('rfidlist',rfidlist)
   useEffect(() => {
     if(search == "" || search == " "){
       setfilteredrfidlist([...rfidlist])
@@ -68,7 +68,7 @@ const RfidManagment = () => {
     else if (search != undefined) {
       const searchedids = rfidlist.filter((item) => {
         if (
-          item.deviceName.search(search) > -1
+          item.deviceName.search(search) > -1 || item.rfid.search(search) > -1
         ) {
           return true;
         }
@@ -388,8 +388,32 @@ const RfidManagment = () => {
                   <div className="row-item font">{item.rfid}</div>
                   <div className="row-item font">{item.assignedTo?.userName ? item.assignedTo?.userName : "Not assigned yet"}</div>
                   <div className="row-item font">{item.companyRef?.companyName}</div>
-                  <div className="row-item font">{item.manufacturingdate}</div>
-                  <div className="row-item font">{item.expirydate}</div>
+                  <div className="row-item font">
+                      {`
+                        ${moment(Number(item.manufacturingdate)).format("D")}-${moment(
+                          Number(item.manufacturingdate)
+                        ).format("MM")}-${moment(Number(item.manufacturingdate)).format(
+                          "YYYY"
+                        )}`}
+                        {' at '}
+                        {`${moment(Number(item.manufacturingdate)).format("HH")}:${moment(
+                          Number(item.manufacturingdate)
+                        ).format("mm")}`
+                      }
+                  </div>
+                  <div className="row-item font">
+                      {`
+                        ${moment(Number(item.expirydate)).format("D")}-${moment(
+                          Number(item.expirydate)
+                        ).format("MM")}-${moment(Number(item.expirydate)).format(
+                          "YYYY"
+                        )}`}
+                        {' at '}
+                        {`${moment(Number(item.expirydate)).format("HH")}:${moment(
+                          Number(item.expirydate)
+                        ).format("mm")}`
+                      }
+                    </div>
                   <div className="row-item font flex aic jc">
                     <div 
                       onClick={() => {

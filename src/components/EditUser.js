@@ -6,13 +6,18 @@ import { CameraIcon, ArrowDownIcon, FireCaylinder } from "../svg/index";
 import axios from "axios";
 import Loader from "../components/Loader";
 import { ToastContainer, toast } from 'react-toastify';
+import { useDispatch, useSelector } from "react-redux";
 const EditUser = ({ setOpen,companyfilter,getusers,selecteduser }) => {
+  const user = useSelector((state) => state.generalReducers.user);
   const [img, setImg] = useState();
   const [img2, setImg2] = useState(selecteduser.image);
   const [hide, setHide] = useState(false);
   const [hide2, setHide2] = useState(false);
+  const [hide3, setHide3] = useState(false);
   const [selectedCompany2, setselectedcompany2] = useState(selecteduser.createdBy);
   const [selectedrole, setSelectedrole] = useState();
+  const [selectedtemplate, setselectedtemplate] = useState();
+  const [controlpoints,setcontrolpoints] = useState([])
   const [roles, setroles] = useState([
     { id: 1,title : "Super admin", value: "superadmin" },
     { id: 2, title : "Company admin",value: "companyadmin" },
@@ -36,6 +41,29 @@ const EditUser = ({ setOpen,companyfilter,getusers,selecteduser }) => {
   const [companyRef, setselectedcompanyRef] = useState("");
   const [loading,setloading] = useState(false)
   const [companyName,setcompanyName] = useState(false)
+
+  const getcontrolpointlist = async () => {
+    try {
+      const res = await axios.get(
+        `${process.env.REACT_APP_END_URL}api/getcontrolpointlist`,
+      );
+      console.log("response_checks-getcontrolpointlist", res.data);
+      if (res.data) {
+        setcontrolpoints(res.data.controlpoints)
+      }
+    } catch (error) {
+      console.log("error1", error);
+      if (error.response) {
+        if (error.response.data) {
+          console.log("error", error.response.data);
+          return toast.error(error.response.data.error);
+        }
+      }
+      else {
+        return toast.error("Error in server");
+      }
+    }
+  };
 
   const edituser = async (id) => {
     let formData = new FormData();
@@ -107,6 +135,10 @@ const EditUser = ({ setOpen,companyfilter,getusers,selecteduser }) => {
       setHide(false);
       setHide2(false);
     });
+    if(user.userType == "superadmin"){
+      getcontrolpointlist()
+    }
+
   }, []);
   return (
     <div className="add-new-user flex flex-col">
@@ -249,6 +281,119 @@ const EditUser = ({ setOpen,companyfilter,getusers,selecteduser }) => {
           </div>
           <div className="txt-field flex flex-col">
             <div className="lbl s12 font">{selectedrole?.value != "companyadmin" ? "Select Company" : "Input company"}</div>
+            { selectedrole?.value != "companyadmin" ?
+            <div className="dropDown flex aic jc flex-col rel">
+              <div className="category flex aic">
+                <div
+                  className="cbox cleanbtn flex aic rel"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setHide2(!hide2);
+                  }}
+                >
+                  <div className="slt flex aic">
+                    <div className="unit-name flex aic font s14 b4">
+                      <span
+                        className="unit-eng flex aic font s14 b4"
+                        placeholder="Company Filter"
+                      >
+                        {selectedCompany2
+                          ? selectedCompany2.companyName
+                          : "Company Filter"}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex aic jc">
+                    <ArrowDownIcon />
+                  </div>
+                </div>
+              </div>
+              <div className={`block flex aic abs ${hide2 ? "show" : ""}`}>
+                <div className="manue flex aic col anim">
+                  {companyfilter.map((item, index) => (
+                    <div
+                      key={index}
+                      className="slt flex aic"
+                      onClick={(e) => {
+                        setHide2(!hide2);
+                        setselectedcompany2(item);
+                      }}
+                    >
+                      <div className="unit-name flex aic font s14 b4">
+                        <span className="unit-eng flex aic font s14 b4">
+                          {item.companyName}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            :
+            <input
+              type="text"
+              className="txt cleanbtn s12 font"
+              placeholder="Company name"
+              onChange={(e) => setcompanyName(e.target.value)}
+            />
+            }
+          </div>
+        </div>
+        <div className="data-item flex aic">
+          <div className="txt-field flex flex-col">
+            <div className="lbl s12 font">Select Template</div>
+            <div className="dropDown flex aic jc flex-col rel">
+              <div className="category flex aic">
+                <div
+                  className="cbox cleanbtn flex aic rel"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setHide3(!hide);
+                  }}
+                >
+                  <div className="slt flex aic">
+                    <div className="unit-name flex aic font s14 b4">
+                      <span
+                        className="unit-eng flex aic font s14 b4"
+                        placeholder="Role Filter"
+                      >
+                        {selectedtemplate
+                          ? selectedtemplate.controlpointname
+                          : "Template Filter"}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex aic jc">
+                    <ArrowDownIcon />
+                  </div>
+                </div>
+              </div>
+              <div className={`block flex aic abs ${hide3 ? "show" : ""}`}>
+                <div className="manue flex aic col anim">
+                  {controlpoints?.map((item, index) => (
+                    <div
+                      key={index}
+                      className="slt flex aic"
+                      onClick={(e) => {
+                        setHide3(!hide3);
+                        setselectedtemplate(item)
+                      }}
+                    >
+                      <div className="unit-name flex aic font s14 b4">
+                        <span className="unit-eng flex aic font s14 b4">
+                          {item.controlpointname}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="txt-field flex flex-col">
+            <div className="lbl s12 font">Select admins</div>
             { selectedrole?.value != "companyadmin" ?
             <div className="dropDown flex aic jc flex-col rel">
               <div className="category flex aic">

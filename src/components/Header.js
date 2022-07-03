@@ -15,6 +15,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import moment from 'moment'
+import { useHistory } from "react-router-dom";
 
 const Header = ({ title, hideRightbar, rightbarIcon }) => {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
   const { showRightbar, showSidebar, user } = useSelector(
     (state) => state.generalReducers
   );
+  const history = useHistory();
   const logout = () => {
     localStorage.removeItem("dataontag12344H");
     window.location.href = "/login";
@@ -191,8 +193,16 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
                 </div>
                 }
                 else if(notiTab == "all"){
-                  return <div className="list-item flex flex-col jc">
-                <div className="meta flex flex aic">
+                  return <div 
+                  onClick={() => {
+                    if(item?.details?.checkid){
+                    history.push(`/?checkid=${item?.details?.checkid}&random=${Math.random()}`);
+                    }
+                  }}
+                  className="list-item flex flex-col jc">
+                <div 
+                 style={{cursor : 'pointer'}}
+                className="meta flex flex aic">
                   <div className="le flex aic jc">
                     <div className="icon flex aic jc rel">
                       <div className="ico flex aic jc">

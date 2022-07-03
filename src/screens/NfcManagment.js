@@ -37,6 +37,7 @@ const NfcManagment = () => {
   const [value, setValue] = React.useState([null, null]);
   const [opennfctag, setopennfctag] = useState(false);
   const [edittagdata, setedittagdata] = useState("");
+  const [syncfusionselected,setsyncfusionselected] = useState("")
   const [cloneddata, setcloneddata] = useState("");
   const [hide, setHide] = useState(false);
   const [date, setDate] = useState();
@@ -515,6 +516,7 @@ const NfcManagment = () => {
           getfamilies={getfamilies}
           companies={companies}
           userList={userList}
+          syncfusionselected={syncfusionselected}
         />
       </Modal>
 
@@ -565,7 +567,7 @@ const NfcManagment = () => {
               <CloseIcon />
             </div>
           </div>
-          <SyncfusionCalender setOpen5={setOpen5} />
+          <SyncfusionCalender setOpen5={setOpen5} setsyncfusionselected={setsyncfusionselected} />
         </div>
       </Modal>
     </div>

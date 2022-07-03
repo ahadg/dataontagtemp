@@ -23,11 +23,14 @@ import EditControlPoint from "../components/EditControlPoint";
 import AddNewFamilySubFmaily from "../components/AddNewFamilySubFmaily";
 import FamilyItems from "../components/FamilyItems";
 import CreateCheckPoint from "../components/CreateCheckPoint";
+import EditCheckPoint from "../components/EditCheckPoint";
 import { ToastContainer, toast } from "react-toastify";
 const Checkpoint = () => {
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
   const [open3, setOpen3] = useState(false);
+  const [openeditcheckpoint, setopeneditcheckpoint] = useState(false);
+  const [editcheckpointinfo, seteditcheckpointinfo] = useState({});
   const [hide, setHide] = useState(false);
   const [hide2, setHide2] = useState(false);
   const [hide3, setHide3] = useState(false);
@@ -220,6 +223,60 @@ const Checkpoint = () => {
     }
     setchecksupdates(Math.random());
   };
+
+  const edit_checklist = async (type, checkName, checkDesc, expiry,problemnotifications,index) => {
+    console.log('type0poly',type, checkName, checkDesc, expiry,problemnotifications,index)
+    if (type == "maintaineradmin") {
+      maintaineradminchecklist[index] = {
+        maintainedBy: "maintaineradmin",
+        checkName: checkName,
+        checkDesc: checkDesc,
+        expiry,
+        problemnotifications
+      }
+      setmaintaineradminchecklist([
+        ...maintaineradminchecklist,
+      ]);
+    }
+    if (type == "companyadmin") {
+      companyadminchecklist[index] = {
+        maintainedBy: "companyadmin",
+        checkName: checkName,
+        checkDesc: checkDesc,
+        expiry,
+        problemnotifications
+      }
+      setcompanyadminchecklist([
+        ...companyadminchecklist,
+      ]);
+    }
+    if (type == "companyuser") {
+      companyuserchecklist[index] = {
+        maintainedBy: "companyuser",
+        checkName: checkName,
+        checkDesc: checkDesc,
+        expiry,
+        problemnotifications
+      }
+      setcompanyuserchecklist([
+        ...companyuserchecklist,
+      ]);
+    }
+    if (type == "maintaineruser") {
+      maintaineruserchecklist[index] = {
+        maintainedBy: "maintaineruser",
+        checkName: checkName,
+        checkDesc: checkDesc,
+        expiry,
+        problemnotifications
+      }
+      setmaintaineruserchecklist([
+        ...maintaineruserchecklist,
+      ]);
+    }
+    setchecksupdates(Math.random());
+  };
+
 
   // component to list subfamilies
 
@@ -452,7 +509,9 @@ const Checkpoint = () => {
                         <div
                           className="edit-icon flex aic jc pointer"
                           onClick={() => {
+                            if(selectedFamily){
                             setOpenEditFamily(true);
+                            }
                           }}
                         >
                           <EditIcon />
@@ -531,7 +590,9 @@ const Checkpoint = () => {
                         <div
                           className="edit-icon flex aic jc pointer"
                           onClick={(e) => {
+                            if(selectedSubfamily) {
                             setOpenEditSubFamily(true);
+                            }
                           }}
                         >
                           <EditIcon />
@@ -608,7 +669,11 @@ const Checkpoint = () => {
                         {selectedControlpoint && (
                           <div
                             className="edit-icon flex aic jc pointer"
-                            onClick={(e) => setOpenEditCtrlPoint(true)}
+                            onClick={(e) => {
+                              if(selectedControlpoint){
+                                setOpenEditCtrlPoint(true)
+                              }           
+                            }}
                           >
                             <EditIcon />
                           </div>
@@ -757,7 +822,15 @@ const Checkpoint = () => {
                           <div className="meta flex flex-col">
                             <div className="txt-fields flex flex-col">
                               <div className="icon-action flex aic">
-                                <div className="icon-edit flex aic">
+                                <div 
+                                onClick={() => {
+                                  setopeneditcheckpoint(true);
+                                  seteditcheckpointinfo({
+                                    details : item,
+                                    index
+                                  })
+                                }}
+                                className="icon-edit flex aic">
                                   <EditIcon />
                                 </div>
                                 <div
@@ -861,6 +934,18 @@ const Checkpoint = () => {
                         return (
                           <div className="meta flex flex-col">
                             <div className="txt-fields flex flex-col">
+                            <div className="icon-action flex aic">
+                                <div 
+                                onClick={() => {
+                                  setopeneditcheckpoint(true);
+                                  seteditcheckpointinfo({
+                                    details : item,
+                                    index
+                                  })
+                                }}
+                                className="icon-edit flex aic">
+                                  <EditIcon />
+                                </div>
                               <div
                                 onClick={() => {
                                   maintaineruserchecklist.splice(index, 1);
@@ -872,6 +957,7 @@ const Checkpoint = () => {
                                 className="icon-del flex aic"
                               >
                                 <BinBoxIcon />
+                              </div>
                               </div>
                               <input
                                 type="text"
@@ -960,6 +1046,18 @@ const Checkpoint = () => {
                         return (
                           <div className="meta flex flex-col">
                             <div className="txt-fields flex flex-col">
+                              <div className="icon-action flex aic">
+                                <div 
+                                onClick={() => {
+                                  setopeneditcheckpoint(true);
+                                  seteditcheckpointinfo({
+                                    details : item,
+                                    index
+                                  })
+                                }}
+                                className="icon-edit flex aic">
+                                  <EditIcon />
+                                </div>
                               <div
                                 onClick={() => {
                                   companyadminchecklist.splice(index, 1);
@@ -971,6 +1069,7 @@ const Checkpoint = () => {
                                 className="icon-del flex aic"
                               >
                                 <BinBoxIcon />
+                              </div>
                               </div>
                               <input
                                 type="text"
@@ -1057,17 +1156,30 @@ const Checkpoint = () => {
                         return (
                           <div className="meta flex flex-col">
                             <div className="txt-fields flex flex-col">
-                              <div
+                              <div className="icon-action flex aic">
+                                <div 
                                 onClick={() => {
-                                  companyuserchecklist.splice(index, 1);
-                                  setcompanyuserchecklist([
-                                    ...companyuserchecklist,
-                                  ]);
-                                  setchecksupdates(Math.random());
+                                  setopeneditcheckpoint(true);
+                                  seteditcheckpointinfo({
+                                    details : item,
+                                    index
+                                  })
                                 }}
-                                className="icon-del flex aic"
-                              >
-                                <BinBoxIcon />
+                                className="icon-edit flex aic">
+                                  <EditIcon />
+                                </div>
+                                <div
+                                  onClick={() => {
+                                    companyuserchecklist.splice(index, 1);
+                                    setcompanyuserchecklist([
+                                      ...companyuserchecklist,
+                                    ]);
+                                    setchecksupdates(Math.random());
+                                  }}
+                                  className="icon-del flex aic"
+                                >
+                                  <BinBoxIcon />
+                                </div>
                               </div>
                               <input
                                 type="text"
@@ -1230,6 +1342,16 @@ const Checkpoint = () => {
           setOpen3={setOpen3}
           checklisttype={checklisttype}
           modify_checlist={modify_checlist}
+        />
+      </Modal>
+
+      <Modal open={openeditcheckpoint} onClose={() => setopeneditcheckpoint(false)}>
+        <EditCheckPoint
+          setOpen3={setopeneditcheckpoint}
+          checklisttype={checklisttype}
+          modify_checlist={modify_checlist}
+          edit_checklist={edit_checklist}
+          editcheckpointinfo={editcheckpointinfo}
         />
       </Modal>
 

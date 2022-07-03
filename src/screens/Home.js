@@ -24,8 +24,10 @@ import CustomDateRangeInputs from "../components/CustomDateRangeInputs";
 import ControlPointInfo from "../components/ControlPointInfo";
 // import CheckPointStatus from "../components/CheckPointStatus";
 // import DownloadImg from "../components/DownloadImg";
+import { useParams } from 'react-router-dom';
 import { ToastContainer, toast } from "react-toastify";
-const Home = () => {
+import queryString from 'query-string';
+const Home = ({location}) => {
   const defaultOptions = {
     loop: true,
     autoplay: true,
@@ -34,6 +36,8 @@ const Home = () => {
       preserveAspectRatio: "xMidYMid slice",
     },
   };
+  let {checkid,random} = queryString.parse(location.search)
+  console.log('params',queryString.parse(location.search))
   const user = useSelector((state) => state.generalReducers.user);
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
@@ -84,11 +88,14 @@ const Home = () => {
     //   status: "No Issue",
     // },
   ]);
-  console.log("tblData", tblData);
+  console.log("selectedcompany", selectedcompany);
   const filterdatabycompany = () => {
-    const data = tblData.filter(
+    let data = [...tblData];
+    if(selectedcompany == "All" || !selectedcompany){
+    data = tblData.filter(
       (item) => item?.controlpointId?.createdBy?.companyName == selectedcompany
     );
+    }
     let mod_building = [];
     data.map((item, index) => {
       item?.controlpointId.tagIds.map((item2) => {
@@ -169,6 +176,17 @@ const Home = () => {
       filterdatabybuilding();
     }
   }, [selectedfloor]);
+  useEffect(() => {
+   if(checkid){
+     if(tblData){
+      let theindex = tblData.findIndex((item) => item._id == checkid)
+      if(theindex > -1){
+        setchecklists(tblData[theindex]['checklists'])
+        setOpen(true);
+      }
+     }
+   }
+  },[checkid,random])
   const getallchecks = async () => {
     setloading(true);
     try {
@@ -190,6 +208,14 @@ const Home = () => {
         setthe_checklists(res.data.checks);
         setcompanies(res.data.companies);
         setloading(false);
+        if(checkid){
+        let theindex = res.data.checks.findIndex((item) => item._id == checkid)
+        if(theindex > -1){
+          setchecklists(res.data.checks[theindex]['checklists'])
+          setOpen(true);
+        }
+        
+        }
       }
     } catch (error) {
       console.log("error1", error);
@@ -341,7 +367,7 @@ const Home = () => {
                 <div className="item-header flex aic">
                   <div className="header-left flex flex-col">
                     <div className="tag b6 font">Check {index + 1}</div>
-                    <div className="des s12 b5 font">CO2 fire extinguisher</div>
+                    <div className="des s12 b5 font">{item.checkDesc}</div>
                   </div>
                   <div className="header-right flex aic">
                     <div className="status-icon flex aic jc green">

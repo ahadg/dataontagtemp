@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { ToastContainer, toast } from "react-toastify";
 import { CameraIcon } from "../svg";
+import {loaduser} from '../actions/auth'
 
 const UserProfile = () => {
   const dispatch = useDispatch();
@@ -45,9 +46,33 @@ const UserProfile = () => {
         config
       );
       console.log(res2);
+      dispatch(loaduser())
       setloading(false);
-      //setOpen(false)
-      //getusers()
+    } catch (error) {
+      console.log("error1", error);
+      if (error.response) {
+        if (error.response.data) {
+          console.log("error", error.response.data);
+          return toast.error(error.response.data.error);
+        }
+      } else {
+        return toast.error("Error in server");
+      }
+    }
+    //})
+  };
+
+  const updateuser = async (id) => {
+    try {
+       await axios.post(
+        `${process.env.REACT_APP_END_URL}api/updateuser`,
+        {
+          userName,
+          mobile
+        }
+      );
+      dispatch(loaduser())
+      setloading(false);
     } catch (error) {
       console.log("error1", error);
       if (error.response) {
@@ -218,6 +243,15 @@ const UserProfile = () => {
                     disabled
                   />
                 </div>
+              </div>
+              <div 
+              className="fields-row flex aic">
+              <button
+                onClick={updateuser}
+                className="btn-create button cleanbtn"
+              >
+                Update info 
+              </button>
               </div>
             </div>
             <div className="right flex flex-col">

@@ -3238,6 +3238,69 @@ body {
     padding: 8px 0;
     margin-bottom: 36px;
   }
+  .search-box {
+    .txt-box {
+      width: 100%;
+      .txt-b {
+        width: 100%;
+      }
+      svg {
+        path {
+          fill: $themeColor;
+        }
+      }
+    }
+    .list-box {
+      top: 38px;
+      left: 0;
+      right: 0;
+      background: #ffffff;
+      box-shadow: 0px 0px 34px -10px rgba(0, 0, 0, 0.15);
+      border-radius: 8px;
+      visibility: hidden;
+      opacity: 0;
+      z-index: 2;
+      width: 100%;
+      padding: 8px 10px;
+      &.show {
+        display: flex;
+        visibility: visible;
+        opacity: 1;
+        @include dropDownAnim;
+      }
+      .txt-search {
+        border-bottom: 1px solid #eae9e9;
+        .txt-s {
+          padding: 10px;
+          width: 100%;
+        }
+        .icon {
+        }
+      }
+      .user-list {
+        height: 100px;
+        overflow-y: auto;
+        &::-webkit-scrollbar {
+          width: 4px;
+        }
+        .list-item {
+          padding: 6px 4px;
+          .name {
+            flex: 1;
+          }
+          .action-icon {
+            svg {
+              width: 20px;
+              height: 20px;
+              path {
+                fill: $themeColor;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
   .txt-field {
     margin-bottom: 10px;
     .lbl {

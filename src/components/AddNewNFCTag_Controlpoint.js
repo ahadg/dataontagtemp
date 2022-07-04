@@ -26,6 +26,7 @@ const AddNewNFCTag = ({
   getfamilies,
   syncfusionselected,
 }) => {
+  console.log('userList',userList)
   const user = useSelector((state) => state.generalReducers.user);
   const [showList, setShowList] = useState(false);
   const [gowithoutsubfamily, setgowithoutsubfamily] = useState(false);
@@ -595,6 +596,7 @@ const AddNewNFCTag = ({
                         <input
                           type="text"
                           className="txt-s cleanbtn"
+                          placeholder="Search users"
                           onChange={(e) => setsearch(e.target.value)}
                         />
                         <div className="icon flex aic jc">

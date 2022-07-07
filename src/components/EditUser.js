@@ -15,61 +15,12 @@ import Loader from "../components/Loader";
 import { ToastContainer, toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 const EditUser = ({ setOpen, companyfilter, getusers, selecteduser }) => {
+  console.log('companyfilter',companyfilter)
   const user = useSelector((state) => state.generalReducers.user);
   const [showList, setShowList] = useState(false);
   const [selectedUser, setSelectedUser] = useState();
   const [search, setsearch] = useState("");
-  const [userList, setuserList] = useState([
-    {
-      userType: "user",
-      notificationPlayerIds: ["7339315a-b4d6-491e-be1e-ae1cef50fc53"],
-      _id: "625553dca2bf8604d3bad256",
-      groups: [],
-      userName: "metro",
-      email: "Marco@gmail.com",
-      password: "$2a$12$OLbQGkAI0h7Cz2Va8jrq1.amaqSwByYGce9ANlfZcfioZV.j4FNzq",
-      createdBy: {
-        userType: "superadmin",
-        notificationPlayerIds: [
-          "e0ef66dd-ef27-4b7c-bf99-ee50332da28b",
-          "8cd2a204-e07e-45fc-a7fe-958e35eec36e",
-        ],
-        _id: "625f296a79657e059307a00a",
-        userName: "Domeno Ico2",
-        companyRef: "625f296a79657e059307a00a",
-        email: "domenico@gmail.com",
-        password:
-          "$2a$12$gMPIPhjzsIlNDyqKaXWOu.gXUxRqAcRqmv10ivz.9405wcpjmFyHK",
-        mobile: "121212121212",
-        createdBy: "625f296a79657e059307a00a",
-        image: "users/8525-1656872217448.jpeg",
-        groups: [
-          {
-            _id: "62bb0b4924f0b3490343122e",
-            grouplist: [],
-            groupname: "hello",
-            image: "groups/3279-1656425289386.jpeg",
-          },
-          {
-            _id: "62bb39bb24f0b349034315a6",
-            grouplist: [],
-            groupname: "user",
-            image: "groups/5968-1656437178942.jpeg",
-          },
-        ],
-        __v: 3,
-        companyAddress: null,
-        companyName: "dev e",
-        assignedrfidDevices: [],
-      },
-      __v: 12,
-      image: "users/2853-1650410601753.jpeg",
-      mobile: "+39423423423",
-      assignedrfidDevices: [],
-      companyAddress: null,
-      companyRef: "62b1b5832ec60e8573c95176",
-    },
-  ]);
+  const [selectedcontrolpoints,setselectedcontrolpoints] = useState([])
   const [img, setImg] = useState();
   const [img2, setImg2] = useState(selecteduser.image);
   const [hide, setHide] = useState(false);
@@ -150,6 +101,7 @@ const EditUser = ({ setOpen, companyfilter, getusers, selecteduser }) => {
         confirmPassword: password,
         companyRef: selectedCompany2._id,
         userType: selectedrole?.value,
+        selectedcontrolpoints
       };
     } else {
       body = {
@@ -161,6 +113,7 @@ const EditUser = ({ setOpen, companyfilter, getusers, selecteduser }) => {
         confirmPassword: password,
         companyName,
         userType: selectedrole?.value,
+        selectedcontrolpoints
       };
     }
     console.log(body);
@@ -188,7 +141,7 @@ const EditUser = ({ setOpen, companyfilter, getusers, selecteduser }) => {
     }
     //})
   };
-
+  console.log('controlpoints',controlpoints)
   useEffect(() => {
     document.addEventListener("click", () => {
       setHide(false);
@@ -470,9 +423,9 @@ const EditUser = ({ setOpen, companyfilter, getusers, selecteduser }) => {
                     className="flex aic txt-b s12 cleanbtn flex-wrap"
                     // value={selectedUser}
                   >
-                    {selectedUser?.map((item, index) => (
+                    {selectedcontrolpoints?.map((item, index) => (
                       <div className="flex s12">
-                        {item}, {""}
+                        {item.controlpointname}, {""}
                       </div>
                     ))}
                   </div>
@@ -506,103 +459,91 @@ const EditUser = ({ setOpen, companyfilter, getusers, selecteduser }) => {
                     </div>
                   </div>
                   <div className="user-list flex flex-col">
-                    {userList?.map((item, index) =>
-                      search ? (
-                        item.userName.search(search) > -1 && (
-                          <div className="list-item flex aic">
-                            <div className="name s13 font b5">{item.user}</div>
-                            {selectedUser?.includes(item.userName) ? (
-                              <div
-                                className="action-ico pointer"
-                                onClick={(e) => {
-                                  const index = selectedUser.findIndex(
-                                    (item2) => {
-                                      // console.log('mod_selector',item)
-                                      // console.log('mod_selector',item.userName)
-                                      // console.log('mod_selector',item == item.userName)
-                                      return item2 == item.userName;
-                                    }
-                                  );
-                                  console.log("mod_selector", index);
-                                  const mod_selector = selectedUser.splice(
-                                    index,
-                                    1
-                                  );
-                                  console.log("mod_selector", mod_selector);
-                                  console.log("mod_selector", selectedUser);
-                                  setSelectedUser([...selectedUser]);
-                                }}
-                              >
-                                <div className="action-icon">
-                                  <RoundRemoveIcon />
+                  {controlpoints?.map((item, index) =>
+                          search?.toLowerCase() ? (
+                            item?.controlpointname?.toLowerCase()?.search(search) > -1 && (
+                              <div className="list-item flex aic">
+                                <div className="name s13 font b5">
+                                  {item.controlpointname}
                                 </div>
+                                {selectedcontrolpoints.findIndex((item2) =>  item2.controlpointname == item.controlpointname) > -1 ? (
+                                  <div
+                                    className="action-ico pointer"
+                                    onClick={(e) => {
+                                      const index = selectedcontrolpoints.findIndex((item2) =>  item2.controlpointname == item.controlpointname);
+                                      console.log("mod_selector", index);
+                                      const mod_selector = selectedcontrolpoints.splice(
+                                        index,
+                                        1
+                                      );
+                                      console.log("mod_selector", mod_selector);
+                                      console.log("mod_selector", selectedcontrolpoints);
+                                      setselectedcontrolpoints([...selectedcontrolpoints]);
+                                    }}
+                                  >
+                                    <div className="action-icon">
+                                      <RoundRemoveIcon />
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <div
+                                    className="action-ico pointer"
+                                    onClick={(e) => {
+                                      setselectedcontrolpoints([
+                                        ...selectedcontrolpoints,
+                                        item,
+                                      ]);
+                                    }}
+                                  >
+                                    <div className="action-icon">
+                                      <RoundAdd />
+                                    </div>
+                                  </div>
+                                )}
                               </div>
-                            ) : (
-                              <div
-                                className="action-ico pointer"
-                                onClick={(e) => {
-                                  setSelectedUser([
-                                    ...selectedUser,
-                                    item.userName,
-                                  ]);
-                                }}
-                              >
-                                <div className="action-icon">
-                                  <RoundAdd />
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        )
-                      ) : (
-                        <div className="list-item flex aic">
-                          <div className="name s13 font b5">
-                            {item.userName}
-                          </div>
-                          {selectedUser?.includes(item.userName) ? (
-                            <div
-                              className="action-ico pointer"
-                              onClick={(e) => {
-                                const index = selectedUser.findIndex(
-                                  (item2) => {
-                                    // console.log('mod_selector',item)
-                                    // console.log('mod_selector',item.userName)
-                                    // console.log('mod_selector',item == item.userName)
-                                    return item2 == item.userName;
-                                  }
-                                );
-                                console.log("mod_selector", index);
-                                const mod_selector = selectedUser.splice(
-                                  index,
-                                  1
-                                );
-                                console.log("mod_selector", mod_selector);
-                                console.log("mod_selector", selectedUser);
-                                setSelectedUser([...selectedUser]);
-                              }}
-                            >
-                              <div className="action-ico">
-                                <RoundRemoveIcon />
-                              </div>
-                            </div>
+                            )
                           ) : (
-                            <div
-                              className="action-ico pointer"
-                              onClick={(e) => {
-                                setSelectedUser([
-                                  ...selectedUser,
-                                  item.userName,
-                                ]);
-                              }}
-                            >
-                              <div className="action-icon">
-                                <RoundAdd />
+                            <div className="list-item flex aic">
+                              <div className="name s13 font b5">
+                                {item.controlpointname}
                               </div>
+                              {selectedcontrolpoints.findIndex((item2) =>  item2.controlpointname == item.controlpointname) > -1 ? (
+                                <div
+                                  className="action-ico pointer"
+                                  onClick={(e) => {
+                                    const index = selectedcontrolpoints.findIndex((item2) =>  item2.controlpointname == item.controlpointname);
+                                    console.log("mod_selector", index);
+                                    const mod_selector = selectedcontrolpoints.splice(
+                                      index,
+                                      1
+                                    );
+                                    console.log("mod_selector", mod_selector);
+                                    console.log("mod_selector", selectedcontrolpoints);
+                                    setselectedcontrolpoints([...selectedcontrolpoints]);
+                                  }}
+                                >
+                                  <div className="action-ico">
+                                    <RoundRemoveIcon />
+                                  </div>
+                                </div>
+                              ) : (
+                                <div
+                                  className="action-ico pointer"
+                                  onClick={(e) => {
+                                    setselectedcontrolpoints([
+                                      ...selectedcontrolpoints,
+                                      item,
+                                    ]);
+                                  }}
+                                >
+                                  <div className="action-icon">
+                                    <RoundAdd />
+                                  </div>
+                                </div>
+                              )}
                             </div>
-                          )}
-                        </div>
-                      )
-                    )}
+                          )
+                        )}
                   </div>
                 </div>
               </div>

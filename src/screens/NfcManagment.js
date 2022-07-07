@@ -450,11 +450,11 @@ const NfcManagment = () => {
                     )}`}
                   </div> */}
                     <div className="row-item font">
-                      {`${moment(Number(item.tagIds?.expirydate)).format(
+                      {`${moment((item.tagIds?.expirydate)).format(
                         "D"
-                      )}-${moment(Number(item.tagIds?.expirydate)).format(
+                      )}-${moment((item.tagIds?.expirydate)).format(
                         "MM"
-                      )}-${moment(Number(item.tagIds?.expirydate)).format(
+                      )}-${moment((item.tagIds?.expirydate)).format(
                         "YYYY"
                       )}`}
                     </div>
@@ -520,7 +520,10 @@ const NfcManagment = () => {
         />
       </Modal>
 
-      <Modal open={opennfctag} onClose={() => setopennfctag(false)}>
+      <Modal open={opennfctag} onClose={() => {
+        setopennfctag(false)
+        setsyncfusionselected(edittagdata?.tagIds?.syncfusiondetails?.object)
+        }}>
         <CloneNFCTag
           families={families}
           edittagdata={edittagdata}
@@ -530,6 +533,7 @@ const NfcManagment = () => {
           setloading={setloading}
           companies={companies}
           userList={userList}
+          syncfusionselected={syncfusionselected}
         />
       </Modal>
 
@@ -537,7 +541,10 @@ const NfcManagment = () => {
         <Confirm />
       </Modal>
 
-      <Modal open={open3} onClose={() => setOpen3(false)}>
+      <Modal open={open3} onClose={() => {
+        setOpen3(false)
+        setsyncfusionselected(edittagdata?.tagIds?.syncfusiondetails?.object)
+        }}>
         <EditNFCTag
           families={families}
           edittagdata={edittagdata}
@@ -547,6 +554,7 @@ const NfcManagment = () => {
           setloading={setloading}
           companies={companies}
           userList={userList}
+          syncfusionselected={syncfusionselected}
         />
       </Modal>
       <Modal open={open4} onClose={() => setOpen4(false)}>

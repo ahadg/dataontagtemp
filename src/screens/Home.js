@@ -271,7 +271,7 @@ const Home = ({location}) => {
           title : `Checkpoint issue on ${selectedcheck?.controlpointId?.familyId?.deviceName}`,
           message : message,
           details,
-          buttons : [{id : "solve_it", text : "SOLVE IT"}]
+          buttons : [{id : `solve_it:${selectedcheck._id}`, text : "SOLVE IT"}]
         }
       );
       console.log("sendfixrequest", res.data);

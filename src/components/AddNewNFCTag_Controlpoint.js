@@ -44,7 +44,8 @@ const AddNewNFCTag = ({
   const [selectedCompany, setSelectedCompany] = useState();
   const [selectedChecklist, setSelectedChecklist] = useState();
   const [selectedPriority, setSelectedPriority] = useState();
-  const [selectedUser, setSelectedUser] = useState();
+  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [daysbefore,setdaysbefore] = useState('')
   const [statusData, setStatusData] = useState([
     { id: 1, title: "NO" },
     { id: 2, title: "YES" },
@@ -65,6 +66,7 @@ const AddNewNFCTag = ({
   const [endDate, setEndDate] = useState(new Date().getTime());
   const [tagId, settagId] = useState();
   const [loader, setloader] = useState(false);
+  console.log('selectedUsers',selectedUsers)
   const createnewtag = async () => {
     if (!selectedfamily) {
       return toast.error("Please select family.");
@@ -85,6 +87,10 @@ const AddNewNFCTag = ({
     }
     try {
       //setloading(true);
+      const theusers = []
+      selectedUsers.map((item) => {
+        theusers.push(item._id)
+      })
       setloader(true);
       const res = await axios.post(
         `${process.env.REACT_APP_END_URL}api/createtag`,
@@ -99,7 +105,7 @@ const AddNewNFCTag = ({
             buildingname,
           },
           selectedchecklistname: selectedChecklist,
-          selectedUser: selectedUser?._id,
+          selectedUsers: theusers,
           selectedCompany: selectedCompany,
           gowithoutsubfamily: gowithoutsubfamily,
           startDate: syncfusionselected[0]?.StartTime,
@@ -112,19 +118,20 @@ const AddNewNFCTag = ({
             startDate: syncfusionselected[0]?.StartTime,
             endDate: syncfusionselected[0]?.EndTime,
             object: syncfusionselected,
+            daysbefore
           },
           priority: selectedPriority,
           manufacturingdate,
         }
       );
       console.log("response_checks", res.data);
-      // if (res.data) {
-      //   //setfamilies(res.data.families);
-      //   setOpen(false);
-      //   //setloading(false);
-      //   setloader(false);
-      //   getfamilies();
-      // }
+      if (res.data) {
+        //setfamilies(res.data.families);
+        setOpen(false);
+        //setloading(false);
+        setloader(false);
+        getfamilies();
+      }
     } catch (error) {
       console.log("error1", error);
       if (error.response) {
@@ -505,7 +512,7 @@ const AddNewNFCTag = ({
               </div>
             </div>
             <div className="heading-tag-2 flex aic jc s16 font b6">
-              <div>Manufacturing & Expiry date</div>
+              <div>Manufacturing & Expiry dates</div>
             </div>
             <div className="fields-row flex aic">
               <div className="field-item-r flex flex-col">
@@ -533,9 +540,13 @@ const AddNewNFCTag = ({
                         "YYYY"
                       )},
                   ${
-                    syncfusionselected[0]?.RecurrenceRule.split(";")[0].split(
+                    syncfusionselected[0]?.RecurrenceRule
+                    ?
+                    syncfusionselected[0]?.RecurrenceRule?.split(";")[0]?.split(
                       "="
                     )[1]
+                    :
+                    ''
                   }`
                     : "Select Expiry Date"}
                 </div>
@@ -543,11 +554,11 @@ const AddNewNFCTag = ({
               <div className="field-item-r flex flex-col">
                 <div className="lbl">Days before</div>
                 <input
-                  type="text"
+                  type="number"
                   className="txt-input cleanbtn"
                   placeholder="Days before"
-                  //value={location}
-                  //onChange={(e) => setlocation(e.target.value)}
+                  value={daysbefore}
+                  onChange={(e) => setdaysbefore(e.target.value)}
                 />
               </div>
             </div>
@@ -566,11 +577,11 @@ const AddNewNFCTag = ({
                       <div
                         // type="text"
                         className="flex aic txt-b s12 cleanbtn flex-wrap"
-                        // value={selectedUser}
+                        // value={selectedUsers}
                       >
-                        {selectedUser?.map((item, index) => (
+                        {selectedUsers?.map((item, index) => (
                           <div className="flex s12">
-                            {item}, {""}
+                            {item.userName}, {""}
                           </div>
                         ))}
                       </div>
@@ -605,32 +616,25 @@ const AddNewNFCTag = ({
                       </div>
                       <div className="user-list flex flex-col">
                         {userList?.map((item, index) =>
-                          search ? (
-                            item.userName.search(search) > -1 && (
+                          search.toLowerCase() ? (
+                            item.userName.toLowerCase().search(search) > -1 && (
                               <div className="list-item flex aic">
                                 <div className="name s13 font b5">
-                                  {item.user}
+                                  {item.userName}
                                 </div>
-                                {selectedUser?.includes(item.userName) ? (
+                                {selectedUsers.findIndex((item2) =>  item2.userName == item.userName) > -1 ? (
                                   <div
                                     className="action-ico pointer"
                                     onClick={(e) => {
-                                      const index = selectedUser.findIndex(
-                                        (item2) => {
-                                          // console.log('mod_selector',item)
-                                          // console.log('mod_selector',item.userName)
-                                          // console.log('mod_selector',item == item.userName)
-                                          return item2 == item.userName;
-                                        }
-                                      );
+                                      const index = selectedUsers.findIndex((item2) =>  item2.userName == item.userName);
                                       console.log("mod_selector", index);
-                                      const mod_selector = selectedUser.splice(
+                                      const mod_selector = selectedUsers.splice(
                                         index,
                                         1
                                       );
                                       console.log("mod_selector", mod_selector);
-                                      console.log("mod_selector", selectedUser);
-                                      setSelectedUser([...selectedUser]);
+                                      console.log("mod_selector", selectedUsers);
+                                      setSelectedUsers([...selectedUsers]);
                                     }}
                                   >
                                     <div className="action-icon">
@@ -641,9 +645,9 @@ const AddNewNFCTag = ({
                                   <div
                                     className="action-ico pointer"
                                     onClick={(e) => {
-                                      setSelectedUser([
-                                        ...selectedUser,
-                                        item.userName,
+                                      setSelectedUsers([
+                                        ...selectedUsers,
+                                        item,
                                       ]);
                                     }}
                                   >
@@ -659,26 +663,19 @@ const AddNewNFCTag = ({
                               <div className="name s13 font b5">
                                 {item.userName}
                               </div>
-                              {selectedUser?.includes(item.userName) ? (
+                              {selectedUsers.findIndex((item2) =>  item2.userName == item.userName) > -1 ? (
                                 <div
                                   className="action-ico pointer"
                                   onClick={(e) => {
-                                    const index = selectedUser.findIndex(
-                                      (item2) => {
-                                        // console.log('mod_selector',item)
-                                        // console.log('mod_selector',item.userName)
-                                        // console.log('mod_selector',item == item.userName)
-                                        return item2 == item.userName;
-                                      }
-                                    );
+                                    const index = selectedUsers.findIndex((item2) =>  item2.userName == item.userName);
                                     console.log("mod_selector", index);
-                                    const mod_selector = selectedUser.splice(
+                                    const mod_selector = selectedUsers.splice(
                                       index,
                                       1
                                     );
                                     console.log("mod_selector", mod_selector);
-                                    console.log("mod_selector", selectedUser);
-                                    setSelectedUser([...selectedUser]);
+                                    console.log("mod_selector", selectedUsers);
+                                    setSelectedUsers([...selectedUsers]);
                                   }}
                                 >
                                   <div className="action-ico">
@@ -689,9 +686,9 @@ const AddNewNFCTag = ({
                                 <div
                                   className="action-ico pointer"
                                   onClick={(e) => {
-                                    setSelectedUser([
-                                      ...selectedUser,
-                                      item.userName,
+                                    setSelectedUsers([
+                                      ...selectedUsers,
+                                      item,
                                     ]);
                                   }}
                                 >

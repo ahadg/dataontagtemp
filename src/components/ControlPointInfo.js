@@ -10,7 +10,8 @@ const ControlPointInfo = ({
   console.log("selectedcontrolpoint", selectedcontrolpoint);
   console.log("theinspection", theinspection);
 
-  const CopyFun = () => {
+  const CopyFun = async (text) => {
+    await navigator.clipboard.writeText(text)
     toast("Successfully Tag ID Copied!", {
       position: "top-right",
       autoClose: 5000,
@@ -57,7 +58,8 @@ const ControlPointInfo = ({
           <div className="left flex">Tag ID :</div>
           <div className="right flex aic">
             {theinspection.tagId}
-            <div className="copy-icon flex aic jc" onClick={(e) => CopyFun()}>
+            <div 
+            className="copy-icon flex aic jc" onClick={(e) => CopyFun(theinspection.tagId)}>
               <CopyIcon />
             </div>
           </div>
@@ -115,10 +117,10 @@ const ControlPointInfo = ({
         <div className="check-points-item flex aic">
           <div className="left flex">Expiry :</div>
           <div className="right flex crrr">{`${moment(
-            Number(theinspection.expirydate)
-          ).format("D")}-${moment(Number(theinspection.expirydate)).format(
+            (theinspection.expirydate)
+          ).format("D")}-${moment((theinspection.expirydate)).format(
             "MM"
-          )}-${moment(Number(theinspection.expirydate)).format("YYYY")}`}</div>
+          )}-${moment((theinspection.expirydate)).format("YYYY")}`}</div>
         </div>
       </div>
     </div>

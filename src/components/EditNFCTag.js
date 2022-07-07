@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { ArrowDownIcon, FireCaylinder } from "../svg";
+import { ArrowDownIcon, FireCaylinder, RoundAdd,
+  RoundRemoveIcon,SearchIcon, } from "../svg";
 import Datetime from "react-datetime";
 import "react-datetime/css/react-datetime.css";
-import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import axios from "axios";
 import Lottie from "react-lottie";
 import LoadPage from "./LoadPage.json";
 import { ToastContainer, toast } from 'react-toastify';
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import moment from "moment";
 const EditNFCTag = ({
   families,
   setfamilies,
@@ -15,7 +17,8 @@ const EditNFCTag = ({
   setloading,
   companies,
   userList,
-  getfamilies
+  getfamilies,
+  syncfusionselected
 }) => {
   const defaultOptions = {
     loop: true,
@@ -26,6 +29,10 @@ const EditNFCTag = ({
     },
   };
   const [hide, setHide] = useState(false);
+  const [daysbefore,setdaysbefore] = useState((edittagdata?.tagIds?.syncfusiondetails?.daysbefore))
+  const [selectedUsers, setSelectedUsers] = useState([edittagdata?.tagIds?.selectedUsers]);
+  const [showList, setShowList] = useState(false);
+  const [search, setsearch] = useState("");
   const [hide2, setHide2] = useState(false);
   const [hide3, setHide3] = useState(false);
   const [hide4, setHide4] = useState(false);
@@ -523,155 +530,200 @@ const EditNFCTag = ({
           <div className="heading-tag-2 flex aic jc s16 font b6">
             <div>Manufacturing & Expiry date</div>
           </div>
+          
           <div className="fields-row flex aic">
-              <div className="field-item-l flex flex-col">
-                <div className="lbl">Select Checklist</div>
-                <div className="dropDown flex aic jc flex-col rel">
-                  <div className="category flex aic">
-                    <div
-                      className="cbox cleanbtn flex aic rel"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setHide5(!hide5);
-                      }}
-                    >
-                      <div className="slt flex aic">
-                        <div className="unit-name flex aic font s14 b4">
-                          {/* <div className="icon-fire flex aic jc ">
-                            <FireCaylinder />
-                          </div> */}
-                          <span
-                            className="unit-eng flex aic font s14 b4"
-                            placeholder="Select Checklist"
-                          >
-                            {selectedChecklist
-                              ? selectedChecklist
-                              : "Select Checklist"}
-                          </span>
-                        </div>
-                      </div>
-                      <div>
-                        <ArrowDownIcon />
-                      </div>
-                    </div>
-                  </div>
-                  <div className={`block flex aic abs ${hide5 ? "show" : ""}`}>
-                    <div className="manue flex aic col anim">
-                      {checklists.map((item, index) => (
-                        <div
-                          key={index}
-                          className="slt flex aic"
-                          onClick={(e) => {
-                            setHide5(!hide5);
-                            setSelectedChecklist(item);
-                          }}
-                        >
-                          <div className="unit-name flex aic font s14 b4">
-                            {/* <div className="icon-fire flex aic jc ">
-                              <FireCaylinder />
-                            </div> */}
-                            <span className="unit-eng flex aic font s14 b4">
-                              {item}
-                            </span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+              <div className="field-item-r flex flex-col">
+                <div className="lbl">Expiry Date</div>
+                <div
+                  // to={"/syncfusion-calender"}
+                  className="txt-input b6 s18 flex aic jc pointer"
+                  onClick={(e) => {
+                    setOpen3(true);
+                  }}
+                >
+                  {syncfusionselected
+                    ? `${moment(syncfusionselected[0]?.StartTime).format(
+                        "D"
+                      )}-${moment(syncfusionselected[0]?.StartTime).format(
+                        "MM"
+                      )}-${moment(syncfusionselected[0]?.StartTime).format(
+                        "YYYY"
+                      )} -
+                  ${moment(syncfusionselected[0]?.EndTime).format(
+                    "D"
+                  )}-${moment(syncfusionselected[0]?.EndTime).format(
+                        "MM"
+                      )}-${moment(syncfusionselected[0]?.EndTime).format(
+                        "YYYY"
+                      )},
+                  ${
+                    syncfusionselected[0]?.RecurrenceRule
+                    ?
+                    syncfusionselected[0]?.RecurrenceRule?.split(";")[0]?.split(
+                      "="
+                    )[1]
+                    :
+                    ''
+                  }`
+                    : "Select Expiry Date"}
                 </div>
               </div>
               <div className="field-item-r flex flex-col">
-                <div className="lbl">User Selection</div>
-                <div className="dropDown flex aic jc flex-col rel">
-                  <div className="category flex aic">
-                    <div
-                      className="cbox cleanbtn flex aic rel"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setHide6(!hide6);
-                      }}
-                    >
-                      <div className="slt flex aic">
-                        <div className="unit-name flex aic font s14 b4">
-                          {/* <div className="icon-fire flex aic jc ">
-                            <FireCaylinder />
-                          </div> */}
-                          <span
-                            className="unit-eng flex aic font s14 b4"
-                            placeholder="User Selection"
-                          >
-                            {selectedUser
-                              ? selectedUser.userName
-                              : "User Selection"}
-                          </span>
-                        </div>
+                <div className="lbl">Days before</div>
+                <input
+                  type="number"
+                  className="txt-input cleanbtn"
+                  placeholder="Days before"
+                  value={daysbefore}
+                  onChange={(e) => setdaysbefore(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="fields-row flex aic">
+              <div className="data-item flex aic">
+                <div className="txt-field flex flex-col">
+                  <div className="lbl s12 font">User Selection</div>
+                  <div
+                    className="search-box txt  flex flex-col rel pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowList(!showList);
+                    }}
+                  >
+                    <div className="txt-box flex aic">
+                      <div
+                        // type="text"
+                        className="flex aic txt-b s12 cleanbtn flex-wrap"
+                        // value={selectedUsers}
+                      >
+                        {selectedUsers?.map((item, index) => (
+                          <div className="flex s12">
+                            {item.userName}, {""}
+                          </div>
+                        ))}
                       </div>
-                      <div>
+                      <div
+                        className="icon flex aic jc pointer"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setShowList(!showList);
+                        }}
+                      >
                         <ArrowDownIcon />
                       </div>
                     </div>
-                  </div>
-                  <div className={`block flex aic abs ${hide6 ? "show" : ""}`}>
-                    <div className="manue flex aic col anim">
-                      {userList.map((item, index) => (
-                        <div
-                          key={index}
-                          className="slt flex aic"
-                          onClick={(e) => {
-                            setHide6(!hide6);
-                            setSelectedUser(item);
-                          }}
-                        >
-                          <div className="unit-name flex aic font s14 b4">
-                            {/* <div className="icon-fire flex aic jc ">
-                              <FireCaylinder />
-                            </div> */}
-                            <span className="unit-eng flex aic font s14 b4">
-                              {item.userName}
-                            </span>
-                          </div>
+                    <div
+                      className={`list-box flex flex-col abs ${
+                        showList ? "show" : ""
+                      }`}
+                    >
+                      <div
+                        className="txt-search flex aic"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <input
+                          type="text"
+                          className="txt-s cleanbtn"
+                          placeholder="Search users"
+                          onChange={(e) => setsearch(e.target.value)}
+                        />
+                        <div className="icon flex aic jc">
+                          <SearchIcon />
                         </div>
-                      ))}
+                      </div>
+                      <div className="user-list flex flex-col">
+                        {userList?.map((item, index) =>
+                          search.toLowerCase() ? (
+                            item.userName.toLowerCase().search(search) > -1 && (
+                              <div className="list-item flex aic">
+                                <div className="name s13 font b5">
+                                  {item.userName}
+                                </div>
+                                {selectedUsers.findIndex((item2) =>  item2.userName == item.userName) > -1 ? (
+                                  <div
+                                    className="action-ico pointer"
+                                    onClick={(e) => {
+                                      const index = selectedUsers.findIndex((item2) =>  item2.userName == item.userName);
+                                      console.log("mod_selector", index);
+                                      const mod_selector = selectedUsers.splice(
+                                        index,
+                                        1
+                                      );
+                                      console.log("mod_selector", mod_selector);
+                                      console.log("mod_selector", selectedUsers);
+                                      setSelectedUsers([...selectedUsers]);
+                                    }}
+                                  >
+                                    <div className="action-icon">
+                                      <RoundRemoveIcon />
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <div
+                                    className="action-ico pointer"
+                                    onClick={(e) => {
+                                      setSelectedUsers([
+                                        ...selectedUsers,
+                                        item,
+                                      ]);
+                                    }}
+                                  >
+                                    <div className="action-icon">
+                                      <RoundAdd />
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            )
+                          ) : (
+                            <div className="list-item flex aic">
+                              <div className="name s13 font b5">
+                                {item.userName}
+                              </div>
+                              {selectedUsers.findIndex((item2) =>  item2.userName == item.userName) > -1 ? (
+                                <div
+                                  className="action-ico pointer"
+                                  onClick={(e) => {
+                                    const index = selectedUsers.findIndex((item2) =>  item2.userName == item.userName);
+                                    console.log("mod_selector", index);
+                                    const mod_selector = selectedUsers.splice(
+                                      index,
+                                      1
+                                    );
+                                    console.log("mod_selector", mod_selector);
+                                    console.log("mod_selector", selectedUsers);
+                                    setSelectedUsers([...selectedUsers]);
+                                  }}
+                                >
+                                  <div className="action-ico">
+                                    <RoundRemoveIcon />
+                                  </div>
+                                </div>
+                              ) : (
+                                <div
+                                  className="action-ico pointer"
+                                  onClick={(e) => {
+                                    setSelectedUsers([
+                                      ...selectedUsers,
+                                      item,
+                                    ]);
+                                  }}
+                                >
+                                  <div className="action-icon">
+                                    <RoundAdd />
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          )
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          <div className="fields-row flex aic">
-            <div className="field-item-l flex flex-col">
-              <div className="lbl">Manufacturing Date</div>
-              <div className="date-picker flex aic jc pointer">
-                <Datetime
-                  closeOnSelect={true}
-                  value={startDate}
-                  onChange={(value) => {
-                    console.log("value", new Date(value).getTime());
-                    setStartDate(new Date(value).getTime());
-                  }}
-                  timeFormat={false}
-                  dateFormat="DD-MM-YYYY"
-                  className="start-date cleanbtn pointer"
-                />
-                <CalendarTodayIcon className="calender-icon" />
-              </div>
-            </div>
-            <div className="field-item-r flex flex-col">
-              <div className="lbl">Expiry Date</div>
-              <div className="date-picker flex aic jc">
-                <Datetime
-                  closeOnSelect={true}
-                  value={endDate}
-                  onChange={(value) => {
-                    setEndDate(new Date(value).getTime());
-                  }}
-                  timeFormat={false}
-                  dateFormat="DD-MM-YYYY"
-                  className="start-date cleanbtn"
-                />
-                <CalendarTodayIcon className="calender-icon" />
-              </div>
-            </div>
-          </div>
+
           <div className="fields-row flex aic">
             <button
               className="btn-cancle button cleanbtn"

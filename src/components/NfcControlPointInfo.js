@@ -1,10 +1,23 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 import { CopyIcon, CloseIcon } from "../svg";
-
+import { ToastContainer, toast } from "react-toastify";
 const ControlPointInfo = ({ setOpen4,selectedcontrolpoint,theinspection }) => {
   console.log('selectedcontrolpoint',selectedcontrolpoint)
   console.log('theinspection',theinspection)
+  const CopyFun = async (text) => {
+    await navigator.clipboard.writeText(text)
+    toast("Successfully Tag ID Copied!", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+    //setOpen3(false);
+  };
   return (
     <div className="control-point-info  flex flex-col">
       <div className="check-point-header flex jc">
@@ -37,7 +50,9 @@ const ControlPointInfo = ({ setOpen4,selectedcontrolpoint,theinspection }) => {
           <div className="left flex">Tag ID :</div>
           <div className="right flex aic">
             {theinspection.tagId}
-            <div className="copy-icon flex aic jc">
+            <div 
+            onClick={(e) => CopyFun(theinspection.tagId)}
+            className="copy-icon flex aic jc">
               <CopyIcon />
             </div>
           </div>
@@ -90,9 +105,9 @@ const ControlPointInfo = ({ setOpen4,selectedcontrolpoint,theinspection }) => {
         </div>
         <div className="check-points-item flex aic">
           <div className="left flex">Expiry :</div>
-          <div className="right flex crrr">{`${moment(Number(theinspection.expirydate)).format("D")}-${moment(
-                          Number(theinspection.expirydate)
-                        ).format("MM")}-${moment(Number(theinspection.expirydate)).format(
+          <div className="right flex crrr">{`${moment((theinspection.expirydate)).format("D")}-${moment(
+                          (theinspection.expirydate)
+                        ).format("MM")}-${moment((theinspection.expirydate)).format(
                           "YYYY"
                         )}`}</div>
         </div>

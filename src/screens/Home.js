@@ -15,7 +15,7 @@ import {
   ActionIcon,
   LogoutIcon,
 } from "../svg";
-
+import FileSaver from 'file-saver'
 import axios from "axios";
 import moment from "moment";
 import Loader from "../components/Loader";
@@ -88,7 +88,7 @@ const Home = ({location}) => {
     //   status: "No Issue",
     // },
   ]);
-  console.log("selectedcompany", selectedcompany);
+  console.log("tblData", tblData);
   const filterdatabycompany = () => {
     let data = [...tblData];
     if(selectedcompany == "All" || !selectedcompany){
@@ -489,7 +489,11 @@ const Home = ({location}) => {
         }}
       >
         <div className="download-btn flex">
-          <button className="btn cleanbtn">
+          <button 
+          onClick={() => {
+            FileSaver.saveAs(`${process.env.REACT_APP_END_URL}${issueimage}.jpeg`, `image${new Date().getTime()}.jpg`);
+          }}
+          className="btn cleanbtn">
             <DownloadIcon />
             <div className="lbl s12 font ">Download</div>
           </button>

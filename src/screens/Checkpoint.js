@@ -29,6 +29,7 @@ const Checkpoint = () => {
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
   const [open3, setOpen3] = useState(false);
+  const [deletedialogue, setdeletedialogue] = useState(false);
   const [openeditcheckpoint, setopeneditcheckpoint] = useState(false);
   const [editcheckpointinfo, seteditcheckpointinfo] = useState({});
   const [hide, setHide] = useState(false);
@@ -404,6 +405,65 @@ const Checkpoint = () => {
       </div>
     );
   };
+  const [confirmobj,setconfirmobj] = useState({})
+  const Confirm = () => {
+    let onyes = () => {
+      if(confirmobj.type == 'maintaineradminchecklist'){
+        maintaineradminchecklist.splice(confirmobj.index, 1);
+        setmaintaineradminchecklist([
+          ...maintaineradminchecklist,
+        ]);
+      }
+      else if(confirmobj.type == 'maintaineruserchecklist') {
+        maintaineruserchecklist.splice(confirmobj.index, 1);
+        setmaintaineruserchecklist([
+          ...maintaineruserchecklist,
+        ]);
+      }
+      else if(confirmobj.type == 'companyadminchecklist') {
+        companyadminchecklist.splice(confirmobj.index, 1);
+        setcompanyadminchecklist([
+          ...companyadminchecklist,
+        ]);
+      }
+      else if(confirmobj.type == 'companyuserchecklist') {
+        companyuserchecklist.splice(confirmobj.index, 1);
+        setcompanyuserchecklist([
+          ...companyuserchecklist,
+        ]);
+      }
+      setchecksupdates(Math.random());
+      setdeletedialogue(false)
+    }
+    return (
+      <>
+        <div className="confirm-delte flex aic flex-col">
+            <>
+              <div className="heading-tag flex aic jc s16 font b6">
+                <div>Delete Checklist</div>
+              </div>
+              <div className="desc flex aic jc s14 font b5">
+                Do You Want To Delete Checklist?
+              </div>
+              <div className="actions-row flex aic">
+                <button
+                  className="btn-cancle button cleanbtn"
+                  onClick={(e) => setdeletedialogue(false)}
+                >
+                  No! Cancel
+                </button>
+                <button
+                  onClick={onyes}
+                  className="btn-create button cleanbtn"
+                >
+                  Yes! Delete
+                </button>
+              </div>
+            </>
+        </div>
+      </>
+    );
+  };
 
   const [checksupdates, setchecksupdates] = useState("");
 
@@ -452,16 +512,6 @@ const Checkpoint = () => {
     // companyadminchecklist,
     // companyuserchecklist,
   ]);
-
-  // const familyselection = (item) => {
-  //  if(item.subfamilies.length > 0){
-  //      selectedFamily.subfamilies.append({subfamilyname : 'no subfamily'})
-       
-  //  }
-  //  else if(item.subfamilies) {
-
-  //  }
-  // }
 
   return (
     <>
@@ -835,11 +885,8 @@ const Checkpoint = () => {
                                 </div>
                                 <div
                                   onClick={() => {
-                                    maintaineradminchecklist.splice(index, 1);
-                                    setmaintaineradminchecklist([
-                                      ...maintaineradminchecklist,
-                                    ]);
-                                    setchecksupdates(Math.random());
+                                    setconfirmobj({type : 'maintaineradminchecklist',index})
+                                    setdeletedialogue(true)
                                   }}
                                   className="icon-del flex aic"
                                 >
@@ -948,11 +995,8 @@ const Checkpoint = () => {
                                 </div>
                               <div
                                 onClick={() => {
-                                  maintaineruserchecklist.splice(index, 1);
-                                  setmaintaineruserchecklist([
-                                    ...maintaineruserchecklist,
-                                  ]);
-                                  setchecksupdates(Math.random());
+                                  setconfirmobj({type : 'maintaineruserchecklist',index})
+                                  setdeletedialogue(true)
                                 }}
                                 className="icon-del flex aic"
                               >
@@ -1060,11 +1104,8 @@ const Checkpoint = () => {
                                 </div>
                               <div
                                 onClick={() => {
-                                  companyadminchecklist.splice(index, 1);
-                                  setcompanyadminchecklist([
-                                    ...companyadminchecklist,
-                                  ]);
-                                  setchecksupdates(Math.random());
+                                  setconfirmobj({type : 'companyadminchecklist',index})
+                                  setdeletedialogue(true)
                                 }}
                                 className="icon-del flex aic"
                               >
@@ -1170,11 +1211,8 @@ const Checkpoint = () => {
                                 </div>
                                 <div
                                   onClick={() => {
-                                    companyuserchecklist.splice(index, 1);
-                                    setcompanyuserchecklist([
-                                      ...companyuserchecklist,
-                                    ]);
-                                    setchecksupdates(Math.random());
+                                    setconfirmobj({type : 'companyuserchecklist',index})
+                                    setdeletedialogue(true)
                                   }}
                                   className="icon-del flex aic"
                                 >
@@ -1375,6 +1413,9 @@ const Checkpoint = () => {
           selectedFamily={selectedFamily}
           getfamilies={getfamilies}
         />
+      </Modal>
+      <Modal open={deletedialogue} onClose={() => setdeletedialogue(false)}>
+        <Confirm />
       </Modal>
 
       <Modal

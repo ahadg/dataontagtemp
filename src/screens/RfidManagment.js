@@ -68,7 +68,7 @@ const RfidManagment = () => {
     else if (search != undefined) {
       const searchedids = rfidlist.filter((item) => {
         if (
-          item.deviceName.search(search) > -1 || item.rfid.search(search) > -1
+          item.deviceName.toLowerCase()?.search(search?.toLowerCase()) > -1 || item.rfid?.toLowerCase()?.search(search.toLowerCase()) > -1
         ) {
           return true;
         }
@@ -431,9 +431,9 @@ const RfidManagment = () => {
                     className="icon-del flex aic">
                       <DeleteIcon />
                     </div>
-                    <div className="icon-del flex aic">
+                    {/* <div className="icon-del flex aic">
                       <ActionIcon />
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               ))}

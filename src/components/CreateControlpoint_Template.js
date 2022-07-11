@@ -256,7 +256,11 @@ const AddNewControlPoint = ({ getfamilies, families, setOpen2 }) => {
               className="txt-r cleanbtn s14 b4 font"
               placeholder="Days"
               value={priorities.high}
-              onChange={e => setpriorities({...priorities,high : e.target.value})}
+              onChange={e => {
+                if(e.target.value > -1){
+                setpriorities({...priorities,high : e.target.value})
+                }
+              }}
             />
           </div>
           <div className="input-filed flex aic">
@@ -272,7 +276,11 @@ const AddNewControlPoint = ({ getfamilies, families, setOpen2 }) => {
               className="txt-r cleanbtn s14 b4 font"
               placeholder="Days"
               value={priorities.medium}
-              onChange={e => setpriorities({...priorities,medium : e.target.value})}
+              onChange={e => {
+                if(e.target.value > -1){
+                  setpriorities({...priorities,medium : e.target.value})
+                  }
+                }}
             />
           </div>
           <div className="input-filed flex aic">
@@ -288,7 +296,11 @@ const AddNewControlPoint = ({ getfamilies, families, setOpen2 }) => {
               className="txt-r cleanbtn s14 b4 font"
               placeholder="Days"
               value={priorities.low}
-              onChange={e => setpriorities({...priorities,low : e.target.value})}
+              onChange={e => {
+                if(e.target.value > -1){
+                  setpriorities({...priorities,low : e.target.value})
+                  }
+                }}
             />
           </div>
         </div>

@@ -18,7 +18,8 @@ const EditNFCTag = ({
   companies,
   userList,
   getfamilies,
-  syncfusionselected
+  syncfusionselected,
+  setOpen5
 }) => {
   const defaultOptions = {
     loop: true,
@@ -30,7 +31,10 @@ const EditNFCTag = ({
   };
   const [hide, setHide] = useState(false);
   const [daysbefore,setdaysbefore] = useState((edittagdata?.tagIds?.syncfusiondetails?.daysbefore))
-  const [selectedUsers, setSelectedUsers] = useState([edittagdata?.tagIds?.selectedUsers]);
+  const [manufacturingdate, setmanufacturingdate] = useState(
+    new Date(Number(edittagdata?.tagIds?.manufacturingdate))?.getTime()
+  );
+  const [selectedUsers, setSelectedUsers] = useState([]);
   const [showList, setShowList] = useState(false);
   const [search, setsearch] = useState("");
   const [hide2, setHide2] = useState(false);
@@ -46,9 +50,8 @@ const EditNFCTag = ({
   const [selectedCompany, setSelectedCompany] = useState();
   const [companymodified,setcompanymodified] = useState(false)
   const [familmodified,setfamilmodified] = useState(false)
-  const [selectedUser, setSelectedUser] = useState(edittagdata.tagIds?.selectedUser);
   const [gowithoutsubfamily, setgowithoutsubfamily] = useState(edittagdata?.subfamily ? false : true);
-  const [subfamilymodified,setsubfamilymodified] = useState(edittagdata.tagIds?.gowithoutsubfamily)
+  const [subfamilymodified,setsubfamilymodified] = useState(false)
   const [templatemodified,settemplatemodified] = useState(false)
   const [checklists,setchecklists] = useState(['Maintainer Admin','Maintainer User','Company Admin','Company User'])
   const [statusData, setStatusData] = useState([
@@ -58,6 +61,13 @@ const EditNFCTag = ({
   const [buildingname, setbuildingname] = useState(
     edittagdata.tagIds?.location?.buildingname
   );
+  useEffect(() => {
+    let theusers = []
+    edittagdata.tagIds.selectedUsers.map((item) => {
+      theusers.push(item.userinfo)
+    })
+    setSelectedUsers(theusers)
+  },[])
   const [floor, setfloor] = useState(edittagdata.tagIds?.location?.floor);
   const [location, setlocation] = useState(
     edittagdata.tagIds?.location?.location
@@ -90,9 +100,31 @@ const EditNFCTag = ({
 },[])
 
   const editnfc = async () => {
+    console.log('manufacturingdate',manufacturingdate)
+    if (!selectedfamily) {
+      return toast.error("Please select family.");
+    } else if (!selectedSubfamily && !gowithoutsubfamily) {
+      return toast.error("Please select subfamily.");
+    // } else if (!selectedcontrolpoint) {
+    //   return toast.error("Please select controlPoint.");
+    } else if (!tagId) {
+      return toast.error("Please input tagId.");
+    } else if (!floor || !location || !buildingname) {
+      return toast.error("Please input all location fields.");
+    } else if (!manufacturingdate) {
+      return toast.error("Please select Manufacturingdate.");
+    // } else if (!endDate) {
+    //   return toast.error("Please select end date.");
+    } else if (!syncfusionselected) {
+      return toast.error("Please select expiry date.");
+    }
     try {
       setloading(true);
       setloader(true)
+      const theusers = []
+      selectedUsers.map((item) => {
+        theusers.push({theuser :item._id,userinfo : item})
+      })
       const res = await axios.post(
         `${process.env.REACT_APP_END_URL}api/editnfctag`,
         {
@@ -103,19 +135,30 @@ const EditNFCTag = ({
             location,
             buildingname,
           },
-          startDate,
-          endDate,
           edittagdata,
           familmodified,
           subfamilymodified,
           templatemodified,
           companymodified,
           selectedCompany,
-          selectedUser : selectedUser._id,
+          selectedUsers : theusers,
           selectedSubfamily,
           selectedTemplate,
           selectedfamily,
-          gowithoutsubfamily
+          gowithoutsubfamily,
+          manufacturingdate,
+          syncfusiondetails: {
+            recurrencetype:
+              syncfusionselected[0]?.RecurrenceRule?.split(";")[0]?.split(
+                "="
+              )[1],
+            startDate: syncfusionselected[0]?.StartTime,
+            endDate: syncfusionselected[0]?.EndTime,
+            object: syncfusionselected,
+            daysbefore
+          },
+          startDate: syncfusionselected[0]?.StartTime,
+          endDate: syncfusionselected[0]?.EndTime,
         }
       );
       console.log("response_checks", res.data);
@@ -469,63 +512,27 @@ const EditNFCTag = ({
             </div>
           </div>
           <div className="fields-row flex aic">
-            <div className="field-item-l flex flex-col">
-                <div className="lbl">Select Priority</div>
-                <div className="dropDown flex aic jc flex-col rel">
-                  <div className="category flex aic">
-                    <div
-                      className="cbox cleanbtn flex aic rel"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setHide7(!hide7);
+                <div className="field-item-l flex flex-col">
+                  <div className="lbl">Manufacturing Date</div>
+                  <div className="date-picker flex aic jc pointer">
+                    <Datetime
+                      closeOnSelect={true}
+                      value={
+                        manufacturingdate
+                          ? manufacturingdate
+                          : new Date().getTime()
+                      }
+                      onChange={(value) => {
+                        setmanufacturingdate(new Date(value).getTime());
                       }}
-                    >
-                      <div className="slt flex aic">
-                        <div className="unit-name flex aic font s14 b4">
-                          {/* <div className="icon-fire flex aic jc ">
-                            <FireCaylinder />
-                          </div> */}
-                          <span
-                            className="unit-eng flex aic font s14 b4"
-                            placeholder="Select Checklist"
-                          >
-                            {selectedPriority
-                              ? selectedPriority
-                              : "Maintenance Priority"}
-                          </span>
-                        </div>
-                      </div>
-                      <div>
-                        <ArrowDownIcon />
-                      </div>
-                    </div>
-                  </div>
-                  <div className={`block flex aic abs ${hide7 ? "show" : ""}`}>
-                    <div className="manue flex aic col anim">
-                      {["High",'Medium',"Low"].map((item, index) => (
-                        <div
-                          key={index}
-                          className="slt flex aic"
-                          onClick={(e) => {
-                            setHide7(!hide7);
-                            setSelectedPriority(item);
-                          }}
-                        >
-                          <div className="unit-name flex aic font s14 b4">
-                            {/* <div className="icon-fire flex aic jc ">
-                              <FireCaylinder />
-                            </div> */}
-                            <span className="unit-eng flex aic font s14 b4">
-                              {item}
-                            </span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+                      timeFormat={false}
+                      dateFormat="DD-MM-YYYY"
+                      className="start-date cleanbtn pointer"
+                    />
+                    <CalendarTodayIcon className="calender-icon" />
                   </div>
                 </div>
               </div>
-            </div>
 
           <div className="heading-tag-2 flex aic jc s16 font b6">
             <div>Manufacturing & Expiry date</div>
@@ -538,7 +545,7 @@ const EditNFCTag = ({
                   // to={"/syncfusion-calender"}
                   className="txt-input b6 s18 flex aic jc pointer"
                   onClick={(e) => {
-                    setOpen3(true);
+                    setOpen5(true);
                   }}
                 >
                   {syncfusionselected

@@ -73,7 +73,7 @@ const AddNewNFCTag = ({
     } else if (!selectedSubfamily && !gowithoutsubfamily) {
       return toast.error("Please select subfamily.");
     } else if (!selectedcontrolpoint) {
-      return toast.error("Please select controlPoint.");
+      return toast.error("Please select template.");
     } else if (!tagId) {
       return toast.error("Please input tagId.");
     } else if (!floor || !location || !buildingname) {
@@ -89,7 +89,7 @@ const AddNewNFCTag = ({
       //setloading(true);
       const theusers = []
       selectedUsers.map((item) => {
-        theusers.push(item._id)
+        theusers.push({theuser :item._id,userinfo : item})
       })
       setloader(true);
       const res = await axios.post(

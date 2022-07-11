@@ -38,6 +38,7 @@ const NfcManagment = () => {
   const [opennfctag, setopennfctag] = useState(false);
   const [edittagdata, setedittagdata] = useState("");
   const [syncfusionselected,setsyncfusionselected] = useState("")
+  console.log('syncfusionselected',syncfusionselected)
   const [cloneddata, setcloneddata] = useState("");
   const [hide, setHide] = useState(false);
   const [date, setDate] = useState();
@@ -363,7 +364,7 @@ const NfcManagment = () => {
                             setsearch(e.target.value);
                           }}
                           type="text"
-                          placeholder="Search Anything"
+                          placeholder="Search by Building or Floor"
                           className="txt cleanbtn s16"
                         />
                         <SearchIcon />
@@ -474,6 +475,7 @@ const NfcManagment = () => {
                           setedittagdata(item);
                           setopennfctag(true);
                           setcloneddata(item);
+                          setsyncfusionselected(item?.tagIds?.syncfusiondetails?.object)
                         }}
                       >
                         <CloneIcon />
@@ -482,6 +484,7 @@ const NfcManagment = () => {
                         onClick={() => {
                           setedittagdata(item);
                           setOpen3(true);
+                          setsyncfusionselected(item?.tagIds?.syncfusiondetails?.object)
                         }}
                         className="ico-edit pointer flex aic jc"
                       >
@@ -527,7 +530,8 @@ const NfcManagment = () => {
         <CloneNFCTag
           families={families}
           edittagdata={edittagdata}
-          setOpen3={setOpen3}
+          setOpen3={setopennfctag}
+          setOpen5={setOpen5}
           setfamilies={setfamilies}
           getfamilies={getfamilies}
           setloading={setloading}
@@ -543,12 +547,12 @@ const NfcManagment = () => {
 
       <Modal open={open3} onClose={() => {
         setOpen3(false)
-        setsyncfusionselected(edittagdata?.tagIds?.syncfusiondetails?.object)
         }}>
         <EditNFCTag
           families={families}
           edittagdata={edittagdata}
           setOpen3={setOpen3}
+          setOpen5={setOpen5}
           setfamilies={setfamilies}
           getfamilies={getfamilies}
           setloading={setloading}

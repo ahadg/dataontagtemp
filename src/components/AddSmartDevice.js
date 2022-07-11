@@ -16,6 +16,7 @@ const AddSmartDevice = ({setOpen,getdevices}) => {
   const [devicename,setdevicename] = useState('')
   const [plugid,setplugid] = useState('')
   const [ssid,setssid] = useState('')
+  const [disabled,setdisabled] = useState(false)
   const [password,setpassword] = useState('')
   const [ipaddress,setipaddress] = useState('')
   const [deviceamperes,setdeviceamperes] = useState('')
@@ -46,6 +47,7 @@ const AddSmartDevice = ({setOpen,getdevices}) => {
    getcompanies()
   },[])
   const createSmartdevice = async () => {
+    setdisabled(true)
     let formData = new FormData();
     const config = {
       header: {
@@ -57,21 +59,27 @@ const AddSmartDevice = ({setOpen,getdevices}) => {
     //setloading(true)
     if(!img){
       return toast.error("Please select an image.");
+      setdisabled(false)
     }
     else if(!deviceamperes){
       return toast.error("Please input device Ampere.");
+      setdisabled(false)
     }
     else if(!ipaddress){
-      return toast.error("Please input ipaddress.");
+      return toast.error("Please input Ip address.");
+      setdisabled(false)
     }
     else if(!ssid){
       return toast.error("Please input ssid.");
+      setdisabled(false)
     }
     else if(!plugid || !devicename){
       return toast.error("Please input all fields.");
+      setdisabled(false)
     }
     else if(!selectedState){
       return toast.error("Please select a company.");
+      setdisabled(false)
     }
     formData.append("file", img);
     const body = {
@@ -84,7 +92,7 @@ const AddSmartDevice = ({setOpen,getdevices}) => {
       addingdate : endDate,
       company : selectedState._id
     };
-    console.log(body);
+    console.log('datatobesended',body);
     formData.append("data", JSON.stringify(body));
     try {
       let res2 = await axios.post(
@@ -94,7 +102,9 @@ const AddSmartDevice = ({setOpen,getdevices}) => {
       );
       setOpen(false)
       getdevices()
+      setdisabled(false)
     } catch (error) {
+      setdisabled(false)
       console.log("error1", error);
       if (error.response) {
         if (error.response.data) {
@@ -290,6 +300,7 @@ const AddSmartDevice = ({setOpen,getdevices}) => {
         className="btn cleanbtn button s14 font">Cancel</button>
         <button 
         onClick={createSmartdevice}
+        disabled={disabled}
         className="btn cleanbtn button s14 font">Add Device</button>
       </div>
     </div>

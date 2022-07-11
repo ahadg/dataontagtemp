@@ -15,7 +15,7 @@ import {
   ActionIcon,
   LogoutIcon,
 } from "../svg";
-import FileSaver from 'file-saver'
+import FileSaver from "file-saver";
 import axios from "axios";
 import moment from "moment";
 import Loader from "../components/Loader";
@@ -24,10 +24,10 @@ import CustomDateRangeInputs from "../components/CustomDateRangeInputs";
 import ControlPointInfo from "../components/ControlPointInfo";
 // import CheckPointStatus from "../components/CheckPointStatus";
 // import DownloadImg from "../components/DownloadImg";
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import queryString from 'query-string';
-const Home = ({location}) => {
+import queryString from "query-string";
+const Home = ({ location }) => {
   const defaultOptions = {
     loop: true,
     autoplay: true,
@@ -36,8 +36,8 @@ const Home = ({location}) => {
       preserveAspectRatio: "xMidYMid slice",
     },
   };
-  let {checkid,random} = queryString.parse(location.search)
-  console.log('params',queryString.parse(location.search))
+  let { checkid, random } = queryString.parse(location.search);
+  console.log("params", queryString.parse(location.search));
   const user = useSelector((state) => state.generalReducers.user);
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
@@ -91,10 +91,11 @@ const Home = ({location}) => {
   console.log("tblData", tblData);
   const filterdatabycompany = () => {
     let data = [...tblData];
-    if(selectedcompany == "All" || !selectedcompany){
-    data = tblData.filter(
-      (item) => item?.controlpointId?.createdBy?.companyName == selectedcompany
-    );
+    if (selectedcompany == "All" || !selectedcompany) {
+      data = tblData.filter(
+        (item) =>
+          item?.controlpointId?.createdBy?.companyName == selectedcompany
+      );
     }
     let mod_building = [];
     data.map((item, index) => {
@@ -177,16 +178,16 @@ const Home = ({location}) => {
     }
   }, [selectedfloor]);
   useEffect(() => {
-   if(checkid){
-     if(tblData){
-      let theindex = tblData.findIndex((item) => item._id == checkid)
-      if(theindex > -1){
-        setchecklists(tblData[theindex]['checklists'])
-        setOpen(true);
+    if (checkid) {
+      if (tblData) {
+        let theindex = tblData.findIndex((item) => item._id == checkid);
+        if (theindex > -1) {
+          setchecklists(tblData[theindex]["checklists"]);
+          setOpen(true);
+        }
       }
-     }
-   }
-  },[checkid,random])
+    }
+  }, [checkid, random]);
   const getallchecks = async () => {
     setloading(true);
     try {
@@ -208,13 +209,14 @@ const Home = ({location}) => {
         setthe_checklists(res.data.checks);
         setcompanies(res.data.companies);
         setloading(false);
-        if(checkid){
-        let theindex = res.data.checks.findIndex((item) => item._id == checkid)
-        if(theindex > -1){
-          setchecklists(res.data.checks[theindex]['checklists'])
-          setOpen(true);
-        }
-        
+        if (checkid) {
+          let theindex = res.data.checks.findIndex(
+            (item) => item._id == checkid
+          );
+          if (theindex > -1) {
+            setchecklists(res.data.checks[theindex]["checklists"]);
+            setOpen(true);
+          }
         }
       }
     } catch (error) {
@@ -229,7 +231,7 @@ const Home = ({location}) => {
       }
     }
   };
-  const [userList,setuserList] = useState([])
+  const [userList, setuserList] = useState([]);
   const getusers = async () => {
     try {
       //setloading(true);
@@ -256,22 +258,22 @@ const Home = ({location}) => {
     }
   };
 
-  const sendfixrequest = async (issue,checkdesc,details) => {
+  const sendfixrequest = async (issue, checkdesc, details) => {
     try {
-      let message; 
-      if(issue){
-        message  = `${checkdesc} : ${issue}`
-      }
-      else {
-        message  = `There is a problem on: ${checkdesc}`
+      let message;
+      if (issue) {
+        message = `${checkdesc} : ${issue}`;
+      } else {
+        message = `There is a problem on: ${checkdesc}`;
       }
       const res = await axios.post(
-        `${process.env.REACT_APP_END_URL}api/sendnotification`,{
-          touser : selectedUser._id,
-          title : `Checkpoint issue on ${selectedcheck?.controlpointId?.familyId?.deviceName}`,
-          message : message,
+        `${process.env.REACT_APP_END_URL}api/sendnotification`,
+        {
+          touser: selectedUser._id,
+          title: `Checkpoint issue on ${selectedcheck?.controlpointId?.familyId?.deviceName}`,
+          message: message,
           details,
-          buttons : [{id : `solve_it:${selectedcheck._id}`, text : "SOLVE IT"}]
+          buttons: [{ id: `solve_it:${selectedcheck._id}`, text: "SOLVE IT" }],
         }
       );
       console.log("sendfixrequest", res.data);
@@ -290,7 +292,7 @@ const Home = ({location}) => {
 
   useEffect(() => {
     getallchecks();
-    getusers()
+    getusers();
   }, []);
   useEffect(() => {
     if (value) {
@@ -400,9 +402,17 @@ const Home = ({location}) => {
                       </div>
                     </div>
                     <div className="issue-action flex aic">
-                      <div 
-                      onClick={() => sendfixrequest(item.issue,item.checkDesc,{checkid : selectedcheck._id,index})}
-                      className="btn-fix button">Fix Now</div>
+                      <div
+                        onClick={() =>
+                          sendfixrequest(item.issue, item.checkDesc, {
+                            checkid: selectedcheck._id,
+                            index,
+                          })
+                        }
+                        className="btn-fix button"
+                      >
+                        Fix Now
+                      </div>
                       <div className="dropDown flex aic jc flex-col rel">
                         <div className="category flex aic">
                           <div
@@ -489,11 +499,15 @@ const Home = ({location}) => {
         }}
       >
         <div className="download-btn flex">
-          <button 
-          onClick={() => {
-            FileSaver.saveAs(`${process.env.REACT_APP_END_URL}${issueimage}.jpeg`, `image${new Date().getTime()}.jpg`);
-          }}
-          className="btn cleanbtn">
+          <button
+            onClick={() => {
+              FileSaver.saveAs(
+                `${process.env.REACT_APP_END_URL}${issueimage}.jpeg`,
+                `image${new Date().getTime()}.jpg`
+              );
+            }}
+            className="btn cleanbtn"
+          >
             <DownloadIcon />
             <div className="lbl s12 font ">Download</div>
           </button>

@@ -5,7 +5,9 @@ const initState = {
   isAuthenticated: false,
   apploaded: false,
   socket : {},
-  rfid : ''
+  rfid : '',
+  notifications : [],
+  socket_notification : ''
 };
 
 const generalReducers = (state = initState, action) => {
@@ -17,6 +19,16 @@ const generalReducers = (state = initState, action) => {
         user: payload,
         isAuthenticated: true,
         apploaded: true,
+      };
+    case "UPDATE_NOTIFICATIONS":
+      return {
+        ...state,
+        notifications: payload,
+      };
+    case "UPDATE_NOTIFICATIONS_SOCKET_UPDATE":
+      return {
+        ...state,
+        socket_notification: payload,
       };
     case "AUTHENTICATION_FAIL": {
       return {

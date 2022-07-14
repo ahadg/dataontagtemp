@@ -39,6 +39,7 @@ function App() {
     (state) => state.generalReducers.isAuthenticated
   );
   const user = useSelector((state) => state.generalReducers.user);
+  const notifications = useSelector((state) => state.generalReducers.notifications);
   const connectwithsocket = () => {
     //const socket = io.connect(`http://localhost:5000?token=${token}&Id=${uniqueId}`);
     const socket = io.connect(
@@ -51,13 +52,14 @@ function App() {
     );
     dispatch({ type: "UPDATE_WS", payload: socket });
     socket.on("message", function (thedata) {
-      // console.log("message befire parse", mydata);
-      // const thedata = JSON.parse(mydata);
       console.log("socket_message", thedata);
       if (thedata.type == "rfidevent") {
         dispatch({ type: "RFID_INSPECTION", payload: thedata.message.id });
       } else if (thedata.type == "chat") {
         dispatch({ type: "MESSAGE_UPDATE", payload: thedata });
+      } else if (thedata.type == "notification") {
+        console.log('notificationss_inside')
+        dispatch({ type: "UPDATE_NOTIFICATIONS_SOCKET_UPDATE", payload: {id : thedata.id,type : 'notification',message : thedata.message, createdAt : `${new Date()}`,read: false,details : thedata.details} });
       }
     });
     socket.on("disconnect", () => {

@@ -46,9 +46,9 @@ const AddNewControlPoint = ({ getfamilies, families, setOpen2 }) => {
     else if(!controlpointname){
       return toast.error("Please input a template name");
     }
-    else if(!priorities.high || !priorities.medium || !priorities.low){
-      return toast.error("Please fill all priorities fields");
-    }
+    // else if(!priorities.high || !priorities.medium || !priorities.low){
+    //   return toast.error("Please fill all priorities fields");
+    // }
     else if(!controlpointimage){
       return toast.error("Please input a template image");
     }
@@ -66,7 +66,7 @@ const AddNewControlPoint = ({ getfamilies, families, setOpen2 }) => {
       familyid: selectedfamily._id,
       subfamilyid: selectedsubfamily?._id,
       controlpointname,
-      priorities
+      //priorities
     };
     console.log(body);
     formData.append("data", JSON.stringify(body));
@@ -100,7 +100,8 @@ const AddNewControlPoint = ({ getfamilies, families, setOpen2 }) => {
 
   return (
     <div className="create-new-controal-point flex">
-      {loading && <Loader />}
+      {loading ? <Loader />
+      :
       <div className="wrap flex flex-col">
         <div className="controal-point-heading s16 font b6 flex aic jc">
           CREATE NEW TEMPLATE
@@ -241,8 +242,8 @@ const AddNewControlPoint = ({ getfamilies, families, setOpen2 }) => {
             value={controlpointname}
           />
         </div>
-        <div className="control-field flex flex-col">
-          <div className="lbl s13 font">Maintenance Priority Setting</div>
+        {/* <div className="control-field flex flex-col">
+          <div className="lbl s13 font">Maintainance Priority Setting</div>
           <div className="input-filed flex aic">
             <input
               type="text"
@@ -303,7 +304,7 @@ const AddNewControlPoint = ({ getfamilies, families, setOpen2 }) => {
                 }}
             />
           </div>
-        </div>
+        </div> */}
         <div
           className="select-img flex flex-col aic jc"
           onClick={() => document.getElementById("upload_img").click()}
@@ -350,6 +351,7 @@ const AddNewControlPoint = ({ getfamilies, families, setOpen2 }) => {
           </button>
         </div>
       </div>
+      }
     </div>
   );
 };

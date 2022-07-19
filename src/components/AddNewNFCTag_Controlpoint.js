@@ -46,6 +46,11 @@ const AddNewNFCTag = ({
   const [selectedPriority, setSelectedPriority] = useState();
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [daysbefore,setdaysbefore] = useState('')
+  const [reminderselections,setreminderseletions] = useState([{
+    selectedUsers : [],
+    daysbefore : '',
+    showList : false
+  }])
   const [statusData, setStatusData] = useState([
     { id: 1, title: "NO" },
     { id: 2, title: "YES" },
@@ -86,12 +91,26 @@ const AddNewNFCTag = ({
       return toast.error("Please select expiry date.");
     }
     try {
-      //setloading(true);
+      setloading(true);
+      let mod_reminderselction = reminderselections.map((item) => {
+        //var result = new Date(syncfusionselected[0]?.StartTime);
+        var result = moment(syncfusionselected[0]?.StartTime);
+        result = result.subtract(Number(item.daysbefore), "days");
+        result = result.format();
+        // info : by default date will be selected according to timezone, with maybe hours will be zoro if is'nt selected, so if convert it to italy zone, 'll subtract 4 hours and one day wil be less
+        // carefull..
+        return {
+          ...item,
+          reminderdate : result,
+          //reminderdate : new Date(result).toLocaleString('en-US', { timeZone: 'Antarctica/Troll' }),
+          showList : false
+        }
+      })
       const theusers = []
       selectedUsers.map((item) => {
         theusers.push({theuser :item._id,userinfo : item})
       })
-      setloader(true);
+      //setloader(true);
       const res = await axios.post(
         `${process.env.REACT_APP_END_URL}api/createtag`,
         {
@@ -117,8 +136,9 @@ const AddNewNFCTag = ({
               )[1],
             startDate: syncfusionselected[0]?.StartTime,
             endDate: syncfusionselected[0]?.EndTime,
-            object: syncfusionselected,
-            daysbefore
+            syncfusionselected,
+            reminderselectionsobject : mod_reminderselction,
+            //daysbefore
           },
           priority: selectedPriority,
           manufacturingdate,
@@ -128,8 +148,7 @@ const AddNewNFCTag = ({
       if (res.data) {
         //setfamilies(res.data.families);
         setOpen(false);
-        //setloading(false);
-        setloader(false);
+        //setloader(false);
         getfamilies();
       }
     } catch (error) {
@@ -551,17 +570,25 @@ const AddNewNFCTag = ({
                     : "Select Expiry Date"}
                 </div>
               </div>
-              <div className="field-item-r flex flex-col">
-                <div className="lbl">Days before</div>
-                <input
-                  type="number"
-                  className="txt-input cleanbtn"
-                  placeholder="Days before"
-                  value={daysbefore}
-                  onChange={(e) => setdaysbefore(e.target.value)}
-                />
               </div>
-            </div>
+            {
+            reminderselections.map((mainitem,mainindex) => <>
+              <div className="fields-row flex aic">
+                <div className="field-item-r flex flex-col">
+                  <div className="lbl">Days before</div>
+                  <input
+                    type="number"
+                    className="txt-input cleanbtn"
+                    placeholder="Days before"
+                    value={mainitem.daysbefore}
+                    onChange={(e) => {
+                      reminderselections[mainindex]['daysbefore'] = e.target.value
+                      setreminderseletions([...reminderselections])
+                    }}
+                  />
+                </div>
+              </div>
+            
             <div className="fields-row flex aic">
               <div className="data-item flex aic">
                 <div className="txt-field flex flex-col">
@@ -570,7 +597,9 @@ const AddNewNFCTag = ({
                     className="search-box txt  flex flex-col rel pointer"
                     onClick={(e) => {
                       e.stopPropagation();
-                      setShowList(!showList);
+                      reminderselections[mainindex]['showList'] = !reminderselections[mainindex]['showList']
+                      setreminderseletions([...reminderselections])
+                      //setShowList(!item.showList);
                     }}
                   >
                     <div className="txt-box flex aic">
@@ -579,7 +608,7 @@ const AddNewNFCTag = ({
                         className="flex aic txt-b s12 cleanbtn flex-wrap"
                         // value={selectedUsers}
                       >
-                        {selectedUsers?.map((item, index) => (
+                        {mainitem.selectedUsers?.map((item, index) => (
                           <div className="flex s12">
                             {item.userName}, {""}
                           </div>
@@ -589,7 +618,8 @@ const AddNewNFCTag = ({
                         className="icon flex aic jc pointer"
                         onClick={(e) => {
                           e.stopPropagation();
-                          setShowList(!showList);
+                          reminderselections[mainindex]['showList'] = !reminderselections[mainindex]['showList']
+                          setreminderseletions([...reminderselections])
                         }}
                       >
                         <ArrowDownIcon />
@@ -597,7 +627,7 @@ const AddNewNFCTag = ({
                     </div>
                     <div
                       className={`list-box flex flex-col abs ${
-                        showList ? "show" : ""
+                        reminderselections[mainindex]['showList'] ? "show" : ""
                       }`}
                     >
                       <div
@@ -622,19 +652,20 @@ const AddNewNFCTag = ({
                                 <div className="name s13 font b5">
                                   {item.userName}
                                 </div>
-                                {selectedUsers.findIndex((item2) =>  item2.userName == item.userName) > -1 ? (
+                                {mainitem?.selectedUsers?.findIndex((item2) =>  item2.userName == item.userName) > -1 ? (
                                   <div
                                     className="action-ico pointer"
                                     onClick={(e) => {
-                                      const index = selectedUsers.findIndex((item2) =>  item2.userName == item.userName);
+                                      const index = mainitem.selectedUsers.findIndex((item2) =>  item2.userName == item.userName);
                                       console.log("mod_selector", index);
-                                      const mod_selector = selectedUsers.splice(
+                                      const mod_selector = mainitem.selectedUsers.splice(
                                         index,
                                         1
                                       );
                                       console.log("mod_selector", mod_selector);
                                       console.log("mod_selector", selectedUsers);
-                                      setSelectedUsers([...selectedUsers]);
+                                      //reminderselections[index]['daysbefore'] = e.target.value
+                                      setreminderseletions([...reminderselections]);
                                     }}
                                   >
                                     <div className="action-icon">
@@ -645,10 +676,8 @@ const AddNewNFCTag = ({
                                   <div
                                     className="action-ico pointer"
                                     onClick={(e) => {
-                                      setSelectedUsers([
-                                        ...selectedUsers,
-                                        item,
-                                      ]);
+                                      reminderselections[mainindex]['selectedUsers'] = [...mainitem.selectedUsers,item]
+                                      setreminderseletions([...reminderselections]);
                                     }}
                                   >
                                     <div className="action-icon">
@@ -663,19 +692,20 @@ const AddNewNFCTag = ({
                               <div className="name s13 font b5">
                                 {item.userName}
                               </div>
-                              {selectedUsers.findIndex((item2) =>  item2.userName == item.userName) > -1 ? (
+                              {mainitem?.selectedUsers?.findIndex((item2) =>  item2.userName == item.userName) > -1 ? (
                                 <div
                                   className="action-ico pointer"
                                   onClick={(e) => {
-                                    const index = selectedUsers.findIndex((item2) =>  item2.userName == item.userName);
+                                    const index = mainitem.selectedUsers.findIndex((item2) =>  item2.userName == item.userName);
                                     console.log("mod_selector", index);
-                                    const mod_selector = selectedUsers.splice(
+                                    const mod_selector = mainitem.selectedUsers.splice(
                                       index,
                                       1
                                     );
                                     console.log("mod_selector", mod_selector);
                                     console.log("mod_selector", selectedUsers);
-                                    setSelectedUsers([...selectedUsers]);
+                                    //reminderselections[index]['daysbefore'] = e.target.value
+                                    setreminderseletions([...reminderselections]);
                                   }}
                                 >
                                   <div className="action-ico">
@@ -686,10 +716,8 @@ const AddNewNFCTag = ({
                                 <div
                                   className="action-ico pointer"
                                   onClick={(e) => {
-                                    setSelectedUsers([
-                                      ...selectedUsers,
-                                      item,
-                                    ]);
+                                    reminderselections[mainindex]['selectedUsers'] = [...mainitem.selectedUsers,item]
+                                    setreminderseletions([...reminderselections]);
                                   }}
                                 >
                                   <div className="action-icon">
@@ -706,7 +734,25 @@ const AddNewNFCTag = ({
                 </div>
               </div>
             </div>
-
+            </>
+            )}
+            <div className="add-new-field flex">
+              <div
+                onClick={() => {
+                  setreminderseletions([
+                    ...reminderselections,
+                    {
+                      daysbefore : '',
+                      selectedUsers : [],
+                      showList : false
+                    }
+                  ])
+                }}
+                className="btn font b5 s13 "
+              >
+                + Add More
+              </div>
+            </div>
             <div className="fields-row flex aic">
               <button
                 className="btn-cancle button cleanbtn"

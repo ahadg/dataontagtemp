@@ -201,6 +201,14 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
                             ).format("mm")}`}
                           </div>
                         </div>
+                         {
+                          item.type == "qraccess"
+                          && 
+                          <div className="action flex aic">
+                            <div className="btn button">Cancel</div>
+                            <div className="btn button">Allow (30s)</div>
+                        </div>
+                        }
                       </div>
                     </div>
                   );
@@ -244,6 +252,14 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
                             ).format("mm")}`}
                           </div>
                         </div>
+                        {
+                          item.type == "qraccess"
+                          && 
+                          <div className="action flex aic">
+                            <div className="btn button">Cancel</div>
+                            <div className="btn button">Allow (30s)</div>
+                        </div>
+                        }
                       </div>
                     </div>
                   );

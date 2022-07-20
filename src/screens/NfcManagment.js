@@ -475,7 +475,7 @@ const NfcManagment = () => {
                           setedittagdata(item);
                           setopennfctag(true);
                           setcloneddata(item);
-                          setsyncfusionselected(item?.tagIds?.syncfusiondetails?.object)
+                           setsyncfusionselected(edittagdata?.tagIds?.syncfusiondetails?.syncfusionselected)
                         }}
                       >
                         <CloneIcon />
@@ -484,7 +484,7 @@ const NfcManagment = () => {
                         onClick={() => {
                           setedittagdata(item);
                           setOpen3(true);
-                          setsyncfusionselected(item?.tagIds?.syncfusiondetails?.object)
+                           setsyncfusionselected(edittagdata?.tagIds?.syncfusiondetails?.syncfusionselected)
                         }}
                         className="ico-edit pointer flex aic jc"
                       >
@@ -525,7 +525,7 @@ const NfcManagment = () => {
 
       <Modal open={opennfctag} onClose={() => {
         setopennfctag(false)
-        setsyncfusionselected(edittagdata?.tagIds?.syncfusiondetails?.object)
+        setsyncfusionselected(edittagdata?.tagIds?.syncfusiondetails?.syncfusionselected)
         }}>
         <CloneNFCTag
           families={families}

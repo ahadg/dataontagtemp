@@ -23,9 +23,13 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
   const [show, setShow] = useState(false);
   //const [notifications, setnotifications] = useState([]);
   const [showNotification, setShowNotification] = useState(false);
-  const { showRightbar, showSidebar, user, notifications,socket_notification } = useSelector(
-    (state) => state.generalReducers
-  );
+  const {
+    showRightbar,
+    showSidebar,
+    user,
+    notifications,
+    socket_notification,
+  } = useSelector((state) => state.generalReducers);
   const history = useHistory();
   const logout = () => {
     localStorage.removeItem("dataontag12344H");
@@ -47,7 +51,10 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
       console.log("getnotifications", res.data);
       if (res.data) {
         //setnotifications(res.data.notifcations);
-        dispatch({ type: "UPDATE_NOTIFICATIONS", payload: res.data.notifcations });
+        dispatch({
+          type: "UPDATE_NOTIFICATIONS",
+          payload: res.data.notifcations,
+        });
       }
     } catch (error) {
       console.log("error1", error);
@@ -61,13 +68,16 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
       }
     }
   };
-  console.log('notificationss',notifications)
+  console.log("notificationss", notifications);
   useEffect(() => {
-     if(socket_notification){
-       console.log('socket_notification',socket_notification)
-       dispatch({ type: "UPDATE_NOTIFICATIONS", payload: [socket_notification,...notifications] });
-     }
-  },[socket_notification])
+    if (socket_notification) {
+      console.log("socket_notification", socket_notification);
+      dispatch({
+        type: "UPDATE_NOTIFICATIONS",
+        payload: [socket_notification, ...notifications],
+      });
+    }
+  }, [socket_notification]);
   const updatereadstatus = async (id) => {
     try {
       //setloading(true);
@@ -101,7 +111,7 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
           <Link to="/" className="logo flex aic">
             <img src="/images/logo-small.svg" className="img" />
           </Link>
-          <button
+          {/* <button
             className="cleanbtn sidebar-menu-ico flex aic"
             onClick={(e) => {
               e.stopPropagation();
@@ -109,7 +119,7 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
             }}
           >
             <MenuIcon />
-          </button>
+          </button> */}
           <div className="title font s22 b6 c000 upc">{title}</div>
         </div>
         <div className="right flex aic">

@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { ArrowDownIcon, FireCaylinder, RoundAdd,
-  RoundRemoveIcon,SearchIcon, } from "../svg";
+import {
+  ArrowDownIcon,
+  FireCaylinder,
+  RoundAdd,
+  RoundRemoveIcon,
+  SearchIcon,
+} from "../svg";
 import Datetime from "react-datetime";
 import "react-datetime/css/react-datetime.css";
 import axios from "axios";
 import Lottie from "react-lottie";
 import LoadPage from "./LoadPage.json";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import moment from "moment";
 const EditNFCTag = ({
@@ -19,7 +24,7 @@ const EditNFCTag = ({
   userList,
   getfamilies,
   syncfusionselected,
-  setOpen5
+  setOpen5,
 }) => {
   const defaultOptions = {
     loop: true,
@@ -30,7 +35,9 @@ const EditNFCTag = ({
     },
   };
   const [hide, setHide] = useState(false);
-  const [daysbefore,setdaysbefore] = useState((edittagdata?.tagIds?.syncfusiondetails?.daysbefore))
+  const [daysbefore, setdaysbefore] = useState(
+    edittagdata?.tagIds?.syncfusiondetails?.daysbefore
+  );
   const [manufacturingdate, setmanufacturingdate] = useState(
     new Date(Number(edittagdata?.tagIds?.manufacturingdate))?.getTime()
   );
@@ -43,17 +50,26 @@ const EditNFCTag = ({
   const [hide5, setHide5] = useState(false);
   const [hide6, setHide6] = useState(false);
   const [hide7, setHide7] = useState(false);
-  const [selectedChecklist, setSelectedChecklist] = useState(edittagdata.tagIds?.selectedchecklistname);
+  const [selectedChecklist, setSelectedChecklist] = useState(
+    edittagdata.tagIds?.selectedchecklistname
+  );
   const [selectedfamily, setSelectedfamily] = useState();
   const [selectedSubfamily, setSelectedSubfamily] = useState();
   const [selectedTemplate, setSelectedTemplate] = useState();
   const [selectedCompany, setSelectedCompany] = useState();
-  const [companymodified,setcompanymodified] = useState(false)
-  const [familmodified,setfamilmodified] = useState(false)
-  const [gowithoutsubfamily, setgowithoutsubfamily] = useState(edittagdata?.subfamily ? false : true);
-  const [subfamilymodified,setsubfamilymodified] = useState(false)
-  const [templatemodified,settemplatemodified] = useState(false)
-  const [checklists,setchecklists] = useState(['Maintainer Admin','Maintainer User','Company Admin','Company User'])
+  const [companymodified, setcompanymodified] = useState(false);
+  const [familmodified, setfamilmodified] = useState(false);
+  const [gowithoutsubfamily, setgowithoutsubfamily] = useState(
+    edittagdata?.subfamily ? false : true
+  );
+  const [subfamilymodified, setsubfamilymodified] = useState(false);
+  const [templatemodified, settemplatemodified] = useState(false);
+  const [checklists, setchecklists] = useState([
+    "Maintainer Admin",
+    "Maintainer User",
+    "Company Admin",
+    "Company User",
+  ]);
   const [statusData, setStatusData] = useState([
     { id: 1, title: "NO" },
     { id: 2, title: "YES" },
@@ -62,12 +78,12 @@ const EditNFCTag = ({
     edittagdata.tagIds?.location?.buildingname
   );
   useEffect(() => {
-    let theusers = []
+    let theusers = [];
     edittagdata.tagIds.selectedUsers.map((item) => {
-      theusers.push(item.userinfo)
-    })
-    setSelectedUsers(theusers)
-  },[])
+      theusers.push(item.userinfo);
+    });
+    setSelectedUsers(theusers);
+  }, []);
   const [floor, setfloor] = useState(edittagdata.tagIds?.location?.floor);
   const [location, setlocation] = useState(
     edittagdata.tagIds?.location?.location
@@ -90,41 +106,43 @@ const EditNFCTag = ({
     new Date(edittagdata.tagIds?.expirydate).getTime(),
     endDate
   );
-  const [selectedPriority, setSelectedPriority] = useState(edittagdata.tagIds?.priority);
-  const [loader,setloader] = useState(false)
+  const [selectedPriority, setSelectedPriority] = useState(
+    edittagdata.tagIds?.priority
+  );
+  const [loader, setloader] = useState(false);
   useEffect(() => {
-    setSelectedfamily(edittagdata.family)
-    setSelectedSubfamily(edittagdata.subfamily)
-    setSelectedTemplate(edittagdata.controlpoint)
-    setSelectedCompany(edittagdata.family.createdBy.companyName)
-},[])
+    setSelectedfamily(edittagdata.family);
+    setSelectedSubfamily(edittagdata.subfamily);
+    setSelectedTemplate(edittagdata.controlpoint);
+    setSelectedCompany(edittagdata.family.createdBy.companyName);
+  }, []);
 
   const editnfc = async () => {
-    console.log('manufacturingdate',manufacturingdate)
+    console.log("manufacturingdate", manufacturingdate);
     if (!selectedfamily) {
       return toast.error("Please select family.");
     } else if (!selectedSubfamily && !gowithoutsubfamily) {
       return toast.error("Please select subfamily.");
-    // } else if (!selectedcontrolpoint) {
-    //   return toast.error("Please select controlPoint.");
+      // } else if (!selectedcontrolpoint) {
+      //   return toast.error("Please select controlPoint.");
     } else if (!tagId) {
       return toast.error("Please input tagId.");
     } else if (!floor || !location || !buildingname) {
       return toast.error("Please input all location fields.");
     } else if (!manufacturingdate) {
       return toast.error("Please select Manufacturingdate.");
-    // } else if (!endDate) {
-    //   return toast.error("Please select end date.");
+      // } else if (!endDate) {
+      //   return toast.error("Please select end date.");
     } else if (!syncfusionselected) {
       return toast.error("Please select expiry date.");
     }
     try {
       setloading(true);
-      setloader(true)
-      const theusers = []
+      setloader(true);
+      const theusers = [];
       selectedUsers.map((item) => {
-        theusers.push({theuser :item._id,userinfo : item})
-      })
+        theusers.push({ theuser: item._id, userinfo: item });
+      });
       const res = await axios.post(
         `${process.env.REACT_APP_END_URL}api/editnfctag`,
         {
@@ -141,7 +159,7 @@ const EditNFCTag = ({
           templatemodified,
           companymodified,
           selectedCompany,
-          selectedUsers : theusers,
+          selectedUsers: theusers,
           selectedSubfamily,
           selectedTemplate,
           selectedfamily,
@@ -155,7 +173,7 @@ const EditNFCTag = ({
             startDate: syncfusionselected[0]?.StartTime,
             endDate: syncfusionselected[0]?.EndTime,
             object: syncfusionselected,
-            daysbefore
+            daysbefore,
           },
           startDate: syncfusionselected[0]?.StartTime,
           endDate: syncfusionselected[0]?.EndTime,
@@ -164,10 +182,10 @@ const EditNFCTag = ({
       console.log("response_checks", res.data);
       if (res.data) {
         //setfamilies(res.data.families);
-        getfamilies()
+        getfamilies();
         setloading(false);
         setOpen3(false);
-        setloader(false)
+        setloader(false);
       }
     } catch (error) {
       console.log("error1", error);
@@ -176,8 +194,7 @@ const EditNFCTag = ({
           console.log("error", error.response.data);
           return toast.error(error.response.data.error);
         }
-      }
-      else {
+      } else {
         return toast.error("Error in server");
       }
     }
@@ -200,345 +217,348 @@ const EditNFCTag = ({
           <Lottie options={defaultOptions} height={200} width={200} />
         </div>
       ) : (
-      <div className="wrap flex flex-col">
-        <div className="heading-tag flex aic jc s16 font b6">
-          <div>Edit Controlpoint</div>
-        </div>
-        <div className="field-block flex flex-col">
-          <div className="fields-row flex aic">
-            <div className="field-item-l flex flex-col">
-              <div className="lbl">Select ControlPoint Family</div>
-              <div className="dropDown flex aic jc flex-col rel">
-                <div className="category flex aic">
-                  <div
-                    className="cbox cleanbtn flex aic rel"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setHide(!hide);
-                    }}
-                  >
-                    <div className="slt flex aic">
-                      <div className="unit-name flex aic font s14 b4">
-                        <div className="icon-fire flex aic jc ">
-                          <FireCaylinder />
-                        </div>
-                        <span
-                          className="unit-eng flex aic font s14 b4"
-                          placeholder="Company Filter"
-                        >
-                          {selectedfamily
-                            ? selectedfamily.deviceName
-                            : "Company Filter"}
-                        </span>
-                      </div>
-                    </div>
-                    {/* <div className="arrow s12 c666 anim" /> */}
-                    <div>
-                      <ArrowDownIcon />
-                    </div>
-                  </div>
-                </div>
-                <div className={`block flex aic abs ${hide ? "show" : ""}`}>
-                  <div className="manue flex aic col anim">
-                    {families.map((item, index) => (
-                      <div
-                        key={index}
-                        className="slt flex aic"
-                        onClick={(e) => {
-                          setHide(!hide);
-                          setSelectedfamily(item);
-                          setfamilmodified(true)
-                          setSelectedSubfamily('')
-                          setSelectedTemplate('')
-                        }}
-                      >
+        <div className="wrap flex flex-col">
+          <div className="heading-tag flex aic jc s16 font b6">
+            <div>Edit Controlpoint</div>
+          </div>
+          <div className="field-block flex flex-col">
+            <div className="fields-row flex aic">
+              <div className="field-item-l flex flex-col">
+                <div className="lbl">Select ControlPoint Family</div>
+                <div className="dropDown flex aic jc flex-col rel">
+                  <div className="category flex aic">
+                    <div
+                      className="cbox cleanbtn flex aic rel"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setHide(!hide);
+                      }}
+                    >
+                      <div className="slt flex aic">
                         <div className="unit-name flex aic font s14 b4">
                           <div className="icon-fire flex aic jc ">
                             <FireCaylinder />
                           </div>
-                          <span className="unit-eng flex aic font s14 b4">
-                            {item.deviceName}
+                          <span
+                            className="unit-eng flex aic font s14 b4"
+                            placeholder="Company Filter"
+                          >
+                            {selectedfamily
+                              ? selectedfamily.deviceName
+                              : "Company Filter"}
                           </span>
                         </div>
                       </div>
-                    ))}
+                      {/* <div className="arrow s12 c666 anim" /> */}
+                      <div>
+                        <ArrowDownIcon />
+                      </div>
+                    </div>
+                  </div>
+                  <div className={`block flex aic abs ${hide ? "show" : ""}`}>
+                    <div className="manue flex aic col anim">
+                      {families.map((item, index) => (
+                        <div
+                          key={index}
+                          className="slt flex aic"
+                          onClick={(e) => {
+                            setHide(!hide);
+                            setSelectedfamily(item);
+                            setfamilmodified(true);
+                            setSelectedSubfamily("");
+                            setSelectedTemplate("");
+                          }}
+                        >
+                          <div className="unit-name flex aic font s14 b4">
+                            <div className="icon-fire flex aic jc ">
+                              <FireCaylinder />
+                            </div>
+                            <span className="unit-eng flex aic font s14 b4">
+                              {item.deviceName}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
+              <div className="field-item-r flex flex-col">
+                <div className="lbl">Tag ID</div>
+                <input
+                  style={{ color: "#a6a6a6" }}
+                  type="text"
+                  className="txt-input cleanbtn"
+                  placeholder="Put Tag ID"
+                  value={tagId}
+                  onChange={(e) => settagId(e.target.value)}
+                  disabled
+                />
+              </div>
             </div>
-            <div className="field-item-r flex flex-col">
-              <div className="lbl">Tag ID</div>
-              <input
-                style={{ color: "#a6a6a6" }}
-                type="text"
-                className="txt-input cleanbtn"
-                placeholder="Put Tag ID"
-                value={tagId}
-                onChange={(e) => settagId(e.target.value)}
-                disabled
-              />
-            </div>
-          </div>
-          <div className="fields-row flex aic">
-            <div 
-             style={{
-              color : gowithoutsubfamily ? 'grey' : ''
-            }}
-            className="field-item-l flex flex-col">
-              <div className="lbl">Select ControlPoint Sub-Family</div>
-              <div className="dropDown flex aic jc flex-col rel">
-                <div className="category flex aic">
-                  <div
-                    className="cbox cleanbtn flex aic rel"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if(!gowithoutsubfamily){
-                        setHide2(!hide2);
-                      }
-                      //setHide2(!hide2);
-                    }}
-                  >
-                    <div className="slt flex aic">
-                      <div className="unit-name flex aic font s14 b4">
-                        <div className="icon-fire flex aic jc ">
-                          <FireCaylinder />
-                        </div>
-                        <span
-                          className="unit-eng flex aic font s14 b4"
-                          placeholder="Company Filter"
-                        >
-                          {selectedSubfamily
-                            ? selectedSubfamily.subfamilyname
-                            : "ControlPoint Sub-Family"}
-                        </span>
-                      </div>
-                    </div>
-                    {/* <div className="arrow s12 c666 anim" /> */}
-                    <div>
-                      <ArrowDownIcon />
-                    </div>
-                  </div>
-                </div>
-                <div className={`block flex aic abs ${hide2 ? "show" : ""}`}>
-                  <div className="manue flex aic col anim">
-                    {selectedfamily?.subfamilies?.map((item, index) => (
-                      <div
-                        key={index}
-                        className="slt flex aic"
-                        onClick={(e) => {
+            <div className="fields-row flex aic">
+              <div
+                style={{
+                  color: gowithoutsubfamily ? "grey" : "",
+                }}
+                className="field-item-l flex flex-col"
+              >
+                <div className="lbl">Select ControlPoint Sub-Family</div>
+                <div className="dropDown flex aic jc flex-col rel">
+                  <div className="category flex aic">
+                    <div
+                      className="cbox cleanbtn flex aic rel"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (!gowithoutsubfamily) {
                           setHide2(!hide2);
-                          setSelectedSubfamily(item);
-                          setsubfamilymodified(true)
-                          setSelectedTemplate('')
-                        }}
-                      >
+                        }
+                        //setHide2(!hide2);
+                      }}
+                    >
+                      <div className="slt flex aic">
                         <div className="unit-name flex aic font s14 b4">
                           <div className="icon-fire flex aic jc ">
                             <FireCaylinder />
                           </div>
-                          <span className="unit-eng flex aic font s14 b4">
-                          {item.subfamilyname}
+                          <span
+                            className="unit-eng flex aic font s14 b4"
+                            placeholder="Company Filter"
+                          >
+                            {selectedSubfamily
+                              ? selectedSubfamily.subfamilyname
+                              : "ControlPoint Sub-Family"}
                           </span>
                         </div>
                       </div>
-                    ))}
+                      {/* <div className="arrow s12 c666 anim" /> */}
+                      <div>
+                        <ArrowDownIcon />
+                      </div>
+                    </div>
+                  </div>
+                  <div className={`block flex aic abs ${hide2 ? "show" : ""}`}>
+                    <div className="manue flex aic col anim">
+                      {selectedfamily?.subfamilies?.map((item, index) => (
+                        <div
+                          key={index}
+                          className="slt flex aic"
+                          onClick={(e) => {
+                            setHide2(!hide2);
+                            setSelectedSubfamily(item);
+                            setsubfamilymodified(true);
+                            setSelectedTemplate("");
+                          }}
+                        >
+                          <div className="unit-name flex aic font s14 b4">
+                            <div className="icon-fire flex aic jc ">
+                              <FireCaylinder />
+                            </div>
+                            <span className="unit-eng flex aic font s14 b4">
+                              {item.subfamilyname}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
+              <div className="field-item-r flex flex-col">
+                <div className="lbl">Building Name</div>
+                <input
+                  type="text"
+                  className="txt-input cleanbtn"
+                  placeholder="Building Name"
+                  value={buildingname}
+                  onChange={(e) => setbuildingname(e.target.value)}
+                />
+              </div>
             </div>
-            <div className="field-item-r flex flex-col">
-              <div className="lbl">Building Name</div>
-              <input
-                type="text"
-                className="txt-input cleanbtn"
-                placeholder="Building Name"
-                value={buildingname}
-                onChange={(e) => setbuildingname(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className="fields-row flex aic">
+            <div className="fields-row flex aic">
               <div className="field-item-l flex aic">
                 <div className="lbl mr-10">Go Without Sub-Family</div>
                 <button
                   onClick={(e) => {
                     setgowithoutsubfamily(!gowithoutsubfamily);
                   }}
-                  className={`cleanbtn radio-btn rel ${gowithoutsubfamily ? "on" : ""}`}
+                  className={`cleanbtn radio-btn rel ${
+                    gowithoutsubfamily ? "on" : ""
+                  }`}
                 />
               </div>
             </div>
-          <div className="fields-row flex aic">
-            <div className="field-item-l flex flex-col">
-              <div className="lbl">Select Template</div>
-              <div className="dropDown flex aic jc flex-col rel">
-                <div className="category flex aic">
-                  <div
-                    className="cbox cleanbtn flex aic rel"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setHide3(!hide3);
-                    }}
-                  >
-                    <div className="slt flex aic">
-                      <div className="unit-name flex aic font s14 b4">
-                        <div className="icon-fire flex aic jc ">
-                          <FireCaylinder />
-                        </div>
-                        <span
-                          className="unit-eng flex aic font s14 b4"
-                          placeholder="Company Filter"
-                        >
-                          {selectedTemplate
-                            ? selectedTemplate.controlpointname
-                            : "ControlPoint Type"}
-                        </span>
-                      </div>
-                    </div>
-                    {/* <div className="arrow s12 c666 anim" /> */}
-                    <div>
-                      <ArrowDownIcon />
-                    </div>
-                  </div>
-                </div>
-                <div className={`block flex aic abs ${hide3 ? "show" : ""}`}>
-                  <div className="manue flex aic col anim">
-                    {selectedSubfamily?.controlpoints?.map((item, index) => (
-                      <div
-                        key={index}
-                        className="slt flex aic"
-                        onClick={(e) => {
-                          setHide3(!hide3);
-                          setSelectedTemplate(item);
-                          settemplatemodified(true)
-                        }}
-                      >
+            <div className="fields-row flex aic">
+              <div className="field-item-l flex flex-col">
+                <div className="lbl">Select Template</div>
+                <div className="dropDown flex aic jc flex-col rel">
+                  <div className="category flex aic">
+                    <div
+                      className="cbox cleanbtn flex aic rel"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setHide3(!hide3);
+                      }}
+                    >
+                      <div className="slt flex aic">
                         <div className="unit-name flex aic font s14 b4">
                           <div className="icon-fire flex aic jc ">
                             <FireCaylinder />
                           </div>
-                          <span className="unit-eng flex aic font s14 b4">
-                          {item.controlpointname}
+                          <span
+                            className="unit-eng flex aic font s14 b4"
+                            placeholder="Company Filter"
+                          >
+                            {selectedTemplate
+                              ? selectedTemplate.controlpointname
+                              : "ControlPoint Type"}
                           </span>
                         </div>
                       </div>
-                    ))}
+                      {/* <div className="arrow s12 c666 anim" /> */}
+                      <div>
+                        <ArrowDownIcon />
+                      </div>
+                    </div>
+                  </div>
+                  <div className={`block flex aic abs ${hide3 ? "show" : ""}`}>
+                    <div className="manue flex aic col anim">
+                      {selectedSubfamily?.controlpoints?.map((item, index) => (
+                        <div
+                          key={index}
+                          className="slt flex aic"
+                          onClick={(e) => {
+                            setHide3(!hide3);
+                            setSelectedTemplate(item);
+                            settemplatemodified(true);
+                          }}
+                        >
+                          <div className="unit-name flex aic font s14 b4">
+                            <div className="icon-fire flex aic jc ">
+                              <FireCaylinder />
+                            </div>
+                            <span className="unit-eng flex aic font s14 b4">
+                              {item.controlpointname}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
+              <div className="field-item-r flex flex-col">
+                <div className="lbl">Floor</div>
+                <input
+                  type="text"
+                  className="txt-input cleanbtn"
+                  placeholder="Floor"
+                  value={floor}
+                  onChange={(e) => setfloor(e.target.value)}
+                />
+              </div>
             </div>
-            <div className="field-item-r flex flex-col">
-              <div className="lbl">Floor</div>
-              <input
-                type="text"
-                className="txt-input cleanbtn"
-                placeholder="Floor"
-                value={floor}
-                onChange={(e) => setfloor(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className="fields-row flex aic">
-            <div className="field-item-l flex flex-col">
-              <div className="lbl">Select Company</div>
-              <div className="dropDown flex aic jc flex-col rel">
-                <div className="category flex aic">
-                  <div
-                    className="cbox cleanbtn flex aic rel"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setHide4(!hide4);
-                    }}
-                  >
-                    <div className="slt flex aic">
-                      <div className="unit-name flex aic font s14 b4">
-                        {/* <div className="icon-fire flex aic jc ">
+            <div className="fields-row flex aic">
+              <div className="field-item-l flex flex-col">
+                <div className="lbl">Select Company</div>
+                <div className="dropDown flex aic jc flex-col rel">
+                  <div className="category flex aic">
+                    <div
+                      className="cbox cleanbtn flex aic rel"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setHide4(!hide4);
+                      }}
+                    >
+                      <div className="slt flex aic">
+                        <div className="unit-name flex aic font s14 b4">
+                          {/* <div className="icon-fire flex aic jc ">
                           <FireCaylinder />
                         </div> */}
-                        <span
-                          className="unit-eng flex aic font s14 b4"
-                          placeholder="Company Filter"
-                        >
-                          {selectedCompany
-                            ? selectedCompany
-                            : "Company Filter"}
-                        </span>
-                      </div>
-                    </div>
-                    {/* <div className="arrow s12 c666 anim" /> */}
-                    <div>
-                      <ArrowDownIcon />
-                    </div>
-                  </div>
-                </div>
-                <div className={`block flex aic abs ${hide4 ? "show" : ""}`}>
-                  <div className="manue flex aic col anim">
-                    {companies.map((item, index) => (
-                      <div
-                        key={index}
-                        className="slt flex aic"
-                        onClick={(e) => {
-                          setHide4(!hide4);
-                          setSelectedCompany(item);
-                          setcompanymodified(true)
-                          setSelectedTemplate('')
-                          setSelectedSubfamily('')
-                          setSelectedfamily('')
-                        }}
-                      >
-                        <div className="unit-name flex aic font s14 b4">
-                          <div className="icon-fire flex aic jc ">
-                            <FireCaylinder />
-                          </div>
-                          <span className="unit-eng flex aic font s14 b4">
-                            {item}
+                          <span
+                            className="unit-eng flex aic font s14 b4"
+                            placeholder="Company Filter"
+                          >
+                            {selectedCompany
+                              ? selectedCompany
+                              : "Company Filter"}
                           </span>
                         </div>
                       </div>
-                    ))}
+                      {/* <div className="arrow s12 c666 anim" /> */}
+                      <div>
+                        <ArrowDownIcon />
+                      </div>
+                    </div>
+                  </div>
+                  <div className={`block flex aic abs ${hide4 ? "show" : ""}`}>
+                    <div className="manue flex aic col anim">
+                      {companies.map((item, index) => (
+                        <div
+                          key={index}
+                          className="slt flex aic"
+                          onClick={(e) => {
+                            setHide4(!hide4);
+                            setSelectedCompany(item);
+                            setcompanymodified(true);
+                            setSelectedTemplate("");
+                            setSelectedSubfamily("");
+                            setSelectedfamily("");
+                          }}
+                        >
+                          <div className="unit-name flex aic font s14 b4">
+                            <div className="icon-fire flex aic jc ">
+                              <FireCaylinder />
+                            </div>
+                            <span className="unit-eng flex aic font s14 b4">
+                              {item}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
+              <div className="field-item-r flex flex-col">
+                <div className="lbl">Location</div>
+                <input
+                  type="text"
+                  className="txt-input cleanbtn"
+                  placeholder="Location"
+                  value={location}
+                  onChange={(e) => setlocation(e.target.value)}
+                />
+              </div>
             </div>
-            <div className="field-item-r flex flex-col">
-              <div className="lbl">Location</div>
-              <input
-                type="text"
-                className="txt-input cleanbtn"
-                placeholder="Location"
-                value={location}
-                onChange={(e) => setlocation(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className="fields-row flex aic">
-                <div className="field-item-l flex flex-col">
-                  <div className="lbl">Manufacturing Date</div>
-                  <div className="date-picker flex aic jc pointer">
-                    <Datetime
-                      closeOnSelect={true}
-                      value={
-                        manufacturingdate
-                          ? manufacturingdate
-                          : new Date().getTime()
-                      }
-                      onChange={(value) => {
-                        setmanufacturingdate(new Date(value).getTime());
-                      }}
-                      timeFormat={false}
-                      dateFormat="DD-MM-YYYY"
-                      className="start-date cleanbtn pointer"
-                    />
-                    <CalendarTodayIcon className="calender-icon" />
-                  </div>
+            <div className="fields-row flex aic">
+              <div className="field-item-l flex flex-col">
+                <div className="lbl">Manufacturing Date</div>
+                <div className="date-picker flex aic jc pointer">
+                  <Datetime
+                    closeOnSelect={true}
+                    value={
+                      manufacturingdate
+                        ? manufacturingdate
+                        : new Date().getTime()
+                    }
+                    onChange={(value) => {
+                      setmanufacturingdate(new Date(value).getTime());
+                    }}
+                    timeFormat={false}
+                    dateFormat="DD-MM-YYYY"
+                    className="start-date cleanbtn pointer"
+                  />
+                  <CalendarTodayIcon className="calender-icon" />
                 </div>
               </div>
+            </div>
 
-          <div className="heading-tag-2 flex aic jc s16 font b6">
-            <div>Manufacturing & Expiry date</div>
-          </div>
-          
-          <div className="fields-row flex aic">
+            <div className="heading-tag-2 flex aic jc s16 font b6">
+              <div>Manufacturing & Expiry date</div>
+            </div>
+
+            <div className="fields-row flex aic">
               <div className="field-item-r flex flex-col">
                 <div className="lbl">Expiry Date</div>
                 <div
@@ -565,12 +585,10 @@ const EditNFCTag = ({
                       )},
                   ${
                     syncfusionselected[0]?.RecurrenceRule
-                    ?
-                    syncfusionselected[0]?.RecurrenceRule?.split(";")[0]?.split(
-                      "="
-                    )[1]
-                    :
-                    ''
+                      ? syncfusionselected[0]?.RecurrenceRule?.split(
+                          ";"
+                        )[0]?.split("=")[1]
+                      : ""
                   }`
                     : "Select Expiry Date"}
                 </div>
@@ -646,18 +664,26 @@ const EditNFCTag = ({
                                 <div className="name s13 font b5">
                                   {item.userName}
                                 </div>
-                                {selectedUsers.findIndex((item2) =>  item2.userName == item.userName) > -1 ? (
+                                {selectedUsers.findIndex(
+                                  (item2) => item2.userName == item.userName
+                                ) > -1 ? (
                                   <div
                                     className="action-ico pointer"
                                     onClick={(e) => {
-                                      const index = selectedUsers.findIndex((item2) =>  item2.userName == item.userName);
+                                      const index = selectedUsers.findIndex(
+                                        (item2) =>
+                                          item2.userName == item.userName
+                                      );
                                       console.log("mod_selector", index);
                                       const mod_selector = selectedUsers.splice(
                                         index,
                                         1
                                       );
                                       console.log("mod_selector", mod_selector);
-                                      console.log("mod_selector", selectedUsers);
+                                      console.log(
+                                        "mod_selector",
+                                        selectedUsers
+                                      );
                                       setSelectedUsers([...selectedUsers]);
                                     }}
                                   >
@@ -687,11 +713,15 @@ const EditNFCTag = ({
                               <div className="name s13 font b5">
                                 {item.userName}
                               </div>
-                              {selectedUsers.findIndex((item2) =>  item2.userName == item.userName) > -1 ? (
+                              {selectedUsers.findIndex(
+                                (item2) => item2.userName == item.userName
+                              ) > -1 ? (
                                 <div
                                   className="action-ico pointer"
                                   onClick={(e) => {
-                                    const index = selectedUsers.findIndex((item2) =>  item2.userName == item.userName);
+                                    const index = selectedUsers.findIndex(
+                                      (item2) => item2.userName == item.userName
+                                    );
                                     console.log("mod_selector", index);
                                     const mod_selector = selectedUsers.splice(
                                       index,
@@ -710,10 +740,7 @@ const EditNFCTag = ({
                                 <div
                                   className="action-ico pointer"
                                   onClick={(e) => {
-                                    setSelectedUsers([
-                                      ...selectedUsers,
-                                      item,
-                                    ]);
+                                    setSelectedUsers([...selectedUsers, item]);
                                   }}
                                 >
                                   <div className="action-icon">
@@ -731,22 +758,22 @@ const EditNFCTag = ({
               </div>
             </div>
 
-          <div className="fields-row flex aic">
-            <button
-              className="btn-cancle button cleanbtn"
-              onClick={(e) => setOpen3(false)}
-            >
-              Cancel
-            </button>
-            <button
-              onClick={() => editnfc()}
-              className="btn-create button cleanbtn"
-            >
-              Save Changes
-            </button>
+            <div className="fields-row flex aic">
+              <button
+                className="btn-cancle button cleanbtn"
+                onClick={(e) => setOpen3(false)}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => editnfc()}
+                className="btn-create button cleanbtn"
+              >
+                Save Changes
+              </button>
+            </div>
           </div>
         </div>
-      </div>
       )}
     </div>
   );

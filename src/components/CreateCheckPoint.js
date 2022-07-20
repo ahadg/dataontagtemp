@@ -20,7 +20,7 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
   const [selection2, setSelection2] = useState(true);
   const [selection3, setSelection3] = useState(false);
   const [selectedUser, setSelectedUser] = useState([]);
- 
+
   const [selectedUser2, setSelectedUser2] = useState([]);
   //const [showList, setShowList] = useState(true);
   const [showList2, setShowList2] = useState(true);
@@ -31,7 +31,7 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
     { id: 4, user: "Abc" },
     { id: 5, user: "Xyz" },
   ]);
-  const [groups,setgroups] = useState([])
+  const [groups, setgroups] = useState([]);
   const getadminusersandgroups = async (id) => {
     try {
       let res2 = await axios.get(
@@ -39,7 +39,7 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
       );
       console.log(res2);
       setUser(res2.data.users);
-      setgroups(res2.data.groups)
+      setgroups(res2.data.groups);
       //setloading(false)
     } catch (error) {
       console.log("error1", error);
@@ -70,10 +70,10 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
       //label: "Notification 1",
       type: "user",
       users: [],
-      groups : [],
+      groups: [],
       expiry: "",
-      showList : false,
-      date : new Date().getTime()
+      showList: false,
+      date: new Date().getTime(),
     },
   ]);
   console.log("problemnotifications", problemnotifications);
@@ -96,21 +96,20 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
   console.log("alters....", alerts);
   console.log("selected user...", selectedUser);
   console.log("groups", groups);
-  const findindex = (theusers,item) => {
+  const findindex = (theusers, item) => {
     let index = theusers?.findIndex((item2) => {
-     return item2._id == item?._id;
+      return item2._id == item?._id;
     });
-    console.log('index',index)
-    return index
-   }
-   const checktype  = (item) => {
-     if(item.type == 'user'){
-       return user
-     }
-     else if(item.type == 'group'){
-       return groups
-     }
+    console.log("index", index);
+    return index;
+  };
+  const checktype = (item) => {
+    if (item.type == "user") {
+      return user;
+    } else if (item.type == "group") {
+      return groups;
     }
+  };
 
   return (
     <div className="create-checkpoint flex flex-col">
@@ -360,10 +359,10 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                     <div className="c555 s13 b4 font lbl">Individual User</div>
                     <button
                       onClick={(e) => {
-                        problemnotifications[index]['type'] = 'user'
-                        problemnotifications[index]['users'] = []
-                        problemnotifications[index]['groups'] = []
-                        setproblemnotifications([...problemnotifications])
+                        problemnotifications[index]["type"] = "user";
+                        problemnotifications[index]["users"] = [];
+                        problemnotifications[index]["groups"] = [];
+                        setproblemnotifications([...problemnotifications]);
                       }}
                       className={`cleanbtn radio-btn rel ${
                         item.type === "user" ? "on" : ""
@@ -375,12 +374,11 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                     <button
                       //disabled
                       onClick={(e) => {
-                        problemnotifications[index]['type'] = 'group'
-                        problemnotifications[index]['users'] = []
-                        problemnotifications[index]['groups'] = []
-                        setproblemnotifications([...problemnotifications])
+                        problemnotifications[index]["type"] = "group";
+                        problemnotifications[index]["users"] = [];
+                        problemnotifications[index]["groups"] = [];
+                        setproblemnotifications([...problemnotifications]);
                       }}
-                      
                       className={`cleanbtn radio-btn rel ${
                         item.type === "group" ? "on" : ""
                       }`}
@@ -394,26 +392,28 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                       className="flex aic txt s12 cleanbtn flex-wrap"
                       // value={selectedUser}
                     >
-                      {
-                        item.type == "user" ?
-                        problemnotifications[index]['users'].map((item, index) => (
-                          <div className="flex s12">
-                            {item.userName}, {""}
-                          </div>
-                        ))
-                        :
-                        problemnotifications[index]['groups'].map((item, index) => (
-                          <div className="flex s12">
-                            {item.groupname}, {""}
-                          </div>
-                        ))
-                      }
+                      {item.type == "user"
+                        ? problemnotifications[index]["users"].map(
+                            (item, index) => (
+                              <div className="flex s12">
+                                {item.userName}, {""}
+                              </div>
+                            )
+                          )
+                        : problemnotifications[index]["groups"].map(
+                            (item, index) => (
+                              <div className="flex s12">
+                                {item.groupname}, {""}
+                              </div>
+                            )
+                          )}
                     </div>
                     <div
                       className="icon flex aic jc pointer"
                       onClick={(e) => {
                         e.stopPropagation();
-                        problemnotifications[index].showList = !problemnotifications[index].showList
+                        problemnotifications[index].showList =
+                          !problemnotifications[index].showList;
                         setproblemnotifications([...problemnotifications]);
                       }}
                     >
@@ -441,170 +441,227 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                     <div className="user-list flex flex-col">
                       {checktype(item).map((item2, index2) =>
                         search2 ? (
-                            item.type == "user" ? 
-                              item2?.userName?.search(search2) > -1 && (
-                                <div className="list-item flex aic">
-                                  <div className="name s13 font b5">
-                                    {item2?.userName}
-                                  </div>
-                                  {findindex(problemnotifications[index2]?.users,item2) > -1 ? (
-                                    <div
-                                      className="action-ico pointer"
-                                      onClick={(e) => {
-                                        const index2 = findindex(problemnotifications[index]?.users,item2)
-                                        problemnotifications[index]?.users.splice(index2,1);
-                                        setproblemnotifications([...problemnotifications]);
-                                      }}
-                                    >
-                                      <div className="action-icon">
-                                        <RoundRemoveIcon />
-                                      </div>
-                                    </div>
-                                  ) : (
-                                    <div
-                                      className="action-ico pointer"
-                                      onClick={(e) => {
-                                        problemnotifications[index]['users'] = [
-                                          ...problemnotifications[index]?.users,
-                                          item2
-                                        ] 
-                                        setproblemnotifications([...problemnotifications]);
-                                      }}
-                                    >
-                                      <div className="action-icon">
-                                        <RoundAdd />
-                                      </div>
-                                    </div>
-                                  )}
+                          item.type == "user" ? (
+                            item2?.userName?.search(search2) > -1 && (
+                              <div className="list-item flex aic">
+                                <div className="name s13 font b5">
+                                  {item2?.userName}
                                 </div>
-                              )
-                            :
-                              item?.groupname?.search(search2) > -1 && (
-                                <div className="list-item flex aic">
-                                  <div className="name s13 font b5">
-                                    {item?.groupname}
-                                  </div>
-                                  {findindex(problemnotifications[index2]?.groups,item2) > -1 ? (
-                                    <div
-                                      className="action-ico pointer"
-                                      onClick={(e) => {
-                                        const index2 = findindex(problemnotifications[index]?.groups,item2)
-                                        problemnotifications[index]?.groups.splice(index2,1);
-                                        setproblemnotifications([...problemnotifications]);
-                                      }}
-                                    >
-                                      <div className="action-icon">
-                                        <RoundRemoveIcon />
-                                      </div>
+                                {findindex(
+                                  problemnotifications[index2]?.users,
+                                  item2
+                                ) > -1 ? (
+                                  <div
+                                    className="action-ico pointer"
+                                    onClick={(e) => {
+                                      const index2 = findindex(
+                                        problemnotifications[index]?.users,
+                                        item2
+                                      );
+                                      problemnotifications[index]?.users.splice(
+                                        index2,
+                                        1
+                                      );
+                                      setproblemnotifications([
+                                        ...problemnotifications,
+                                      ]);
+                                    }}
+                                  >
+                                    <div className="action-icon">
+                                      <RoundRemoveIcon />
                                     </div>
-                                  ) : (
-                                    <div
-                                      className="action-ico pointer"
-                                      onClick={(e) => {
-                                        problemnotifications[index]['groups'] = [
-                                          ...problemnotifications[index]?.groups,
-                                          item2
-                                        ] 
-                                        setproblemnotifications([...problemnotifications]);
-                                      }}
-                                    >
-                                      <div className="action-icon">
-                                        <RoundAdd />
-                                      </div>
+                                  </div>
+                                ) : (
+                                  <div
+                                    className="action-ico pointer"
+                                    onClick={(e) => {
+                                      problemnotifications[index]["users"] = [
+                                        ...problemnotifications[index]?.users,
+                                        item2,
+                                      ];
+                                      setproblemnotifications([
+                                        ...problemnotifications,
+                                      ]);
+                                    }}
+                                  >
+                                    <div className="action-icon">
+                                      <RoundAdd />
                                     </div>
-                                  )}
-                                </div>
-                              )
-                            ) : (
-                              item.type == "user" ? 
-                                <div className="list-item flex aic">
-                                  <div className="name s13 font b5">
-                                    {console.log('itetete',item)}
-                                    {item2?.userName}
                                   </div>
-                                  {findindex(problemnotifications[index]?.users,item2) > -1 ? (
-                                      <div
-                                        className="action-ico pointer"
-                                        onClick={(e) => {
-                                          const index2 = findindex(problemnotifications[index]?.users,item2)
-                                          problemnotifications[index]?.users.splice(index2,1);
-                                          setproblemnotifications([...problemnotifications]);
-                                        }}
-                                      >
-                                        <div className="action-icon">
-                                          <RoundRemoveIcon />
-                                        </div>
-                                      </div>
-                                    ) : (
-                                      <div
-                                        className="action-ico pointer"
-                                        onClick={(e) => {
-                                          console.log('problemnotifications[',problemnotifications[index])
-                                          problemnotifications[index]['users'] = [
-                                            ...problemnotifications[index]?.users,
-                                            item2
-                                          ] 
-                                          setproblemnotifications([...problemnotifications]);
-                                        }}
-                                      >
-                                        <div className="action-icon">
-                                          <RoundAdd />
-                                        </div>
-                                      </div>
-                                    )}
-                                </div>
-                              :
-                                <div className="list-item flex aic">
-                                  <div className="name s13 font b5">
-                                    {item2?.groupname}
-                                  </div>
-                                  {findindex(problemnotifications[index]?.groups,item2) > -1 ? (
-                                      <div
-                                        className="action-ico pointer"
-                                        onClick={(e) => {
-                                          const index2 = findindex(problemnotifications[index]?.groups,item2)
-                                          problemnotifications[index]?.groups.splice(index2,1);
-                                          setproblemnotifications([...problemnotifications]);
-                                        }}
-                                      >
-                                        <div className="action-icon">
-                                          <RoundRemoveIcon />
-                                        </div>
-                                      </div>
-                                    ) : (
-                                      <div
-                                        className="action-ico pointer"
-                                        onClick={(e) => {
-                                          console.log('problemnotifications[',problemnotifications[index])
-                                          problemnotifications[index]['groups'] = [
-                                            ...problemnotifications[index]?.groups,
-                                            item2
-                                          ] 
-                                          setproblemnotifications([...problemnotifications]);
-                                        }}
-                                      >
-                                        <div className="action-icon">
-                                          <RoundAdd />
-                                        </div>
-                                      </div>
-                                    )}
-                                </div>
+                                )}
+                              </div>
                             )
+                          ) : (
+                            item?.groupname?.search(search2) > -1 && (
+                              <div className="list-item flex aic">
+                                <div className="name s13 font b5">
+                                  {item?.groupname}
+                                </div>
+                                {findindex(
+                                  problemnotifications[index2]?.groups,
+                                  item2
+                                ) > -1 ? (
+                                  <div
+                                    className="action-ico pointer"
+                                    onClick={(e) => {
+                                      const index2 = findindex(
+                                        problemnotifications[index]?.groups,
+                                        item2
+                                      );
+                                      problemnotifications[
+                                        index
+                                      ]?.groups.splice(index2, 1);
+                                      setproblemnotifications([
+                                        ...problemnotifications,
+                                      ]);
+                                    }}
+                                  >
+                                    <div className="action-icon">
+                                      <RoundRemoveIcon />
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <div
+                                    className="action-ico pointer"
+                                    onClick={(e) => {
+                                      problemnotifications[index]["groups"] = [
+                                        ...problemnotifications[index]?.groups,
+                                        item2,
+                                      ];
+                                      setproblemnotifications([
+                                        ...problemnotifications,
+                                      ]);
+                                    }}
+                                  >
+                                    <div className="action-icon">
+                                      <RoundAdd />
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            )
+                          )
+                        ) : item.type == "user" ? (
+                          <div className="list-item flex aic">
+                            <div className="name s13 font b5">
+                              {console.log("itetete", item)}
+                              {item2?.userName}
+                            </div>
+                            {findindex(
+                              problemnotifications[index]?.users,
+                              item2
+                            ) > -1 ? (
+                              <div
+                                className="action-ico pointer"
+                                onClick={(e) => {
+                                  const index2 = findindex(
+                                    problemnotifications[index]?.users,
+                                    item2
+                                  );
+                                  problemnotifications[index]?.users.splice(
+                                    index2,
+                                    1
+                                  );
+                                  setproblemnotifications([
+                                    ...problemnotifications,
+                                  ]);
+                                }}
+                              >
+                                <div className="action-icon">
+                                  <RoundRemoveIcon />
+                                </div>
+                              </div>
+                            ) : (
+                              <div
+                                className="action-ico pointer"
+                                onClick={(e) => {
+                                  console.log(
+                                    "problemnotifications[",
+                                    problemnotifications[index]
+                                  );
+                                  problemnotifications[index]["users"] = [
+                                    ...problemnotifications[index]?.users,
+                                    item2,
+                                  ];
+                                  setproblemnotifications([
+                                    ...problemnotifications,
+                                  ]);
+                                }}
+                              >
+                                <div className="action-icon">
+                                  <RoundAdd />
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        ) : (
+                          <div className="list-item flex aic">
+                            <div className="name s13 font b5">
+                              {item2?.groupname}
+                            </div>
+                            {findindex(
+                              problemnotifications[index]?.groups,
+                              item2
+                            ) > -1 ? (
+                              <div
+                                className="action-ico pointer"
+                                onClick={(e) => {
+                                  const index2 = findindex(
+                                    problemnotifications[index]?.groups,
+                                    item2
+                                  );
+                                  problemnotifications[index]?.groups.splice(
+                                    index2,
+                                    1
+                                  );
+                                  setproblemnotifications([
+                                    ...problemnotifications,
+                                  ]);
+                                }}
+                              >
+                                <div className="action-icon">
+                                  <RoundRemoveIcon />
+                                </div>
+                              </div>
+                            ) : (
+                              <div
+                                className="action-ico pointer"
+                                onClick={(e) => {
+                                  console.log(
+                                    "problemnotifications[",
+                                    problemnotifications[index]
+                                  );
+                                  problemnotifications[index]["groups"] = [
+                                    ...problemnotifications[index]?.groups,
+                                    item2,
+                                  ];
+                                  setproblemnotifications([
+                                    ...problemnotifications,
+                                  ]);
+                                }}
+                              >
+                                <div className="action-icon">
+                                  <RoundAdd />
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        )
                       )}
                     </div>
                   </div>
                 </div>
                 <div className="date-picker flex aic jc pointer">
-                <input
+                  <input
                     type="text"
-                    className="txt cleanbtn s14 b4 font"
+                    className="txt cleanbtn s14 b4 font h-full w-full"
                     placeholder="Days"
                     onChange={(e) => {
-                      problemnotifications[index]['days'] = e.target.value 
+                      problemnotifications[index]["days"] = e.target.value;
                       setproblemnotifications([...problemnotifications]);
                       //setStartDate2(new Date(value).getTime());
                     }}
-                    value={problemnotifications[index]['days']}
+                    value={problemnotifications[index]["days"]}
                   />
                   {/* <Datetime
                     closeOnSelect={true}
@@ -632,10 +689,10 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                       //label: "Notification 1",
                       type: "user",
                       users: [],
-                      groups : [],
-                      showList : false,
+                      groups: [],
+                      showList: false,
                       expiry: "",
-                      date : new Date().getTime()
+                      date: new Date().getTime(),
                     },
                   ])
                 }
@@ -657,7 +714,13 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
         </button>
         <button
           onClick={() => {
-            modify_checlist(checklisttype, checkName, checkDesc, startDate,problemnotifications);
+            modify_checlist(
+              checklisttype,
+              checkName,
+              checkDesc,
+              startDate,
+              problemnotifications
+            );
             setOpen3(false);
           }}
           className="btn button s14 font b4 cfff"

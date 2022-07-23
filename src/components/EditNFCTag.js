@@ -139,8 +139,27 @@ const EditNFCTag = ({
     }
     try {
       setloading(true);
+<<<<<<< HEAD
       setloader(true);
       const theusers = [];
+=======
+      setloader(true)
+      let mod_reminderselction = reminderselections.map((item) => {
+        //var result = new Date(syncfusionselected[0]?.StartTime);
+        var result = moment(syncfusionselected[0]?.StartTime);
+        result = result.subtract(Number(item.daysbefore), "days");
+        result = result.format();
+        // info : by default date will be selected according to timezone, with maybe hours will be zoro if is'nt selected, so if convert it to italy zone, 'll subtract 4 hours and one day wil be less
+        // carefull..
+        return {
+          ...item,
+          reminderdate : result,
+          //reminderdate : new Date(result).toLocaleString('en-US', { timeZone: 'Antarctica/Troll' }),
+          showList : false
+        }
+      })
+      const theusers = []
+>>>>>>> 1d0a0ddca4e59a8a98b46a039623ba238d61fd3d
       selectedUsers.map((item) => {
         theusers.push({ theuser: item._id, userinfo: item });
       });
@@ -173,8 +192,14 @@ const EditNFCTag = ({
               )[1],
             startDate: syncfusionselected[0]?.StartTime,
             endDate: syncfusionselected[0]?.EndTime,
+<<<<<<< HEAD
             object: syncfusionselected,
             daysbefore,
+=======
+            syncfusionselected,
+            reminderselectionsobject : mod_reminderselction,
+            //daysbefore
+>>>>>>> 1d0a0ddca4e59a8a98b46a039623ba238d61fd3d
           },
           startDate: syncfusionselected[0]?.StartTime,
           endDate: syncfusionselected[0]?.EndTime,

@@ -74,6 +74,7 @@ const EditNFCTag = ({
     { id: 1, title: "NO" },
     { id: 2, title: "YES" },
   ]);
+  const [reminderselections,setreminderseletions] = useState(edittagdata.tagIds?.syncfusiondetails?.reminderselectionsobject)
   const [buildingname, setbuildingname] = useState(
     edittagdata.tagIds?.location?.buildingname
   );
@@ -593,17 +594,26 @@ const EditNFCTag = ({
                     : "Select Expiry Date"}
                 </div>
               </div>
-              <div className="field-item-r flex flex-col">
-                <div className="lbl">Days before</div>
-                <input
-                  type="number"
-                  className="txt-input cleanbtn"
-                  placeholder="Days before"
-                  value={daysbefore}
-                  onChange={(e) => setdaysbefore(e.target.value)}
-                />
-              </div>
+
             </div>
+            {
+            reminderselections.map((mainitem,mainindex) => <>
+              <div className="fields-row flex aic">
+                <div className="field-item-r flex flex-col">
+                  <div className="lbl">Days before</div>
+                  <input
+                    type="number"
+                    className="txt-input cleanbtn"
+                    placeholder="Days before"
+                    value={mainitem.daysbefore}
+                    onChange={(e) => {
+                      reminderselections[mainindex]['daysbefore'] = e.target.value
+                      setreminderseletions([...reminderselections])
+                    }}
+                  />
+                </div>
+              </div>
+            
             <div className="fields-row flex aic">
               <div className="data-item flex aic">
                 <div className="txt-field flex flex-col">
@@ -612,7 +622,9 @@ const EditNFCTag = ({
                     className="search-box txt  flex flex-col rel pointer"
                     onClick={(e) => {
                       e.stopPropagation();
-                      setShowList(!showList);
+                      reminderselections[mainindex]['showList'] = !reminderselections[mainindex]['showList']
+                      setreminderseletions([...reminderselections])
+                      //setShowList(!item.showList);
                     }}
                   >
                     <div className="txt-box flex aic">
@@ -621,7 +633,7 @@ const EditNFCTag = ({
                         className="flex aic txt-b s12 cleanbtn flex-wrap"
                         // value={selectedUsers}
                       >
-                        {selectedUsers?.map((item, index) => (
+                        {mainitem.selectedUsers?.map((item, index) => (
                           <div className="flex s12">
                             {item.userName}, {""}
                           </div>
@@ -631,7 +643,8 @@ const EditNFCTag = ({
                         className="icon flex aic jc pointer"
                         onClick={(e) => {
                           e.stopPropagation();
-                          setShowList(!showList);
+                          reminderselections[mainindex]['showList'] = !reminderselections[mainindex]['showList']
+                          setreminderseletions([...reminderselections])
                         }}
                       >
                         <ArrowDownIcon />
@@ -639,7 +652,7 @@ const EditNFCTag = ({
                     </div>
                     <div
                       className={`list-box flex flex-col abs ${
-                        showList ? "show" : ""
+                        reminderselections[mainindex]['showList'] ? "show" : ""
                       }`}
                     >
                       <div
@@ -675,7 +688,7 @@ const EditNFCTag = ({
                                           item2.userName == item.userName
                                       );
                                       console.log("mod_selector", index);
-                                      const mod_selector = selectedUsers.splice(
+                                      const mod_selector = mainitem.selectedUsers.splice(
                                         index,
                                         1
                                       );
@@ -695,10 +708,8 @@ const EditNFCTag = ({
                                   <div
                                     className="action-ico pointer"
                                     onClick={(e) => {
-                                      setSelectedUsers([
-                                        ...selectedUsers,
-                                        item,
-                                      ]);
+                                      reminderselections[mainindex]['selectedUsers'] = [...mainitem.selectedUsers,item]
+                                      setreminderseletions([...reminderselections]);
                                     }}
                                   >
                                     <div className="action-icon">
@@ -723,13 +734,14 @@ const EditNFCTag = ({
                                       (item2) => item2.userName == item.userName
                                     );
                                     console.log("mod_selector", index);
-                                    const mod_selector = selectedUsers.splice(
+                                    const mod_selector = mainitem.selectedUsers.splice(
                                       index,
                                       1
                                     );
                                     console.log("mod_selector", mod_selector);
                                     console.log("mod_selector", selectedUsers);
-                                    setSelectedUsers([...selectedUsers]);
+                                    //reminderselections[index]['daysbefore'] = e.target.value
+                                    setreminderseletions([...reminderselections]);
                                   }}
                                 >
                                   <div className="action-ico">

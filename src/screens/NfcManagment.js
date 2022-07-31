@@ -181,7 +181,7 @@ const NfcManagment = () => {
       }
     }
   }, [value]);
-
+  console.log('org_tagids',org_tagids)
   useEffect(() => {
     let searchedids = [];
     if (selectedCompany) {
@@ -198,7 +198,8 @@ const NfcManagment = () => {
         if (
           item.tagIds?.location.buildingname?.search(search) > -1 ||
           item.tagIds?.location.floor?.search(search) > -1 ||
-          item.tagIds?.location.location?.search(search) > -1
+          item.tagIds?.location.location?.search(search) > -1 ||
+          item.controlpoint?.controlpointname?.toLowerCase()?.search(search?.toLowerCase()) > -1
         ) {
           return true;
         }
@@ -364,7 +365,7 @@ const NfcManagment = () => {
                             setsearch(e.target.value);
                           }}
                           type="text"
-                          placeholder="Search by Building or Floor"
+                          placeholder="Search by Building,Floor or Name"
                           className="txt cleanbtn s16"
                         />
                         <SearchIcon />

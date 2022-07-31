@@ -677,27 +677,20 @@ const EditNFCTag = ({
                                 <div className="name s13 font b5">
                                   {item.userName}
                                 </div>
-                                {selectedUsers.findIndex(
-                                  (item2) => item2.userName == item.userName
-                                ) > -1 ? (
+                                {mainitem?.selectedUsers?.findIndex((item2) =>  item2.userName == item.userName) > -1 ? (
                                   <div
                                     className="action-ico pointer"
                                     onClick={(e) => {
-                                      const index = selectedUsers.findIndex(
-                                        (item2) =>
-                                          item2.userName == item.userName
-                                      );
+                                      const index = mainitem.selectedUsers.findIndex((item2) =>  item2.userName == item.userName);
                                       console.log("mod_selector", index);
                                       const mod_selector = mainitem.selectedUsers.splice(
                                         index,
                                         1
                                       );
                                       console.log("mod_selector", mod_selector);
-                                      console.log(
-                                        "mod_selector",
-                                        selectedUsers
-                                      );
-                                      setSelectedUsers([...selectedUsers]);
+                                      console.log("mod_selector", selectedUsers);
+                                      //reminderselections[index]['daysbefore'] = e.target.value
+                                      setreminderseletions([...reminderselections]);
                                     }}
                                   >
                                     <div className="action-icon">
@@ -724,15 +717,11 @@ const EditNFCTag = ({
                               <div className="name s13 font b5">
                                 {item.userName}
                               </div>
-                              {selectedUsers.findIndex(
-                                (item2) => item2.userName == item.userName
-                              ) > -1 ? (
+                              {mainitem?.selectedUsers?.findIndex((item2) =>  item2.userName == item.userName) > -1 ? (
                                 <div
                                   className="action-ico pointer"
                                   onClick={(e) => {
-                                    const index = selectedUsers.findIndex(
-                                      (item2) => item2.userName == item.userName
-                                    );
+                                    const index = mainitem.selectedUsers.findIndex((item2) =>  item2.userName == item.userName);
                                     console.log("mod_selector", index);
                                     const mod_selector = mainitem.selectedUsers.splice(
                                       index,
@@ -752,7 +741,8 @@ const EditNFCTag = ({
                                 <div
                                   className="action-ico pointer"
                                   onClick={(e) => {
-                                    setSelectedUsers([...selectedUsers, item]);
+                                    reminderselections[mainindex]['selectedUsers'] = [...mainitem.selectedUsers,item]
+                                    setreminderseletions([...reminderselections]);
                                   }}
                                 >
                                   <div className="action-icon">
@@ -769,7 +759,25 @@ const EditNFCTag = ({
                 </div>
               </div>
             </div>
-
+            </>
+            )}
+            <div className="add-new-field flex">
+              <div
+                onClick={() => {
+                  setreminderseletions([
+                    ...reminderselections,
+                    {
+                      daysbefore : '',
+                      selectedUsers : [],
+                      showList : false
+                    }
+                  ])
+                }}
+                className="btn font b5 s13 "
+              >
+                + Add More
+              </div>
+            </div>
             <div className="fields-row flex aic">
               <button
                 className="btn-cancle button cleanbtn"

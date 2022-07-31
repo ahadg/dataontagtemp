@@ -531,7 +531,7 @@ const AddNewNFCTag = ({
               </div>
             </div>
             <div className="heading-tag-2 flex aic jc s16 font b6">
-              <div>Manufacturing & Expiry dates</div>
+              <div> Expiry dates</div>
             </div>
             <div className="fields-row flex aic">
               <div className="field-item-r flex flex-col">

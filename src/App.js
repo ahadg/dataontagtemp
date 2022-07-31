@@ -62,7 +62,7 @@ function App() {
         dispatch({ type: "UPDATE_NOTIFICATIONS_SOCKET_UPDATE", payload: {id : thedata.id,type : 'notification',message : thedata.message, createdAt : `${new Date()}`,read: false,details : thedata.details} });
       } else if (thedata.type == "qraccess") {
         console.log('notificationss_inside')
-        dispatch({ type: "UPDATE_NOTIFICATIONS_SOCKET_UPDATE", payload: {id : thedata.id,type : 'qraccess',message : thedata.message, createdAt : `${new Date()}`,read: false,details : thedata?.details} });
+        dispatch({ type: "UPDATE_NOTIFICATIONS_SOCKET_UPDATE", payload: {id : thedata.id,type : 'qraccess',message : thedata.message, createdAt : `${new Date()}`,read: false,details : {senderid : thedata.senderid, touser : thedata.touser}} });
       }
     });
     socket.on("disconnect", () => {
@@ -88,7 +88,9 @@ function App() {
   }, []);
   return (
     <div className="App rel">
-      <ToastContainer />
+      <ToastContainer 
+      //autoClose={false} 
+      />
       <Toaster />
       {apploaded ? (
         <BrowserRouter>

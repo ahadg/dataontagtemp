@@ -23,6 +23,7 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
   const [show, setShow] = useState(false);
   //const [notifications, setnotifications] = useState([]);
   const [showNotification, setShowNotification] = useState(false);
+  const {socket,rfid} = useSelector((state) => state.generalReducers);
   const {
     showRightbar,
     showSidebar,
@@ -35,6 +36,7 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
     localStorage.removeItem("dataontag12344H");
     window.location.href = "/login";
   };
+
 
   useEffect(() => {
     document.addEventListener("click", () => {
@@ -103,6 +105,51 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
   useEffect(() => {
     getnotifications();
   }, []);
+  
+
+  const QRAccess = ({end,senderid,touser}) => {
+    const getseconds = (end) => {
+      var now = moment(new Date()); //todays date
+      var end = moment(end); // another date
+      var duration = moment.duration(now.diff(end));
+      return duration.asSeconds();
+    }
+    const [seconds,setseconds] = useState(30)
+    const [response,setresponse] = useState('')
+    useEffect(() => {
+      setInterval(() => setseconds( 30 - Math.floor(getseconds(end)) ) )
+    },[])
+    let sendqrresponse = (senderid,touser) => {
+      console.log('response',{senderid,touser})
+      socket.emit('message',{
+        type: "qraccessaccepted",
+        //"id": `${message.senderid}`,
+        senderid: `${touser}`,
+        title: `Qr request accepted`,
+        message: `Qr request accepted`,
+        touser: senderid
+        })
+    }
+    return (
+      <div className="action flex aic">
+        {
+          seconds < 0 || response
+          ?
+          <div className="btn button">{response ? response :'Expired'}</div>
+          :
+          <>
+            <div 
+            onClick={() => setresponse('Rejected')}
+            className="btn button">Cancel</div>
+            <div onClick={() => {
+              sendqrresponse(senderid,touser)
+              setresponse('Accepted')
+            }} className="btn button">Allow ({seconds})</div>
+          </>
+        }
+      </div>
+    )
+  }
 
   return (
     <div className="header sticky flex aic">
@@ -214,10 +261,7 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
                          {
                           item.type == "qraccess"
                           && 
-                          <div className="action flex aic">
-                            <div className="btn button">Cancel</div>
-                            <div className="btn button">Allow (30s)</div>
-                        </div>
+                          <QRAccess end={item.createdAt} senderid={item.details.senderid} touser={item.details.touser}/>
                         }
                       </div>
                     </div>
@@ -265,10 +309,7 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
                         {
                           item.type == "qraccess"
                           && 
-                          <div className="action flex aic">
-                            <div className="btn button">Cancel</div>
-                            <div className="btn button">Allow (30s)</div>
-                        </div>
+                          <QRAccess end={item.createdAt} senderid={item.details.senderid} touser={item.details.touser}/>
                         }
                       </div>
                     </div>

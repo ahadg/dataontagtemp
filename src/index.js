@@ -8,13 +8,13 @@ import store from "./store";
 import { registerLicense } from '@syncfusion/ej2-base';
 
 // Registering Syncfusion license key
-registerLicense('ORg4AjUWIQA/Gnt2VVhhQlFac1pJWnxLfUx0RWFbb1d6dlBMYVlBNQtUQF1hS35VdEZiWHpfcnRRRmZZ');
+registerLicense(',@32302e322e30Aa7bXXjU1bm7YRZfzG+uKfV/D+YKaYjZUVH+SMvdOIE=,');
 
 ReactDOM.render(
   <Provider store={store}>
     <App />
   </Provider>,
-  document.getElementById("root")
+  document.getElementById("root") 
 );
 
 // If you want to start measuring performance in your app, pass a function

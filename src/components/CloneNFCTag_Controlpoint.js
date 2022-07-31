@@ -544,7 +544,7 @@ const EditNFCTag = ({
           </div>
 
           <div className="heading-tag-2 flex aic jc s16 font b6">
-            <div>Manufacturing & Expiry date</div>
+            <div>Expiry date</div>
           </div>
           <div className="fields-row flex aic">
               <div className="field-item-r flex flex-col">
@@ -749,6 +749,23 @@ const EditNFCTag = ({
             </div>
             </>
             )}
+             <div className="add-new-field flex">
+              <div
+                onClick={() => {
+                  setreminderseletions([
+                    ...reminderselections,
+                    {
+                      daysbefore : '',
+                      selectedUsers : [],
+                      showList : false
+                    }
+                  ])
+                }}
+                className="btn font b5 s13 "
+              >
+                + Add More
+              </div>
+            </div>
           <div className="fields-row flex aic">
             <button
               className="btn-cancle button cleanbtn"

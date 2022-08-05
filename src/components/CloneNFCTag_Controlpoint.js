@@ -18,7 +18,8 @@ const EditNFCTag = ({
   companies,
   userList,
   getfamilies,
-  syncfusionselected
+  syncfusionselected,
+  setOpen5
 }) => {
   const defaultOptions = {
     loop: true,
@@ -553,7 +554,7 @@ const EditNFCTag = ({
                   // to={"/syncfusion-calender"}
                   className="txt-input b6 s18 flex aic jc pointer"
                   onClick={(e) => {
-                    setOpen3(true);
+                    setOpen5(true);
                   }}
                 >
                   {syncfusionselected

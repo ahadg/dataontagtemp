@@ -122,12 +122,16 @@ const Home = ({ location }) => {
   //   setmod_tagids([...searchedids]);
   // }, [search, selectedCompany]);
   console.log('search',search)
-  const filterdatabycompany = () => {
+  const filterdatabycompany = (paramsdata) => {
     let data = [...org_tblData];
     let data2 = []
-    if (selectedcompany == "All" || !selectedcompany) {
-      data = [...org_tblData]
-      data2 = data
+    if(paramsdata){
+      data = paramsdata
+    }
+    console.log('paramsdata',paramsdata)
+    if (selectedcompany == "All" || !selectedcompany || selectedcompany == "") {
+      // data = [...org_tblData]
+      // data2 = data
     }
     else {
       data = org_tblData.filter(
@@ -136,6 +140,7 @@ const Home = ({ location }) => {
       );
       data2 = data
     }
+    data2 = data
     console.log('search',search)
     if (search != undefined) { 
       console.log('data',data)
@@ -156,7 +161,7 @@ const Home = ({ location }) => {
       settblData([...data])
     }
     let mod_building = [];
-    if(selectedcompany) {
+    // if(selectedcompany) {
       data2.map((item, index) => {
         item?.controlpointId.tagIds.map((item2) => {
           console.log("item2", item2);
@@ -165,7 +170,7 @@ const Home = ({ location }) => {
           }
         });
       });
-    }
+    //}
     console.log("mod_building", mod_building);
     if (mod_building.length > 0) {
       setbuildings(["None", ...mod_building]);
@@ -270,8 +275,8 @@ const Home = ({ location }) => {
         setthe_checklists(res.data.checks);
         setcompanies(res.data.companies);
         setloading(false);
-        //setselectedcompany("All")
-        filterdatabycompany(res.data.checks)
+        filterdatabycompany(res.data.checks)    
+      
         if (checkid) {
           let theindex = res.data.checks.findIndex(
             (item) => item._id == checkid

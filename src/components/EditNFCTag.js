@@ -38,6 +38,7 @@ const EditNFCTag = ({
   const [daysbefore, setdaysbefore] = useState(
     edittagdata?.tagIds?.syncfusiondetails?.daysbefore
   );
+  console.log('syncfusionselecteddd',syncfusionselected)
   const [manufacturingdate, setmanufacturingdate] = useState(
     new Date(Number(edittagdata?.tagIds?.manufacturingdate))?.getTime()
   );
@@ -144,6 +145,20 @@ const EditNFCTag = ({
       selectedUsers.map((item) => {
         theusers.push({ theuser: item._id, userinfo: item });
       });
+      let mod_reminderselction = reminderselections.map((item) => {
+        //var result = new Date(syncfusionselected[0]?.StartTime);
+        var result = moment(syncfusionselected[0]?.StartTime);
+        result = result.subtract(Number(item.daysbefore), "days");
+        result = result.format();
+        // info : by default date will be selected according to timezone, with maybe hours will be zoro if is'nt selected, so if convert it to italy zone, 'll subtract 4 hours and one day wil be less
+        // carefull..
+        return {
+          ...item,
+          reminderdate : result,
+          //reminderdate : new Date(result).toLocaleString('en-US', { timeZone: 'Antarctica/Troll' }),
+          showList : false
+        }
+      })
       const res = await axios.post(
         `${process.env.REACT_APP_END_URL}api/editnfctag`,
         {
@@ -173,8 +188,9 @@ const EditNFCTag = ({
               )[1],
             startDate: syncfusionselected[0]?.StartTime,
             endDate: syncfusionselected[0]?.EndTime,
-            object: syncfusionselected,
-            daysbefore,
+            syncfusionselected,
+            reminderselectionsobject : mod_reminderselction,
+            //daysbefore
           },
           startDate: syncfusionselected[0]?.StartTime,
           endDate: syncfusionselected[0]?.EndTime,

@@ -838,7 +838,9 @@ const Home = ({ location }) => {
             </div>
             {!loading && (
               <div className="table-sec flex flex-col">
-                <div className="tbl-row flex aic">
+                <div 
+                style={{cursor : 'default'}}
+                className="tbl-row flex aic">
                   <div className="row-item">
                     <FilterIcon />
                   </div>

@@ -1558,6 +1558,7 @@ body {
       padding: 6px;
       border-radius: 5px;
       border: 1px solid #e5e5e5;
+      justify-content: flex-start;
       .start-date,
       .form-control {
         width: 100% !important;
@@ -1585,8 +1586,9 @@ body {
           margin-bottom: 16px;
         }
         .select-item {
-          justify-content: space-between;
+          justify-content: flex-start;
           padding: 0 6px;
+          gap: 1rem;
           .radito-select {
             .lbl {
               color: #5e5e5e;

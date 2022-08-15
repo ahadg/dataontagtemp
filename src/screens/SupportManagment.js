@@ -80,11 +80,11 @@ const Users = () => {
     // setselectedchat({...selectedchat})
     setallmessages([...allemessages])
     getmessagescount(allemessages)
-    if(selectedchat.senderid._id == user._id){
-      sendto = selectedchat.recieverid._id
+    if(selectedchat?.senderid?._id == user?._id){
+      sendto = selectedchat?.recieverid?._id
     }
     else {
-      sendto = selectedchat.senderid._id
+      sendto = selectedchat?.senderid?._id
     }
     try {
       const res = await axios.post(`${process.env.REACT_APP_END_URL}api/sendmessage`,{
@@ -202,16 +202,22 @@ const Users = () => {
 
   const UsersChatList = ({data,index,resolved} ) => {
     const [activeChat, setActiveChat] = useState(false);
-    console.log('data',data)
+    console.log('messagedata',data)
     let theuser = data?.recieverid?._id == user._id ? data.senderid : data.recieverid
     console.log('theuser',theuser)
-    const findunreadmessages = (messages) => {
+    const findunreadmessages = async (messages) => {
+     console.log('messagesttt',messages)
      let count = 0
      messages.map((item) => {
        if(item.unread == true) {
          count++
        }
      })
+     if(count > 0){
+      axios.post(`${process.env.REACT_APP_END_URL}api/updatereadstatus`,{
+        id : data._id
+      });
+     }
      return count
     }
     return (

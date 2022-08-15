@@ -8,7 +8,7 @@ import store from "./store";
 import { registerLicense } from '@syncfusion/ej2-base';
 
 // Registering Syncfusion license key
-registerLicense(',@32302e322e30Aa7bXXjU1bm7YRZfzG+uKfV/D+YKaYjZUVH+SMvdOIE=,');
+registerLicense('ORg4AjUWIQA/Gnt2VVhhQlFac1pJXGFWfVJpTGpQdk5xdV9DaVZUTWY/P1ZhSXxRdk1iWH9YcXZXT2dVU0I=');
 
 ReactDOM.render(
   <Provider store={store}>

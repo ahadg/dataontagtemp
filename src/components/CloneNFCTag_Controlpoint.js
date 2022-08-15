@@ -548,7 +548,9 @@ const EditNFCTag = ({
             <div>Expiry date</div>
           </div>
           <div className="fields-row flex aic">
-              <div className="field-item-r flex flex-col">
+              <div 
+              style={{width : '100%'}}
+              className="field-item-r flex flex-col">
                 <div className="lbl">Expiry Date</div>
                 <div
                   // to={"/syncfusion-calender"}
@@ -588,7 +590,9 @@ const EditNFCTag = ({
             {
             reminderselections.map((mainitem,mainindex) => <>
               <div className="fields-row flex aic">
-                <div className="field-item-r flex flex-col">
+                <div 
+                style={{width : '100%'}}
+                className="field-item-r flex flex-col">
                   <div className="lbl">Days before</div>
                   <input
                     type="number"

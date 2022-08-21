@@ -682,6 +682,7 @@ const AddNewNFCTag = ({
                                     onClick={(e) => {
                                       reminderselections[mainindex]['selectedUsers'] = [...mainitem.selectedUsers,item]
                                       setreminderseletions([...reminderselections]);
+                                      e.stopPropagation();
                                     }}
                                   >
                                     <div className="action-icon">

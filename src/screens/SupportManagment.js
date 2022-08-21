@@ -214,7 +214,7 @@ const Users = () => {
        }
      })
      if(count > 0){
-      axios.post(`${process.env.REACT_APP_END_URL}api/updatereadstatus`,{
+      axios.post(`${process.env.REACT_APP_END_URL}api/updatereadstatuses`,{
         id : data._id
       });
      }

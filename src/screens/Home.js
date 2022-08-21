@@ -769,7 +769,7 @@ const Home = ({ location }) => {
                   </div>
                   {/* Fourth */}
                   <div className="search-by flex">
-                      <div className="search-box flex aic">
+                      <div className="search-boxs flex aic">
                         <input
                           onChange={(e) => {
                             setsearch(e.target.value);

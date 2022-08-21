@@ -232,6 +232,7 @@ const AddGroup = ({ setOpen2, userList, getusergroup }) => {
                                   ...selectedUser,
                                   item.userName,
                                 ]);
+                                e.stopPropagation();
                               }}
                             >
                               <div className="action-icon">

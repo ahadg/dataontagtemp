@@ -493,6 +493,7 @@ const EditUser = ({ setOpen, companyfilter, getusers, selecteduser }) => {
                                         ...selectedcontrolpoints,
                                         item,
                                       ]);
+                                      e.stopPropagation();
                                     }}
                                   >
                                     <div className="action-icon">

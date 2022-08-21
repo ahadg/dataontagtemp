@@ -385,6 +385,8 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                     />
                   </div>
                 </div>
+                {/* Starting */}
+                <div className="Options">
                 <div className="search-box flex flex-col rel">
                   <div className="txt-box flex aic">
                     <div
@@ -432,6 +434,7 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                       <input
                         type="text"
                         className="txt cleanbtn"
+                        placeholder="Search users"
                         onChange={(e) => setsearch2(e.target.value)}
                       />
                       <div className="icon flex aic jc">
@@ -482,6 +485,7 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                                       setproblemnotifications([
                                         ...problemnotifications,
                                       ]);
+                                      e.stopPropagation();
                                     }}
                                   >
                                     <div className="action-icon">
@@ -677,6 +681,8 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                   />
                   <CalendarTodayIcon className="calender-icon" /> */}
                 </div>
+                {/* Ending */}
+                </div>
               </div>
             ))}
             <div className="action flex aic">
@@ -714,6 +720,31 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
         </button>
         <button
           onClick={() => {
+            console.log('the_dataaa',{checklisttype,
+              checkName,
+              checkDesc,
+              startDate,
+              problemnotifications})
+            let foundemptyuser = false
+            let foundemptydaysval = false
+            if(!checkDesc || !checkName) {
+              return toast.error("Please Input all fields")
+            }
+            problemnotifications.map((item) => {
+              if(item.users.length < 1 && item.groups.length < 1){
+                foundemptyuser = true
+              }
+              else if(!item.days){
+                foundemptydaysval = true
+              }
+            })
+            if(foundemptyuser) {
+              return toast.error("Please select a user")
+            }
+            else if(foundemptydaysval) {
+              return toast.error("Please Input all fields")
+            }
+           
             modify_checlist(
               checklisttype,
               checkName,

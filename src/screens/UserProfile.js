@@ -72,6 +72,7 @@ const UserProfile = () => {
         }
       );
       dispatch(loaduser())
+      toast.success("Profile updated successfully");
       setloading(false);
     } catch (error) {
       console.log("error1", error);

@@ -27,7 +27,7 @@ import {
 } from "../svg";
 
 const SmartDevices = () => {
-  const [date, setDate] = useState(new Date().getTime());
+  const [date, setDate] = useState();
   const [hide, setHide] = useState(false);
   const [hide2, setHide2] = useState(false);
   const [hide3, setHide3] = useState(false);
@@ -185,7 +185,8 @@ const SmartDevices = () => {
                     <div className="date-picker flex aic jc">
                       <Datetime
                         closeOnSelect={true}
-                        value={date ? date : new Date().getTime()}
+                        placeholder="select date"
+                        value={date}
                         onChange={(value) => {
                           setDate(new Date(value).getTime());
                         }}

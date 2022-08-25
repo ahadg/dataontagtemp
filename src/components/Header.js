@@ -44,32 +44,6 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
       setShowNotification(false);
     });
   }, []);
-  const getnotifications = async () => {
-    try {
-      //setloading(true);
-      const res = await axios.get(
-        `${process.env.REACT_APP_END_URL}api/getusernotifications`
-      );
-      console.log("getnotifications", res.data);
-      if (res.data) {
-        //setnotifications(res.data.notifcations);
-        dispatch({
-          type: "UPDATE_NOTIFICATIONS",
-          payload: res.data.notifcations,
-        });
-      }
-    } catch (error) {
-      console.log("error1", error);
-      if (error.response) {
-        if (error.response.data) {
-          console.log("error", error.response.data);
-          return toast.error(error.response.data.error);
-        }
-      } else {
-        return toast.error("Error in server");
-      }
-    }
-  };
   console.log("notificationss", notifications);
   useEffect(() => {
     if (socket_notification) {
@@ -102,10 +76,7 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
       }
     }
   };
-  useEffect(() => {
-    getnotifications();
-  }, []);
-  
+
 
   const QRAccess = ({end,senderid,touser}) => {
     const getseconds = (end) => {

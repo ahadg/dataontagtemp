@@ -27,8 +27,13 @@ const AddNewUser = ({ setOpen, companyfilter, getusers }) => {
   const [companyRef, setselectedcompanyRef] = useState("");
   const [loading, setloading] = useState(false);
   const [companyName, setcompanyName] = useState(false);
-
+  const validateEmail = (email) => {
+    return email.match(
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+  };
   const createnewuser = async (id) => {
+    console.log('vallidd',validateEmail(email))
     let formData = new FormData();
     const config = {
       header: {
@@ -42,10 +47,14 @@ const AddNewUser = ({ setOpen, companyfilter, getusers }) => {
       return toast.error("Please input email.");
     } else if (!mobile) {
       return toast.error("Please input phone number.");
+    } else if(!validateEmail(email)) {
+      return toast.error("Please input a valid email.");
     } else if (!password) {
       return toast.error("Please input password.");
     } else if (password != confirmpassword) {
       return toast.error("Password confirmation does not matched.");
+    } else if(mobile.length > 12){
+      return toast.error("Phone number length should'nt be greater than 12.");
     }
     // else if(password){
     //   return toast.error("your password was'nt matched.");
@@ -62,7 +71,7 @@ const AddNewUser = ({ setOpen, companyfilter, getusers }) => {
     setloading(true);
     formData.append("file", img);
     let body;
-    if (selectedrole?.value != "companyadmin") {
+    if (selectedrole.title == "Company user" || selectedrole.title == "Maintenance user") {
       body = {
         userName,
         email,

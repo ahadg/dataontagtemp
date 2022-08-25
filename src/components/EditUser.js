@@ -78,6 +78,12 @@ const EditUser = ({ setOpen, companyfilter, getusers, selecteduser }) => {
     }
   };
 
+  const validateEmail = (email) => {
+    return email.match(
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+  };
+
   const edituser = async (id) => {
     let formData = new FormData();
     setloading(true);
@@ -88,6 +94,19 @@ const EditUser = ({ setOpen, companyfilter, getusers, selecteduser }) => {
       },
     };
     //console.log(body)
+    if (!userName) {
+      return toast.error("Please input an username.");
+    } else if (!email) {
+      return toast.error("Please input email.");
+    } else if (!mobile) {
+      return toast.error("Please input phone number.");
+    } else if(!validateEmail(email)) {
+      return toast.error("Please input a valid email.");
+    } else if (!password) {
+      return toast.error("Please input password.");
+    } else if(mobile.length > 12){
+      return toast.error("Phone number length should'nt be greater than 12.");
+    }
     setloading(true);
     formData.append("file", img);
     let body;

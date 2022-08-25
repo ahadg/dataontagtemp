@@ -30,6 +30,7 @@ import io from "socket.io-client";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import toast, { Toaster } from "react-hot-toast";
+import axios from "axios";
 
 function App() {
   const dispatch = useDispatch();
@@ -71,11 +72,38 @@ function App() {
       toast("socket_diconnected.");
     });
   };
+  const getnotifications = async () => {
+    try {
+      console.log("GETTTINGGG_NOTIFICATIONSS")
+      const res = await axios.get(
+        `${process.env.REACT_APP_END_URL}api/getusernotifications`
+      );
+      console.log("getnotifications", res.data);
+      if (res.data) {
+        //setnotifications(res.data.notifcations);
+        dispatch({
+          type: "UPDATE_NOTIFICATIONS",
+          payload: res.data.notifcations,
+        });
+      }
+    } catch (error) {
+      console.log("error1", error);
+      if (error.response) {
+        if (error.response.data) {
+          console.log("error", error.response.data);
+          return toast.error(error.response.data.error);
+        }
+      } else {
+        return toast.error("Error in server");
+      }
+    }
+  };
   useEffect(() => {
     if (isAuthenticated) {
       if (user.token) {
         console.log("got in states", user, isAuthenticated);
         connectwithsocket();
+        getnotifications();
       }
     }
   }, [isAuthenticated]);

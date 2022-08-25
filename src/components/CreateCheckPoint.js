@@ -518,6 +518,7 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                                       setproblemnotifications([
                                         ...problemnotifications,
                                       ]);
+                                      e.stopPropagation();
                                     }}
                                   >
                                     <div className="action-icon">
@@ -535,6 +536,7 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                                       setproblemnotifications([
                                         ...problemnotifications,
                                       ]);
+                                      e.stopPropagation();
                                     }}
                                   >
                                     <div className="action-icon">
@@ -569,6 +571,7 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                                   setproblemnotifications([
                                     ...problemnotifications,
                                   ]);
+                                  e.stopPropagation();
                                 }}
                               >
                                 <div className="action-icon">
@@ -590,6 +593,7 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                                   setproblemnotifications([
                                     ...problemnotifications,
                                   ]);
+                                  e.stopPropagation();
                                 }}
                               >
                                 <div className="action-icon">
@@ -610,6 +614,7 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                               <div
                                 className="action-ico pointer"
                                 onClick={(e) => {
+                                  e.stopPropagation();
                                   const index2 = findindex(
                                     problemnotifications[index]?.groups,
                                     item2
@@ -635,6 +640,7 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                                     "problemnotifications[",
                                     problemnotifications[index]
                                   );
+                                  e.stopPropagation();
                                   problemnotifications[index]["groups"] = [
                                     ...problemnotifications[index]?.groups,
                                     item2,

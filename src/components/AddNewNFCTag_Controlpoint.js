@@ -670,6 +670,7 @@ const AddNewNFCTag = ({
                                       console.log("mod_selector", selectedUsers);
                                       //reminderselections[index]['daysbefore'] = e.target.value
                                       setreminderseletions([...reminderselections]);
+                                      e.stopPropagation();
                                     }}
                                   >
                                     <div className="action-icon">
@@ -711,6 +712,7 @@ const AddNewNFCTag = ({
                                     console.log("mod_selector", selectedUsers);
                                     //reminderselections[index]['daysbefore'] = e.target.value
                                     setreminderseletions([...reminderselections]);
+                                    e.stopPropagation();
                                   }}
                                 >
                                   <div className="action-ico">
@@ -723,6 +725,7 @@ const AddNewNFCTag = ({
                                   onClick={(e) => {
                                     reminderselections[mainindex]['selectedUsers'] = [...mainitem.selectedUsers,item]
                                     setreminderseletions([...reminderselections]);
+                                    e.stopPropagation();
                                   }}
                                 >
                                   <div className="action-icon">

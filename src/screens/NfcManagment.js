@@ -365,7 +365,7 @@ const NfcManagment = () => {
                             setsearch(e.target.value);
                           }}
                           type="text"
-                          placeholder="Search by Building,Floor or Name"
+                          placeholder="Search Anything"
                           className="txt cleanbtn s16"
                         />
                         <SearchIcon />

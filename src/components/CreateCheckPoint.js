@@ -657,7 +657,7 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                 </div>
                 <div className="date-picker flex aic jc pointer">
                   <input
-                    type="text"
+                    type="number"
                     className="txt cleanbtn s14 b4 font h-full w-full"
                     placeholder="Days"
                     onChange={(e) => {

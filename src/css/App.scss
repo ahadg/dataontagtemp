@@ -440,6 +440,7 @@ body {
           font-size: 16px;
           line-height: 29px;
           padding: 10px 0px;
+          cursor: pointer;
           svg {
             margin-right: 10px;
             width: 18px;
@@ -1715,6 +1716,7 @@ body {
       border-radius: 5px;
 
       &:first-child {
+        color: #a3a3a3;
         background: #e7e7e7;
         border-color: #e7e7e7;
       }
@@ -2411,7 +2413,7 @@ body {
           background: #e7e7e7;
           border: none !important;
           border-radius: 6px;
-          color: #000000;
+          color: #a3a3a3;
           font-size: 14px;
           font-weight: 500;
           font-family: "Poppins";
@@ -5211,4 +5213,9 @@ body {
   border: 1px solid #fff;
   background-color: #fff;
   gap: 1rem;
+}
+.add-new-Expiry {
+  cursor: pointer;
+  color: $themeColor;
+  font-weight: 500;
 }

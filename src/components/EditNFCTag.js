@@ -796,7 +796,7 @@ const EditNFCTag = ({
                     }
                   ])
                 }}
-                className="btn font b5 s13 "
+                className="add-new-Expiry"
               >
                 + Add More
               </div>

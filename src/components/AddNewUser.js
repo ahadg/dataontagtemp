@@ -238,9 +238,10 @@ const AddNewUser = ({ setOpen, companyfilter, getusers }) => {
               <div className="txt-field flex flex-col">
                 <div className="lbl s12 font">Phone Number</div>
                 <input
-                  type="number"
+                  type="tel"
                   className="txt cleanbtn s12 font"
                   placeholder="Phone Number"
+                  pattern="/^((00|\+)39[\. ]??)??3\d{2}[\. ]??\d{6,7}$/"
                   onChange={(e) => setmobile(e.target.value)}
                 />
               </div>

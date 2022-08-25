@@ -769,7 +769,7 @@ const Home = ({ location }) => {
                   </div>
                   {/* Fourth */}
                   <div className="search-by flex">
-                      <div className="search-box flex aic">
+                      <div className="search-boxs flex aic">
                         <input
                           onChange={(e) => {
                             setsearch(e.target.value);
@@ -838,7 +838,9 @@ const Home = ({ location }) => {
             </div>
             {!loading && (
               <div className="table-sec flex flex-col">
-                <div className="tbl-row flex aic">
+                <div 
+                style={{cursor : 'default'}}
+                className="tbl-row flex aic">
                   <div className="row-item">
                     <FilterIcon />
                   </div>

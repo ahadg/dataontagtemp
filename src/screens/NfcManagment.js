@@ -37,8 +37,8 @@ const NfcManagment = () => {
   const [value, setValue] = React.useState([null, null]);
   const [opennfctag, setopennfctag] = useState(false);
   const [edittagdata, setedittagdata] = useState("");
-  const [syncfusionselected,setsyncfusionselected] = useState("")
-  console.log('syncfusionselected',syncfusionselected)
+  const [syncfusionselected, setsyncfusionselected] = useState("");
+  console.log("syncfusionselected", syncfusionselected);
   const [cloneddata, setcloneddata] = useState("");
   const [hide, setHide] = useState(false);
   const [date, setDate] = useState();
@@ -181,7 +181,7 @@ const NfcManagment = () => {
       }
     }
   }, [value]);
-  console.log('org_tagids',org_tagids)
+
   useEffect(() => {
     let searchedids = [];
     if (selectedCompany) {
@@ -198,8 +198,7 @@ const NfcManagment = () => {
         if (
           item.tagIds?.location.buildingname?.search(search) > -1 ||
           item.tagIds?.location.floor?.search(search) > -1 ||
-          item.tagIds?.location.location?.search(search) > -1 ||
-          item.controlpoint?.controlpointname?.toLowerCase()?.search(search?.toLowerCase()) > -1
+          item.tagIds?.location.location?.search(search) > -1
         ) {
           return true;
         }
@@ -299,6 +298,20 @@ const NfcManagment = () => {
                     <div className="lbl font s18 b5">Filters</div>
                   </div>
                   <div className="f-fields flex aic">
+                    {/* Search Box */}
+                    <div className="search-by flex">
+                      <div className="search-box flex aic">
+                        <input
+                          onChange={(e) => {
+                            setsearch(e.target.value);
+                          }}
+                          type="text"
+                          placeholder="Search by Building or Floor"
+                          className="txt cleanbtn s16"
+                        />
+                        <SearchIcon />
+                      </div>
+                    </div>
                     {/* First */}
                     <div className="dropDown flex aic jc flex-col rel">
                       <div className="category flex aic">
@@ -357,20 +370,6 @@ const NfcManagment = () => {
                         setValue={setValue}
                       />
                     </div>
-                    {/* Search Box */}
-                    <div className="search-by flex">
-                      <div className="search-box flex aic">
-                        <input
-                          onChange={(e) => {
-                            setsearch(e.target.value);
-                          }}
-                          type="text"
-                          placeholder="Search Anything"
-                          className="txt cleanbtn s16"
-                        />
-                        <SearchIcon />
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -386,63 +385,64 @@ const NfcManagment = () => {
                 </button>
               </div>
             </div>
-            <div className="table-sec flex flex-col">
-              <div className="tbl-row flex aic">
-                <div className="row-item">
-                  <FilterIcon />
-                </div>
-                {/* <div className="row-item">Tag ID</div>
+            <div className="table-block flex">
+              <div className="table-sec flex flex-col">
+                <div className="tbl-row flex aic">
+                  <div className="row-item">
+                    <FilterIcon />
+                  </div>
+                  {/* <div className="row-item">Tag ID</div>
                 <div className="row-item">Family Name</div>
                 <div className="row-item">Sub-Family Name</div> */}
-                <div className="row-item">Controlpoint Name</div>
-                <div className="row-item">Company Name</div>
-                <div className="row-item">Building Name</div>
-                <div className="row-item">Floor</div>
-                <div className="row-item">Location</div>
-                {/* <div className="row-item">Manufacturing</div> */}
-                <div className="row-item">Expiry</div>
-                <div className="row-item">Action</div>
-              </div>
-              {mod_tagids.map((item, index) => {
-                console.log(item.tagId);
-                const tagindex = item?.controlpoint?.tagIds?.findIndex(
-                  (item2) => item2.tagId == item.tagId
-                );
-                return (
-                  <div className="tbl-row flex aic" key={index}>
-                    <div className="row-item">
-                      <div className="ico-bg flex aic jc">
-                        {/* <SigIcon /> */}
-                        <img
-                          style={{ borderRadius: "50px" }}
-                          src={`${process.env.REACT_APP_END_URL}${item?.controlpoint?.image}`}
-                          className="img"
-                        />
+                  <div className="row-item">Controlpoint Name</div>
+                  <div className="row-item">Company Name</div>
+                  <div className="row-item">Building Name</div>
+                  <div className="row-item">Floor</div>
+                  <div className="row-item">Location</div>
+                  {/* <div className="row-item">Manufacturing</div> */}
+                  <div className="row-item">Expiry</div>
+                  <div className="row-item">Action</div>
+                </div>
+                {mod_tagids.map((item, index) => {
+                  console.log(item.tagId);
+                  const tagindex = item?.controlpoint?.tagIds?.findIndex(
+                    (item2) => item2.tagId == item.tagId
+                  );
+                  return (
+                    <div className="tbl-row flex aic" key={index}>
+                      <div className="row-item">
+                        <div className="ico-bg flex aic jc">
+                          {/* <SigIcon /> */}
+                          <img
+                            style={{ borderRadius: "50px" }}
+                            src={`${process.env.REACT_APP_END_URL}${item?.controlpoint?.image}`}
+                            className="img"
+                          />
+                        </div>
                       </div>
-                    </div>
-                    {/* <div className="row-item font">{item?.tagIds?.tagId}</div>
+                      {/* <div className="row-item font">{item?.tagIds?.tagId}</div>
                   <div className="row-item font">
                     {item?.family?.deviceName}
                   </div>
                   <div className="row-item font">
                     {item?.subfamily?.subfamilyname}
                   </div> */}
-                    <div className="row-item font">
-                      {item?.controlpoint?.controlpointname}
-                    </div>
-                    <div className="row-item font">
-                      {item?.family?.createdBy?.companyName}
-                    </div>
-                    <div className="row-item font">
-                      {item.tagIds?.location.buildingname}
-                    </div>
-                    <div className="row-item font">
-                      {item.tagIds?.location.floor}
-                    </div>
-                    <div className="row-item font">
-                      {item.tagIds?.location.location}
-                    </div>
-                    {/* <div className="row-item font">
+                      <div className="row-item font">
+                        {item?.controlpoint?.controlpointname}
+                      </div>
+                      <div className="row-item font">
+                        {item?.family?.createdBy?.companyName}
+                      </div>
+                      <div className="row-item font">
+                        {item.tagIds?.location.buildingname}
+                      </div>
+                      <div className="row-item font">
+                        {item.tagIds?.location.floor}
+                      </div>
+                      <div className="row-item font">
+                        {item.tagIds?.location.location}
+                      </div>
+                      {/* <div className="row-item font">
                     {`${moment(Number(item.tagIds?.manufacturingdate)).format(
                       "D"
                     )}-${moment(Number(item.tagIds?.manufacturingdate)).format(
@@ -451,61 +451,64 @@ const NfcManagment = () => {
                       "YYYY"
                     )}`}
                   </div> */}
-                    <div className="row-item font">
-                      {`${moment((item.tagIds?.expirydate)).format(
-                        "D"
-                      )}-${moment((item.tagIds?.expirydate)).format(
-                        "MM"
-                      )}-${moment((item.tagIds?.expirydate)).format(
-                        "YYYY"
-                      )}`}
+                      <div className="row-item font">
+                        {`${moment(item.tagIds?.expirydate).format(
+                          "D"
+                        )}-${moment(item.tagIds?.expirydate).format(
+                          "MM"
+                        )}-${moment(item.tagIds?.expirydate).format("YYYY")}`}
+                      </div>
+                      <div className="row-item font">
+                        <div
+                          className="icon-del flex aic"
+                          onClick={(e) => {
+                            setOpen2(true);
+                            setedittagdata(item);
+                          }}
+                        >
+                          <DeleteIcon />
+                        </div>
+                        <div
+                          className="ico-copy flex aic jc"
+                          onClick={(e) => {
+                            setedittagdata(item);
+                            setopennfctag(true);
+                            setcloneddata(item);
+                            setsyncfusionselected(
+                              item?.tagIds?.syncfusiondetails?.object
+                            );
+                          }}
+                        >
+                          <CloneIcon />
+                        </div>
+                        <div
+                          onClick={() => {
+                            setedittagdata(item);
+                            setOpen3(true);
+                            setsyncfusionselected(
+                              item?.tagIds?.syncfusiondetails?.object
+                            );
+                          }}
+                          className="ico-edit pointer flex aic jc"
+                        >
+                          <EditIcon />
+                        </div>
+                        <div
+                          className="ico-action pointer flex aic jc"
+                          onClick={(e) => {
+                            setOpen4(true);
+                            console.log("tagIndex", tagindex);
+                            settheinspections(item.tagIds);
+                            setselectedcontrolpoint(item);
+                          }}
+                        >
+                          <ActionIcon />
+                        </div>
+                      </div>
                     </div>
-                    <div className="row-item font">
-                      <div
-                        className="icon-del flex aic"
-                        onClick={(e) => {
-                          setOpen2(true);
-                          setedittagdata(item);
-                        }}
-                      >
-                        <DeleteIcon />
-                      </div>
-                      <div
-                        className="ico-copy flex aic jc"
-                        onClick={(e) => {
-                          setsyncfusionselected(edittagdata?.tagIds?.syncfusiondetails?.syncfusionselected)
-                          setedittagdata(item);
-                          setopennfctag(true);
-                          setcloneddata(item);
-                        }}
-                      >
-                        <CloneIcon />
-                      </div>
-                      <div
-                        onClick={() => {
-                          setsyncfusionselected(edittagdata?.tagIds?.syncfusiondetails?.syncfusionselected)
-                          setedittagdata(item);
-                          setOpen3(true);
-                        }}
-                        className="ico-edit pointer flex aic jc"
-                      >
-                        <EditIcon />
-                      </div>
-                      <div
-                        className="ico-action pointer flex aic jc"
-                        onClick={(e) => {
-                          setOpen4(true);
-                          console.log("tagIndex", tagindex);
-                          settheinspections(item.tagIds);
-                          setselectedcontrolpoint(item);
-                        }}
-                      >
-                        <ActionIcon />
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
@@ -524,10 +527,13 @@ const NfcManagment = () => {
         />
       </Modal>
 
-      <Modal open={opennfctag} onClose={() => {
-        setopennfctag(false)
-        //setsyncfusionselected(edittagdata?.tagIds?.syncfusiondetails?.syncfusionselected)
-        }}>
+      <Modal
+        open={opennfctag}
+        onClose={() => {
+          setopennfctag(false);
+          setsyncfusionselected(edittagdata?.tagIds?.syncfusiondetails?.object);
+        }}
+      >
         <CloneNFCTag
           families={families}
           edittagdata={edittagdata}
@@ -546,9 +552,12 @@ const NfcManagment = () => {
         <Confirm />
       </Modal>
 
-      <Modal open={open3} onClose={() => {
-        setOpen3(false)
-        }}>
+      <Modal
+        open={open3}
+        onClose={() => {
+          setOpen3(false);
+        }}
+      >
         <EditNFCTag
           families={families}
           edittagdata={edittagdata}
@@ -580,7 +589,10 @@ const NfcManagment = () => {
               <CloseIcon />
             </div>
           </div>
-          <SyncfusionCalender setOpen5={setOpen5} setsyncfusionselected={setsyncfusionselected} />
+          <SyncfusionCalender
+            setOpen5={setOpen5}
+            setsyncfusionselected={setsyncfusionselected}
+          />
         </div>
       </Modal>
     </div>

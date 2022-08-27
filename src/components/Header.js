@@ -23,7 +23,6 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
   const [show, setShow] = useState(false);
   //const [notifications, setnotifications] = useState([]);
   const [showNotification, setShowNotification] = useState(false);
-  const {socket,rfid} = useSelector((state) => state.generalReducers);
   const {
     showRightbar,
     showSidebar,
@@ -37,13 +36,38 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
     window.location.href = "/login";
   };
 
-
   useEffect(() => {
     document.addEventListener("click", () => {
       setShow(false);
       setShowNotification(false);
     });
   }, []);
+  const getnotifications = async () => {
+    try {
+      //setloading(true);
+      const res = await axios.get(
+        `${process.env.REACT_APP_END_URL}api/getusernotifications`
+      );
+      console.log("getnotifications", res.data);
+      if (res.data) {
+        //setnotifications(res.data.notifcations);
+        dispatch({
+          type: "UPDATE_NOTIFICATIONS",
+          payload: res.data.notifcations,
+        });
+      }
+    } catch (error) {
+      console.log("error1", error);
+      if (error.response) {
+        if (error.response.data) {
+          console.log("error", error.response.data);
+          return toast.error(error.response.data.error);
+        }
+      } else {
+        return toast.error("Error in server");
+      }
+    }
+  };
   console.log("notificationss", notifications);
   useEffect(() => {
     if (socket_notification) {
@@ -76,51 +100,9 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
       }
     }
   };
-
-
-  const QRAccess = ({end,senderid,touser}) => {
-    const getseconds = (end) => {
-      var now = moment(new Date()); //todays date
-      var end = moment(end); // another date
-      var duration = moment.duration(now.diff(end));
-      return duration.asSeconds();
-    }
-    const [seconds,setseconds] = useState(30)
-    const [response,setresponse] = useState('')
-    useEffect(() => {
-      setInterval(() => setseconds( 30 - Math.floor(getseconds(end)) ) )
-    },[])
-    let sendqrresponse = (senderid,touser) => {
-      console.log('response',{senderid,touser})
-      socket.emit('message',{
-        type: "qraccessaccepted",
-        //"id": `${message.senderid}`,
-        senderid: `${touser}`,
-        title: `Qr request accepted`,
-        message: `Qr request accepted`,
-        touser: senderid
-        })
-    }
-    return (
-      <div className="action flex aic">
-        {
-          seconds < 0 || response
-          ?
-          <div className="btn button">{response ? response :'Expired'}</div>
-          :
-          <>
-            <div 
-            onClick={() => setresponse('Rejected')}
-            className="btn button">Cancel</div>
-            <div onClick={() => {
-              sendqrresponse(senderid,touser)
-              setresponse('Accepted')
-            }} className="btn button">Allow ({seconds})</div>
-          </>
-        }
-      </div>
-    )
-  }
+  useEffect(() => {
+    getnotifications();
+  }, []);
 
   return (
     <div className="header sticky flex aic">
@@ -129,7 +111,7 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
           <Link to="/" className="logo flex aic">
             <img src="/images/logo-small.svg" className="img" />
           </Link>
-          {/* <button
+          <button
             className="cleanbtn sidebar-menu-ico flex aic"
             onClick={(e) => {
               e.stopPropagation();
@@ -137,7 +119,7 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
             }}
           >
             <MenuIcon />
-          </button> */}
+          </button>
           <div className="title font s22 b6 c000 upc">{title}</div>
         </div>
         <div className="right flex aic">
@@ -229,11 +211,6 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
                             ).format("mm")}`}
                           </div>
                         </div>
-                         {
-                          item.type == "qraccess"
-                          && 
-                          <QRAccess end={item.createdAt} senderid={item.details.senderid} touser={item.details.touser}/>
-                        }
                       </div>
                     </div>
                   );
@@ -277,11 +254,6 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
                             ).format("mm")}`}
                           </div>
                         </div>
-                        {
-                          item.type == "qraccess"
-                          && 
-                          <QRAccess end={item.createdAt} senderid={item.details.senderid} touser={item.details.touser}/>
-                        }
                       </div>
                     </div>
                   );

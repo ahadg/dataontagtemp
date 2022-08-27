@@ -385,8 +385,6 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                     />
                   </div>
                 </div>
-                {/* Starting */}
-                <div className="Options">
                 <div className="search-box flex flex-col rel">
                   <div className="txt-box flex aic">
                     <div
@@ -434,7 +432,6 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                       <input
                         type="text"
                         className="txt cleanbtn"
-                        placeholder="Search users"
                         onChange={(e) => setsearch2(e.target.value)}
                       />
                       <div className="icon flex aic jc">
@@ -485,7 +482,6 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                                       setproblemnotifications([
                                         ...problemnotifications,
                                       ]);
-                                      e.stopPropagation();
                                     }}
                                   >
                                     <div className="action-icon">
@@ -518,7 +514,6 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                                       setproblemnotifications([
                                         ...problemnotifications,
                                       ]);
-                                      e.stopPropagation();
                                     }}
                                   >
                                     <div className="action-icon">
@@ -536,7 +531,6 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                                       setproblemnotifications([
                                         ...problemnotifications,
                                       ]);
-                                      e.stopPropagation();
                                     }}
                                   >
                                     <div className="action-icon">
@@ -571,7 +565,6 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                                   setproblemnotifications([
                                     ...problemnotifications,
                                   ]);
-                                  e.stopPropagation();
                                 }}
                               >
                                 <div className="action-icon">
@@ -593,7 +586,6 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                                   setproblemnotifications([
                                     ...problemnotifications,
                                   ]);
-                                  e.stopPropagation();
                                 }}
                               >
                                 <div className="action-icon">
@@ -614,7 +606,6 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                               <div
                                 className="action-ico pointer"
                                 onClick={(e) => {
-                                  e.stopPropagation();
                                   const index2 = findindex(
                                     problemnotifications[index]?.groups,
                                     item2
@@ -640,7 +631,6 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                                     "problemnotifications[",
                                     problemnotifications[index]
                                   );
-                                  e.stopPropagation();
                                   problemnotifications[index]["groups"] = [
                                     ...problemnotifications[index]?.groups,
                                     item2,
@@ -663,7 +653,7 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                 </div>
                 <div className="date-picker flex aic jc pointer">
                   <input
-                    type="number"
+                    type="text"
                     className="txt cleanbtn s14 b4 font h-full w-full"
                     placeholder="Days"
                     onChange={(e) => {
@@ -686,8 +676,6 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                     className="start-date cleanbtn pointer"
                   />
                   <CalendarTodayIcon className="calender-icon" /> */}
-                </div>
-                {/* Ending */}
                 </div>
               </div>
             ))}
@@ -726,31 +714,6 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
         </button>
         <button
           onClick={() => {
-            console.log('the_dataaa',{checklisttype,
-              checkName,
-              checkDesc,
-              startDate,
-              problemnotifications})
-            let foundemptyuser = false
-            let foundemptydaysval = false
-            if(!checkDesc || !checkName) {
-              return toast.error("Please Input all fields")
-            }
-            problemnotifications.map((item) => {
-              if(item.users.length < 1 && item.groups.length < 1){
-                foundemptyuser = true
-              }
-              else if(!item.days){
-                foundemptydaysval = true
-              }
-            })
-            if(foundemptyuser) {
-              return toast.error("Please select a user")
-            }
-            else if(foundemptydaysval) {
-              return toast.error("Please Input all fields")
-            }
-           
             modify_checlist(
               checklisttype,
               checkName,

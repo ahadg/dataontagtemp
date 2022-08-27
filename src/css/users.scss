@@ -1,0 +1,352 @@
+// users page
+.users-p {
+  min-height: calc(100vh - 80px);
+  padding: 25px 43px;
+  background-color: #f7fbfe;
+  @include media("<=tablet") {
+    padding: 25px 20px;
+  }
+  .title-blk {
+    align-items: flex-end;
+    margin-bottom: 20px;
+
+    @include media("<=560px") {
+      margin-bottom: 24px;
+    }
+    @include media("<=phoneH") {
+      flex-direction: column;
+      align-items: start;
+    }
+    .lit {
+      flex: 1;
+      @include media("<=phoneH") {
+        width: 100%;
+      }
+      .filter-sec {
+        flex: 1;
+        .f-head {
+          margin-bottom: 20px;
+          .menu-icon {
+          }
+          .lbl {
+            margin-left: 20px;
+            color: #5e5e5e;
+          }
+        }
+        .f-fields {
+          justify-content: space-between;
+          @include media("<=desktop") {
+            flex-direction: column;
+            margin-right: 12px;
+          }
+          .dropDown {
+            margin-right: 12px;
+            @include media("<=desktop") {
+              margin-right: 0px;
+              margin-bottom: 12px;
+              &:last-child {
+                margin-bottom: 0px;
+              }
+            }
+            svg {
+              path {
+                fill: $themeColor;
+              }
+            }
+            .cbox {
+              min-height: 40px;
+              border-radius: 7px;
+              border: 1px solid #fff;
+            }
+          }
+        }
+      }
+    }
+    .rit {
+      justify-content: flex-end;
+      @include media("<=desktop") {
+        flex: 1;
+        margin-left: 20px;
+        flex-direction: column;
+      }
+      @include media("<=phoneH") {
+        justify-content: start;
+        margin-top: 12px;
+        margin-left: 0;
+        width: 100%;
+      }
+      .add-btn {
+        background: $themeColor;
+        padding: 4px 16px;
+        border-radius: 5px;
+        .ico {
+          margin-right: 5px;
+          margin-top: 2px;
+          svg {
+            height: 23px;
+          }
+        }
+      }
+      .btn-2 {
+        margin-right: 10px;
+        background-color: #fff;
+        border: 1px solid $themeColor;
+        .txt {
+          color: $themeColor !important;
+        }
+        @include media("<=desktop") {
+          margin-right: 0px;
+          margin-bottom: 12px;
+        }
+      }
+    }
+  }
+  .tbl-block {
+    margin-top: 30px;
+    height: 460px;
+    .family-block {
+      flex: 0.3;
+      display: none;
+      width: 100%;
+      border-radius: 6px;
+      margin-right: 10px;
+      border: 1px solid #e5e5e5;
+      .family-haeder {
+        width: 100%;
+        padding: 15px 12px;
+        border-radius: 6px 6px 0 0;
+        background-color: #fbfbfb;
+        border-bottom: 1.6px solid #e5e5e5;
+        .icon-cyc {
+          height: 28px;
+          width: 28px;
+          border-radius: 100%;
+          margin-right: 10px;
+          border: 1px solid #00dc98;
+        }
+        .family-heading {
+          margin-right: 10px;
+        }
+        .ico {
+          cursor: pointer;
+          width: 22px;
+          height: 22px;
+          border-radius: 100%;
+          border: 1px solid #00dc98;
+        }
+      }
+      .list {
+        width: 100%;
+        overflow-y: auto;
+        .family-item {
+          width: 100%;
+          justify-content: center;
+          padding: 12px 0;
+          border-bottom: 1.2px solid #e5e5e5;
+          &.bg-color {
+            background-color: #fbfbfb;
+          }
+          .item-head {
+            padding: 12px 8px;
+            justify-content: space-around;
+            // cursor: pointer;
+            .title-lbl {
+              cursor: pointer;
+            }
+            &.bd-b {
+              border-bottom: 1.2px solid #e5e5e5;
+            }
+            .icon-fire {
+              height: 28px;
+              width: 28px;
+              border-radius: 100%;
+              border: 1px solid $themeColor;
+            }
+            .lbl {
+              color: #5e5e5e;
+              margin-left: 10px;
+            }
+            .ico-edit {
+              height: 20px;
+              width: 20px;
+              background: #fff;
+              border-radius: 100%;
+              border: 1px solid $themeColor;
+            }
+            .ico {
+              margin: 0 10px;
+            }
+          }
+          .family-detail {
+            width: 100%;
+            display: none;
+            &.show {
+              display: flex;
+            }
+            .detail-item {
+              width: 100%;
+              padding: 12px 0;
+              @include anim;
+              border-left: 2px solid transparent;
+              justify-content: center;
+              &:hover {
+                border-left: 2px solid #00dc98;
+                cursor: pointer;
+                background-color: #dffcf3;
+                .detail-lbl {
+                  color: $themeColor;
+                }
+              }
+              .icon-cyc {
+                height: 28px;
+                width: 28px;
+                border-radius: 100%;
+                border: 1px solid #00dc98;
+              }
+              .detail-lbl {
+                color: #5e5e5e;
+                font-size: 14px;
+                padding: 0 12px;
+              }
+              .ico {
+                cursor: pointer;
+                width: 22px;
+                height: 22px;
+                border-radius: 100%;
+                border: 1px solid $themeColor;
+              }
+            }
+          }
+        }
+      }
+    }
+    .checklist-control {
+      flex: 1;
+      background: #fff;
+      //   margin-left: 5px;
+      width: 100%;
+      border-radius: 6px;
+      //   border: 1px solid #fff;
+      .checklist-heading {
+        width: 100%;
+        border-radius: 6px 6px 0 0;
+        padding: 15px 12px;
+        background-color: #fbfbfb;
+        // border-bottom: 1.6px solid #fff;
+      }
+      .checklist-blocks {
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        @include media("<=desktop") {
+          overflow: auto;
+          &::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+          }
+        }
+        .block {
+          flex: 1;
+          border-right: 1.2px solid #e5e5e5;
+          overflow: scroll;
+          // &:last-child {
+          //   border-right: 0;
+          //   flex: 1
+          // }
+          @include media("<=desktop") {
+            min-width: 360px;
+          }
+          .block-heading {
+            padding: 14px 12px;
+            border-bottom: 1.2px solid #e5e5e5;
+          }
+          .items {
+            overflow: auto;
+            &::-webkit-scrollbar {
+              width: 5px;
+            }
+          }
+          .meta {
+            margin: 16px 10px;
+            padding: 10px;
+            background: #ffffff;
+            border: 1px solid #fafafa;
+            box-sizing: border-box;
+            box-shadow: 0px 14px 30px -19px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            .txt-fields {
+              // border-bottom: 1px solid #e5e5e5;
+              .icon-edit {
+                cursor: pointer;
+                svg {
+                  width: 15px;
+                  height: 16px;
+                }
+              }
+              .icon-del {
+                justify-content: flex-end;
+                padding: 6px 0px;
+                margin-left: 26px;
+                svg {
+                  &:hover {
+                    cursor: pointer;
+                  }
+                }
+              }
+              .icon-action {
+                margin-top: 6px;
+                justify-content: flex-end;
+              }
+              .txt-1 {
+                border-bottom: 1.8px dashed #e5e5e5;
+              }
+              .txt {
+                padding: 10px 6px;
+                font-family: "Poppins" !important;
+                font-style: normal;
+                font-weight: 700;
+                font-size: 13px;
+                line-height: 20px;
+              }
+              .desc {
+                padding: 10px 6px;
+                font-family: "Poppins" !important;
+                font-style: normal;
+                font-weight: 500;
+                font-size: 11px;
+                line-height: 16px;
+                color: #5e5e5e;
+              }
+            }
+          }
+          .btn-block {
+            padding: 15px 12px;
+            .add-new-btn {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              width: 45%;
+              // height: 45px;
+              border-radius: 30px;
+              background-color: $themeColor;
+              padding: 10px 8px;
+              .txt {
+                color: #fff;
+                margin-left: 10px;
+              }
+              .ico {
+                color: #fff;
+
+                svg {
+                  path {
+                    fill: #fff;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

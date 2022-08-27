@@ -179,7 +179,7 @@ const AssignRFID = ({ setOpen2, userList, rfidlist, getrfids }) => {
                   { id: "", name: "", image: "" },
                 ])
               }
-              >
+            >
               <div className="ico s18 font b6">+</div>
               <div className="lbl">Add More</div>
             </div>

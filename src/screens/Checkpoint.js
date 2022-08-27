@@ -174,7 +174,6 @@ const Checkpoint = () => {
   }, []);
 
   const modify_checlist = async (type, checkName, checkDesc, expiry,problemnotifications) => {
-    
     if (type == "maintaineradmin") {
       setmaintaineradminchecklist([
         ...maintaineradminchecklist,

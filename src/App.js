@@ -25,6 +25,7 @@ import UserProfile from "./screens/UserProfile";
 import Resetuserinfo from "./screens/Resetuserinfo";
 import TaskManagment from "./screens/TaskManagment";
 import SyncfusionCalender from "./components/SyncfusionCalender";
+import CompanyManagement from "./screens/CompanyManagement";
 
 import io from "socket.io-client";
 import { ToastContainer } from "react-toastify";
@@ -107,6 +108,11 @@ function App() {
               <DeviceSidebar />
               <Route exact path="/" component={Home} />
               <Route exact path="/profile" component={UserProfile} />
+              <Route
+                exact
+                path="/CompanyManagement"
+                component={CompanyManagement}
+              />
               <Route exact path="/checkpoint" component={Checkpoint} />
               <Route exact path="/nfc-managment" component={NfcManagment} />
               <Route exact path="/smartDevices" component={SmartDevices} />

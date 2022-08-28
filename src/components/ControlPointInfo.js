@@ -116,11 +116,11 @@ const ControlPointInfo = ({
         </div>
         <div className="check-points-item flex aic">
           <div className="left flex">Expiry :</div>
-          <div className="right flex crrr">{`${moment(
-            (theinspection.expirydate)
-          ).format("D")}-${moment((theinspection.expirydate)).format(
+          <div className="right flex crrr">{`${moment( typeof(theinspection.expirydate) == "string" ?
+            Number(theinspection.expirydate) : (theinspection.expirydate)
+          ).format("D")}-${moment(typeof(theinspection.expirydate) == "string" ?  Number(theinspection.expirydate) : (theinspection.expirydate)).format(
             "MM"
-          )}-${moment((theinspection.expirydate)).format("YYYY")}`}</div>
+          )}-${moment(typeof(theinspection.expirydate) == "string" ? Number(theinspection.expirydate) : (theinspection.expirydate)).format("YYYY")}`}</div>
         </div>
       </div>
     </div>

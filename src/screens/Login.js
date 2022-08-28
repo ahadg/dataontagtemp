@@ -57,7 +57,7 @@ const Login = ({ history }) => {
     <div className="login-p flex flex-col aic">
       <div className="wrapper">
         <div className="logo flex aic">
-          <img src="./images/logo-small.svg" className="img" />
+          <img src="./images/banner-logo.svg" className="img" />
         </div>
         <div className="title font s32 b5 c000">Login</div>
         <div className="feild flex flex-col">

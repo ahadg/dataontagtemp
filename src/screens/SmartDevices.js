@@ -27,11 +27,11 @@ import {
 } from "../svg";
 
 const SmartDevices = () => {
-  const [date, setDate] = useState(new Date().getTime());
+  const [date, setDate] = useState();
   const [hide, setHide] = useState(false);
   const [hide2, setHide2] = useState(false);
   const [hide3, setHide3] = useState(false);
-  const [companies, setcompanies] = useState([]);
+  const [companies,setcompanies] = useState([])
   const [selectedCompany, setselectedcompany] = useState();
   const [selectedCompany2, setselectedcompany2] = useState();
   const [selectedCompany3, setselectedcompany3] = useState();
@@ -57,28 +57,31 @@ const SmartDevices = () => {
   const [loading, setloading] = useState(true);
   useEffect(() => {
     let searchedids;
-    console.log("selectedCompany", selectedCompany);
-    if (selectedCompany) {
-      if (selectedCompany == "All") {
-        searchedids = [...devices];
-      } else {
-        searchedids = devices.filter(
-          (item) => item?.company?.companyName == selectedCompany
-        );
+    console.log('selectedCompany',selectedCompany)
+    if(selectedCompany){
+      if(selectedCompany == "All"){
+        searchedids = [...devices]
+      }
+      else {
+        searchedids = devices.filter((item) => item?.company?.companyName == selectedCompany) 
       }
       setfiltereddevices([...searchedids]);
     }
     if (search != undefined) {
       searchedids = devices.filter((item) => {
-        if (item.plugid.search(search) > -1) {
+        if (
+          item.plugid.search(search) > -1
+        ) {
           return true;
         }
       });
       setfiltereddevices([...searchedids]);
-    } else if (search == "") {
-      setfiltereddevices([...devices]);
     }
-  }, [search, selectedCompany]);
+    else if(search == ''){
+      setfiltereddevices([...devices])
+    }
+    
+  }, [search,selectedCompany]);
   const getdevices = async (id) => {
     try {
       setloading(true);
@@ -87,9 +90,9 @@ const SmartDevices = () => {
       );
       console.log(res2);
       setDevices(res2.data.devices);
-      setfiltereddevices(res2.data.devices);
+      setfiltereddevices(res2.data.devices)
       setloading(false);
-      setcompanies(res2.data.companies);
+      setcompanies(res2.data.companies)
     } catch (error) {
       console.log("error1", error);
       if (error.response) {
@@ -127,20 +130,6 @@ const SmartDevices = () => {
                     <div className="lbl font s18 b5">Filters</div>
                   </div>
                   <div className="f-fields flex aic">
-                    {/* Search Box */}
-                    <div className="search-by flex">
-                      <div className="search-box flex aic">
-                        <input
-                          type="text"
-                          onChange={(e) => {
-                            setsearch(e.target.value);
-                          }}
-                          placeholder="Search Tag Id"
-                          className="txt cleanbtn s16"
-                        />
-                        <SearchIcon />
-                      </div>
-                    </div>
                     {/* First */}
                     <div className="dropDown flex aic jc flex-col rel flex-[0.3]">
                       <div className="category flex aic">
@@ -173,7 +162,7 @@ const SmartDevices = () => {
                         className={`block flex aic abs ${hide ? "show" : ""}`}
                       >
                         <div className="manue flex aic col anim">
-                          {["All", ...companies]?.map((item, index) => (
+                          {["All",...companies]?.map((item, index) => (
                             <div
                               key={index}
                               className="slt flex aic"
@@ -196,7 +185,8 @@ const SmartDevices = () => {
                     <div className="date-picker flex aic jc">
                       <Datetime
                         closeOnSelect={true}
-                        value={date ? date : new Date().getTime()}
+                        placeholder="select date"
+                        value={date}
                         onChange={(value) => {
                           setDate(new Date(value).getTime());
                         }}
@@ -205,6 +195,20 @@ const SmartDevices = () => {
                         className="start-date cleanbtn"
                       />
                       <CalendarTodayIcon className="calender-icon" />
+                    </div>
+                    {/* Search Box */}
+                    <div className="search-by flex">
+                      <div className="search-box flex aic">
+                        <input
+                          type="text"
+                          onChange={(e) => {
+                            setsearch(e.target.value);
+                          }}
+                          placeholder="Search Tag Id"
+                          className="txt cleanbtn s16"
+                        />
+                        <SearchIcon />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -226,7 +230,7 @@ const SmartDevices = () => {
                 </button>
               </div>
             </div>
-            <div className="devices-block">
+            <div className="devices-block flex">
               {filtereddevices.map((item, index) => (
                 <div
                   className="device-card flex flex-col pointer"

@@ -14,6 +14,7 @@ import {
   DownloadIcon,
   ActionIcon,
   LogoutIcon,
+  SearchIcon
 } from "../svg";
 import FileSaver from "file-saver";
 import axios from "axios";
@@ -46,6 +47,7 @@ const Home = ({ location }) => {
   const [hide2, setHide2] = useState(false);
   const [hide3, setHide3] = useState(false);
   const [hide4, setHide4] = useState(false);
+  const [search, setsearch] = useState(undefined);
   const [selectedUser, setSelectedUser] = useState();
   const [companies, setcompanies] = useState([]);
   const [selectedcompany, setselectedcompany] = useState("");
@@ -88,34 +90,97 @@ const Home = ({ location }) => {
     //   status: "No Issue",
     // },
   ]);
+  const [org_tblData, setorg_tblData] = useState([])
   console.log("tblData", tblData);
-  const filterdatabycompany = () => {
-    let data = [...tblData];
-    if (selectedcompany == "All" || !selectedcompany) {
-      data = tblData.filter(
+  console.log("org_tblData", org_tblData);
+  // useEffect(() => {
+  //   let searchedids = [];
+  //   if (selectedCompany) {
+  //     if (selectedCompany == "All") {
+  //       searchedids = [...tblData];
+  //     } else {
+  //       searchedids = org_tagids.filter(
+  //         (item) => item?.family?.createdBy?.companyName == selectedCompany
+  //       );
+  //     }
+  //   }
+  //   if (search != undefined) {
+  //     searchedids = tblData.filter((item) => {
+  //       if (
+  //         item?.controlpointId?.tagIds?.location.buildingname?.search(search) > -1 ||
+  //         item?.controlpointId?.tagIds?.location.floor?.search(search) > -1 ||
+  //         item?.controlpointId?.tagIds?.location.location?.search(search) > -1 ||
+  //         //item?.controlpointId?.controlpoint?.controlpointname?.toLowerCase()?.search(search?.toLowerCase()) > -1
+  //       ) {
+  //         return true;
+  //       }
+  //       // if (item.tagIds.tagId)
+  //       //   return item.tagIds.tagId.search(search) != -1;
+  //       // }
+  //     });
+  //   }
+  //   setmod_tagids([...searchedids]);
+  // }, [search, selectedCompany]);
+  console.log('search',search)
+  const filterdatabycompany = (paramsdata) => {
+    let data = [...org_tblData];
+    let data2 = []
+    if(paramsdata){
+      data = paramsdata
+    }
+    console.log('paramsdata',paramsdata)
+    if (selectedcompany == "All" || !selectedcompany || selectedcompany == "") {
+      // data = [...org_tblData]
+      // data2 = data
+    }
+    else {
+      data = org_tblData.filter(
         (item) =>
           item?.controlpointId?.createdBy?.companyName == selectedcompany
       );
+      data2 = data
+    }
+    data2 = data
+    console.log('search',search)
+    if (search != undefined) { 
+      console.log('data',data)
+      data = data.filter((item) => {
+        if (
+          item?.controlpointId?.tagIds[0]?.location?.buildingname?.search(search) > -1 ||
+          item?.controlpointId?.tagIds[0]?.location?.floor?.search(search) > -1 ||
+          item?.controlpointId?.tagIds[0]?.location?.location?.search(search) > -1 
+          //||
+          //item?.controlpointId?.controlpoint?.controlpointname?.toLowerCase()?.search(search?.toLowerCase()) > -1
+        ) {
+          return true;
+        }
+        // if (item.tagIds.tagId)
+        //   return item.tagIds.tagId.search(search) != -1;
+        // }
+      });
+      settblData([...data])
     }
     let mod_building = [];
-    data.map((item, index) => {
-      item?.controlpointId.tagIds.map((item2) => {
-        console.log("item2", item2);
-        if (!mod_building.includes(item2.location.buildingname)) {
-          mod_building.push(item2.location.buildingname);
-        }
+    // if(selectedcompany) {
+      data2.map((item, index) => {
+        item?.controlpointId.tagIds.map((item2) => {
+          console.log("item2", item2);
+          if (!mod_building.includes(item2.location.buildingname)) {
+            mod_building.push(item2.location.buildingname);
+          }
+        });
       });
-    });
+    //}
     console.log("mod_building", mod_building);
     if (mod_building.length > 0) {
       setbuildings(["None", ...mod_building]);
     }
   };
   useEffect(() => {
-    if (selectedcompany) {
+    if (selectedcompany || search) {
       filterdatabycompany();
     }
-  }, [selectedcompany]);
+  }, [selectedcompany,search]);
   const filterdatabybuilding = () => {
     let mod_data = [];
     the_checklists.map((item, index) => {
@@ -206,9 +271,12 @@ const Home = ({ location }) => {
       console.log("response_checks", res.data);
       if (res.data.success == "true") {
         settblData(res.data.checks);
+        setorg_tblData(res.data.checks)
         setthe_checklists(res.data.checks);
         setcompanies(res.data.companies);
         setloading(false);
+        filterdatabycompany(res.data.checks)    
+      
         if (checkid) {
           let theindex = res.data.checks.findIndex(
             (item) => item._id == checkid
@@ -260,6 +328,9 @@ const Home = ({ location }) => {
 
   const sendfixrequest = async (issue, checkdesc, details) => {
     try {
+      if(!selectedUser){
+        return toast.error("Please select a user");
+      }
       let message;
       if (issue) {
         message = `${checkdesc} : ${issue}`;
@@ -277,6 +348,7 @@ const Home = ({ location }) => {
         }
       );
       console.log("sendfixrequest", res.data);
+      toast.success("Request sent successfully");
     } catch (error) {
       console.log("error1", error);
       if (error.response) {
@@ -569,12 +641,12 @@ const Home = ({ location }) => {
                             className="slt flex aic"
                             onClick={(e) => {
                               setHide(!hide);
-                              if (item == "All") {
-                                setselectedcompany(null);
-                              } else {
+                              // if (item == "All") {
+                              //   setselectedcompany(null);
+                              // } else {
                                 setselectedcompany(item);
                                 setHide2(!hide2);
-                              }
+                              //}
                             }}
                           >
                             <div className="unit-name flex aic font s14 b4">
@@ -696,6 +768,19 @@ const Home = ({ location }) => {
                     </div>
                   </div>
                   {/* Fourth */}
+                  <div className="search-by flex">
+                      <div className="search-boxs flex aic">
+                        <input
+                          onChange={(e) => {
+                            setsearch(e.target.value);
+                          }}
+                          type="text"
+                          placeholder="Search by Building or Floor"
+                          className="txt cleanbtn s16"
+                        />
+                        <SearchIcon />
+                      </div>
+                    </div>
                   {/* <div className="dropDown flex aic jc flex-col rel">
                     <div className="category flex aic">
                       <div
@@ -752,121 +837,121 @@ const Home = ({ location }) => {
               </div>
             </div>
             {!loading && (
-              <div className="table-block flex">
-                <div className="table-sec flex flex-col">
-                  <div className="tbl-row flex aic">
-                    <div className="row-item">
-                      <FilterIcon />
-                    </div>
-                    <div className="row-item">Description</div>
-                    {/* <div className="row-item">Checkpoint ID</div> */}
-                    <div className="row-item">Inspector</div>
-                    <div className="row-item">Date & Time</div>
-
-                    <div className="row-item">Issue Fixed By</div>
-                    <div className="row-item">Building Name</div>
-                    <div className="row-item">Floor</div>
-                    <div className="row-item">Location</div>
-                    {/* <div className="row-item">Date Of Manufacture</div> */}
-                    {/* <div className="row-item">Date Of Expiry</div> */}
-                    <div className="row-item">Status</div>
-                    <div className="row-item">Action</div>
+              <div className="table-sec flex flex-col">
+                <div 
+                style={{cursor : 'default'}}
+                className="tbl-row flex aic">
+                  <div className="row-item">
+                    <FilterIcon />
                   </div>
-                  {tblData.map((item, index) => {
-                    const tagindex = item?.controlpointId?.tagIds?.findIndex(
-                      (item2) => item2.tagId == item.tagId
-                    );
-                    return (
-                      <div className="tbl-row flex aic" key={index}>
-                        <div className="row-item">
-                          <div className="ico-bg flex aic jc">
-                            {/* <SigIcon /> */}
-                            <img
-                              style={{ borderRadius: "50px" }}
-                              src={`${process.env.REACT_APP_END_URL}${item?.controlpointId?.image}`}
-                              className="img"
-                            />
-                          </div>
-                        </div>
-                        <div className="row-item font">
-                          {item?.controlpointId?.controlpointname}
-                        </div>
-                        {/* <div className="row-item font">{item.tagId}</div> */}
-                        <div className="row-item font">
-                          {item?.checkedby?.userName}
-                        </div>
-                        <div
-                          className="row-item font"
-                          style={{ display: "flex", flexDirection: "column" }}
-                        >
-                          {`${moment(item.createdAt).format("D")}-${moment(
-                            item.createdAt
-                          ).format("MM")}-${moment(item.createdAt).format(
-                            "YYYY"
-                          )}`}
-                          <div>
-                            {`${moment(item.createdAt).format("HH")}:${moment(
-                              item.createdAt
-                            ).format("mm")}`}
-                          </div>
-                        </div>
+                  <div className="row-item">Description</div>
+                  {/* <div className="row-item">Checkpoint ID</div> */}
+                  <div className="row-item">Inspector</div>
+                  <div className="row-item">Date & Time</div>
 
-                        <div className="row-item font">{"Muddasir Nazir"}</div>
-                        <div className="row-item font">
-                          {
-                            item?.controlpointId?.tagIds[tagindex]?.location
-                              ?.buildingname
-                          }
-                        </div>
-                        <div className="row-item font">
-                          {
-                            item?.controlpointId?.tagIds[tagindex]?.location
-                              ?.floor
-                          }
-                        </div>
-                        <div className="row-item font">
-                          {
-                            item?.controlpointId?.tagIds[tagindex]?.location
-                              ?.location
-                          }
-                        </div>
-                        <div
-                          className="row-item font"
-                          onClick={(e) => {
-                            setOpen(true);
-                            setchecklists(item?.checklists);
-                            settheinspections(
-                              item?.controlpointId?.tagIds[tagindex]
-                            );
-                            setselectedcheck(item);
-                          }}
-                        >
-                          <div
-                            className={`btn cleanbtn font ${
-                              item.devicecondition != "abnormal"
-                                ? "green bg-green"
-                                : "red bg-red bd-red"
-                            }`}
-                          >
-                            {item.devicecondition}
-                          </div>
-                        </div>
-                        <div
-                          onClick={(e) => {
-                            setOpen3(true);
-                            settheinspections(
-                              item?.controlpointId?.tagIds[tagindex]
-                            );
-                            setselectedcheck(item);
-                          }}
-                          className="row-item font"
-                        >
-                          <ActionIcon />
+                  <div className="row-item">Issue Fixed By</div>
+                  <div className="row-item">Building Name</div>
+                  <div className="row-item">Floor</div>
+                  <div className="row-item">Location</div>
+                  {/* <div className="row-item">Date Of Manufacture</div> */}
+                  {/* <div className="row-item">Date Of Expiry</div> */}
+                  <div className="row-item">Status</div>
+                  <div className="row-item">Action</div>
+                </div>
+                {tblData.map((item, index) => {
+                  const tagindex = item?.controlpointId?.tagIds?.findIndex(
+                    (item2) => item2.tagId == item.tagId
+                  );
+                  return (
+                    <div className="tbl-row flex aic" key={index}>
+                      <div className="row-item">
+                        <div className="ico-bg flex aic jc">
+                          {/* <SigIcon /> */}
+                          <img
+                            style={{ borderRadius: "50px" }}
+                            src={`${process.env.REACT_APP_END_URL}${item?.controlpointId?.image}`}
+                            className="img"
+                          />
                         </div>
                       </div>
-                    );
-                  })}
-                </div>
+                      <div className="row-item font">
+                        {item?.controlpointId?.controlpointname}
+                      </div>
+                      {/* <div className="row-item font">{item.tagId}</div> */}
+                      <div className="row-item font">
+                        {item?.checkedby?.userName}
+                      </div>
+                      <div
+                        className="row-item font"
+                        style={{ display: "flex", flexDirection: "column" }}
+                      >
+                        {`${moment(item.createdAt).format("D")}-${moment(
+                          item.createdAt
+                        ).format("MM")}-${moment(item.createdAt).format(
+                          "YYYY"
+                        )}`}
+                        <div>
+                          {`${moment(item.createdAt).format("HH")}:${moment(
+                            item.createdAt
+                          ).format("mm")}`}
+                        </div>
+                      </div>
+
+                      <div className="row-item font">{"Muddasir Nazir"}</div>
+                      <div className="row-item font">
+                        {
+                          item?.controlpointId?.tagIds[tagindex]?.location
+                            ?.buildingname
+                        }
+                      </div>
+                      <div className="row-item font">
+                        {
+                          item?.controlpointId?.tagIds[tagindex]?.location
+                            ?.floor
+                        }
+                      </div>
+                      <div className="row-item font">
+                        {
+                          item?.controlpointId?.tagIds[tagindex]?.location
+                            ?.location
+                        }
+                      </div>
+                      <div
+                        className="row-item font"
+                        onClick={(e) => {
+                          setOpen(true);
+                          setchecklists(item?.checklists);
+                          settheinspections(
+                            item?.controlpointId?.tagIds[tagindex]
+                          );
+                          setselectedcheck(item);
+                        }}
+                      >
+                        <div
+                          className={`btn cleanbtn font ${
+                            item.devicecondition != "abnormal"
+                              ? "green bg-green"
+                              : "red bg-red bd-red"
+                          }`}
+                        >
+                          {item.devicecondition}
+                        </div>
+                      </div>
+                      <div
+                        onClick={(e) => {
+                          setOpen3(true);
+                          settheinspections(
+                            item?.controlpointId?.tagIds[tagindex]
+                          );
+                          setselectedcheck(item);
+                        }}
+                        className="row-item font"
+                      >
+                        <ActionIcon />
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>

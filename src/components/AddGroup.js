@@ -186,6 +186,7 @@ const AddGroup = ({ setOpen2, userList, getusergroup }) => {
                   <input
                     type="text"
                     className="txt-s cleanbtn"
+                    placeholder="Select Users For Group"
                     onChange={(e) => setsearch(e.target.value)}
                   />
                   <div className="icon flex aic jc">
@@ -232,6 +233,7 @@ const AddGroup = ({ setOpen2, userList, getusergroup }) => {
                                   ...selectedUser,
                                   item.userName,
                                 ]);
+                                e.stopPropagation();
                               }}
                             >
                               <div className="action-icon">

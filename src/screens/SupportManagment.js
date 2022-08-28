@@ -80,11 +80,11 @@ const Users = () => {
     // setselectedchat({...selectedchat})
     setallmessages([...allemessages])
     getmessagescount(allemessages)
-    if(selectedchat.senderid._id == user._id){
-      sendto = selectedchat.recieverid._id
+    if(selectedchat?.senderid?._id == user?._id){
+      sendto = selectedchat?.recieverid?._id
     }
     else {
-      sendto = selectedchat.senderid._id
+      sendto = selectedchat?.senderid?._id
     }
     try {
       const res = await axios.post(`${process.env.REACT_APP_END_URL}api/sendmessage`,{
@@ -202,29 +202,38 @@ const Users = () => {
 
   const UsersChatList = ({data,index,resolved} ) => {
     const [activeChat, setActiveChat] = useState(false);
-    console.log('data',data)
+    console.log('messagedata',data)
     let theuser = data?.recieverid?._id == user._id ? data.senderid : data.recieverid
     console.log('theuser',theuser)
-    const findunreadmessages = (messages) => {
+    const findunreadmessages =  (messages) => {
+     console.log('messagesttt',messages)
      let count = 0
      messages.map((item) => {
-       if(item.unread == true) {
+       if(item.unread == true && item.user != user._id) {
          count++
        }
      })
+    //  if(count > 0){
+     
+    //  }
      return count
     }
     return (
       <div
         className={`chat-item flex aic ${activeChat ? "bg" : ""}`}
-        onClick={async (e) => {
+        onClick={ (e) => {
           setActiveChat(!activeChat);
           setOpenDetail(false);
           if(!data.response){
-            await axios.post(`${process.env.REACT_APP_END_URL}api/chatresponded`,{
+             axios.post(`${process.env.REACT_APP_END_URL}api/chatresponded`,{
               id : data._id
-            });
+            }).then(() => {})
           }
+          axios.post(`${process.env.REACT_APP_END_URL}api/updatereadstatuses`,{
+            id : data._id
+          }).then(() => {
+            console.log('req.sended')
+          })
           setselectedchat(data)
           setselectedchatuser(theuser)
           setselectedchatuserindex(index)
@@ -242,6 +251,7 @@ const Users = () => {
         </div>
         <div className="chat-box-right flex flex-col">
           <div className="time-lbl">{moment(data?.messages[0]?.created).calendar()}</div>
+          {console.log('findunreadmessages(data.messages)',findunreadmessages(data.messages))}
           {findunreadmessages(data.messages) > 0 && (
             <div className="masg-numb flex aic jc">
               <div className="numb">{findunreadmessages(data.messages)}</div>
@@ -296,7 +306,8 @@ const Users = () => {
                       {/* {item.numb && ( */}
                         <div className="masg-numb flex aic jc">
                           <div className="numb">{
-                          item.lbl == 'All Requests' ? allemessages.length
+                          //item.lbl == 'All Requests' ? allemessages.length
+                          item.lbl == 'All Requests' ? unreadrequestscount.current
                           : item.lbl == 'UnRead Requests' ? unreadrequestscount.current
                           : item.lbl == 'Readed Requests' ? readrequestcount.current
                           : item.lbl == 'Resolved Issues' ? resolvedissuescount.current
@@ -319,7 +330,7 @@ const Users = () => {
                   <input
                     type="text"
                     className="txt cleanbtn"
-                    placeholder="Search"
+                    placeholder="Search by username"
                     value={search}
                     onChange={(e) => setsearch(e.target.value)}
                   />
@@ -332,7 +343,7 @@ const Users = () => {
                     allemessages?.map((item, index) => {
                       if(selectReq == 'All Requests') {
                         if(search) {
-                          if((item.senderid?.userName).toLowerCase().search(search.toLowerCase()) > -1){
+                          if((item.senderid?.userName)?.toLowerCase().search(search?.toLowerCase()) > -1){
                             return <UsersChatList data={item} index={index}/>
                           }
                         } else {
@@ -341,7 +352,7 @@ const Users = () => {
                       }
                       else if (selectReq == "UnRead Requests" && item.response == false) {
                          if(search) {
-                          if((item.senderid?.userName).toLowerCase().search(search.toLowerCase()) > -1){
+                          if((item.senderid?.userName)?.toLowerCase().search(search?.toLowerCase()) > -1){
                             return <UsersChatList data={item} index={index}/>
                           }
                         } else {
@@ -350,7 +361,7 @@ const Users = () => {
                       } 
                       else if (selectReq == "Readed Requests" && item.response == true) {
                          if(search) {
-                          if((item.senderid?.userName).toLowerCase().search(search.toLowerCase()) > -1){
+                          if((item.senderid?.userName)?.toLowerCase().search(search?.toLowerCase()) > -1){
                             return <UsersChatList data={item} index={index}/>
                           }
                         } else {
@@ -359,7 +370,7 @@ const Users = () => {
                       } 
                       else if (selectReq == "Resolved Issues" && item.resolved == true) {
                          if(search) {
-                          if((item.senderid?.userName).toLowerCase().search(search.toLowerCase()) > -1){
+                          if((item.senderid?.userName)?.toLowerCase().search(search?.toLowerCase()) > -1){
                             return <UsersChatList data={item} index={index}/>
                           }
                         } else {

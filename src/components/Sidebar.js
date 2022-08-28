@@ -27,6 +27,7 @@ const Siderbar = ({ history }) => {
     { label: "Controlpoint", slug: "/nfc-managment", icon: <NFCIcon /> },
     { label: "Smart Devices", slug: "/smartDevices", icon: <SmartDevices /> },
     { label: "Users Managment", slug: "/usersManagment", icon: <UsersIcon /> },
+    { label: "Company Managment", slug: "/CompanyManagment", icon: <UsersIcon /> },
     {
       label: "RFID Managment",
       slug: "/RfidManagment",

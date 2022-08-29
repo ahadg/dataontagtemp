@@ -26,6 +26,7 @@ import AddNewUser from "../components/AddNewUser";
 import EditUser from "../components/EditUser";
 import AddGroup from "../components/AddGroup";
 import { ToastContainer, toast } from 'react-toastify';
+import { useDispatch, useSelector } from "react-redux";
 const UsersManagment = () => {
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
@@ -35,6 +36,7 @@ const UsersManagment = () => {
   const [hide2, setHide2] = useState(false);
   const [hide3, setHide3] = useState(false);
   const [selectedCompany, setselectedcompany] = useState();
+  const { showRightbar,user } = useSelector((state) => state.generalReducers);
   const [selectedrole, setselectedrole] = useState();
   const [companyfilter, setcompanyfilter] = useState([]);
   const [userfilter, setuserfilter] = useState([
@@ -309,6 +311,9 @@ const UsersManagment = () => {
                       </div>
                     </div>
                     {/* First */}
+                    {
+                    user.userType == "superadmin"
+                      &&
                     <div className="dropDown flex aic jc flex-col rel">
                       <div className="category flex aic">
                         <div
@@ -351,7 +356,7 @@ const UsersManagment = () => {
                             >
                               <div className="unit-name flex aic font s14 b4">
                                 <span className="unit-eng flex aic font s14 b4">
-                                  {item.companyName}
+                                  {item?.companyName}
                                 </span>
                               </div>
                             </div>
@@ -359,6 +364,7 @@ const UsersManagment = () => {
                         </div>
                       </div>
                     </div>
+                    }
                     {/* Second */}
                     {/* <div className="dropDown flex aic jc flex-col rel">
                       <div className="category flex aic">
@@ -495,6 +501,9 @@ const UsersManagment = () => {
                 }
                 </div>
               </div>
+              {
+              user.userType == "superadmin"
+                &&
               <div className="rit flex aix">
                 <button
                   className="cleanbtn creat-btn  flex aic"
@@ -515,6 +524,7 @@ const UsersManagment = () => {
                   <div className="txt s12 b6 cfff">Create New User</div>
                 </button>
               </div>
+              }
             </div>
             { selecteduserfilter.title == "Users"
             &&

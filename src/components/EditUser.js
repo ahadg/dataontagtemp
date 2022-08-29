@@ -52,9 +52,11 @@ const EditUser = ({ setOpen, companyfilter, getusers, selecteduser }) => {
   const [email, setemail] = useState(selecteduser.email);
   const [mobile, setmobile] = useState(selecteduser.mobile);
   const [password, setpassword] = useState();
+  const [cpassword, setcpassword] = useState();
   const [companyRef, setselectedcompanyRef] = useState("");
   const [loading, setloading] = useState(false);
   const [companyName, setcompanyName] = useState(false);
+  const [passwordmodified,setpasswordmodified] = useState(false)
 
   const getcontrolpointlist = async () => {
     try {
@@ -102,8 +104,12 @@ const EditUser = ({ setOpen, companyfilter, getusers, selecteduser }) => {
       return toast.error("Please input phone number.");
     } else if(!validateEmail(email)) {
       return toast.error("Please input a valid email.");
-    } else if (!password) {
+    } else if (passwordmodified && !password) {
       return toast.error("Please input password.");
+    } else if (passwordmodified && password.length < 7) {
+      return toast.error("Password length should be greater than 7.");
+    } else if (passwordmodified && cpassword != password) {
+      return toast.error("Sorry! your password did'nt matched.");
     } else if(mobile.length > 12){
       return toast.error("Phone number length should'nt be greater than 12.");
     }
@@ -117,10 +123,11 @@ const EditUser = ({ setOpen, companyfilter, getusers, selecteduser }) => {
         email,
         mobile,
         password,
-        confirmPassword: password,
+        confirmPassword: cpassword,
         companyRef: selectedCompany2._id,
         userType: selectedrole?.value,
-        selectedcontrolpoints
+        selectedcontrolpoints,
+        passwordmodified
       };
     } else {
       body = {
@@ -129,10 +136,11 @@ const EditUser = ({ setOpen, companyfilter, getusers, selecteduser }) => {
         email,
         mobile,
         password,
-        confirmPassword: password,
+        confirmPassword: cpassword,
         companyName,
         userType: selectedrole?.value,
-        selectedcontrolpoints
+        selectedcontrolpoints,
+        passwordmodified
       };
     }
     console.log(body);
@@ -239,14 +247,31 @@ const EditUser = ({ setOpen, companyfilter, getusers, selecteduser }) => {
           <div className="txt-field flex flex-col">
             <div className="lbl s12 font">Password</div>
             <input
+              //disabled
               type="password"
               className="txt cleanbtn s12 font"
               placeholder="********"
               value={password}
-              onChange={(e) => setpassword(e.target.value)}
+              onChange={(e) => {
+                setpassword(e.target.value)
+                setpasswordmodified(true)
+              }}
             />
           </div>
-          <div className="txt-field flex flex-col">
+           <div className="txt-field flex flex-col">
+            <div className="lbl s12 font">Confirm Password</div>
+            <input
+              //disabled
+              type="password"
+              className="txt cleanbtn s12 font"
+              placeholder="********"
+              value={cpassword}
+              onChange={(e) => setcpassword(e.target.value)}
+            />
+          </div>
+        
+        </div>
+        <div className="txt-field flex flex-col">
             <div className="lbl s12 font">Phone Number</div>
             <input
               type="tel"
@@ -257,7 +282,6 @@ const EditUser = ({ setOpen, companyfilter, getusers, selecteduser }) => {
               onChange={(e) => setmobile(e.target.value)}
             />
           </div>
-        </div>
         <div className="data-item flex aic">
           <div className="txt-field flex flex-col">
             <div className="lbl s12 font">Role</div>

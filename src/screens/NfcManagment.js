@@ -27,9 +27,11 @@ import CloneNFCTag from "../components/CloneNFCTag_Controlpoint";
 import CustomDateRangeInputs from "../components/CustomDateRangeInputs";
 import NfcControlPointInfo from "../components/NfcControlPointInfo";
 import SyncfusionCalender from "../components/SyncfusionCalender";
+import { useDispatch, useSelector } from "react-redux";
 
 const NfcManagment = () => {
   const [open, setOpen] = useState(false);
+  const { user } = useSelector((state) => state.generalReducers);
   const [open2, setOpen2] = useState(false);
   const [open3, setOpen3] = useState(false);
   const [open4, setOpen4] = useState(false);
@@ -300,6 +302,9 @@ const NfcManagment = () => {
                   </div>
                   <div className="f-fields flex aic">
                     {/* First */}
+                    {
+                    user.userType == "superadmin"
+                      &&
                     <div className="dropDown flex aic jc flex-col rel">
                       <div className="category flex aic">
                         <div
@@ -350,6 +355,7 @@ const NfcManagment = () => {
                         </div>
                       </div>
                     </div>
+                    }
                     {/* Date Picker */}
                     <div className="date-selector flex">
                       <CustomDateRangeInputs

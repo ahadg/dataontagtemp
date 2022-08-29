@@ -51,7 +51,7 @@ const SmartDevices = () => {
     });
   }, []);
   const dispatch = useDispatch();
-  const { showRightbar } = useSelector((state) => state.generalReducers);
+  const { showRightbar,user } = useSelector((state) => state.generalReducers);
   const [devices, setDevices] = useState([]);
   const [filtereddevices, setfiltereddevices] = useState([]);
   const [loading, setloading] = useState(true);
@@ -131,6 +131,9 @@ const SmartDevices = () => {
                   </div>
                   <div className="f-fields flex aic">
                     {/* First */}
+                    {
+                    user.userType == "superadmin"
+                      &&
                     <div className="dropDown flex aic jc flex-col rel flex-[0.3]">
                       <div className="category flex aic">
                         <div
@@ -181,6 +184,7 @@ const SmartDevices = () => {
                         </div>
                       </div>
                     </div>
+                    }
                     {/* Second  */}
                     <div className="date-picker flex aic jc">
                       <Datetime

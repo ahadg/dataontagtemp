@@ -108,12 +108,15 @@ const AddNewUser = ({ setOpen, companyfilter, getusers }) => {
       console.log("error1", error);
       if (error.response) {
         if (error.response.data) {
+          setloading(false);
           console.log("error", error.response.data);
           return toast.error(error.response.data.error);
         }
       } else {
+        setloading(false);
         return toast.error("Error in server");
       }
+
     }
     //})
   };
@@ -347,7 +350,7 @@ const AddNewUser = ({ setOpen, companyfilter, getusers }) => {
                           >
                             <div className="unit-name flex aic font s14 b4">
                               <span className="unit-eng flex aic font s14 b4">
-                                {item.companyName}
+                                {item?.companyName}
                               </span>
                             </div>
                           </div>

@@ -20,7 +20,8 @@ const UserProfile = () => {
   const [password, setPassword] = useState("1234567890");
   const [mobile, setmobile] = useState(user.mobile);
   const [role, setRole] = useState(user.userType);
-  const [company, setCompany] = useState(user.companyName);
+  const [company, setCompany] = useState(user?.companyRef?.companyName);
+  console.log('user',user)
   const updateprofile = async (id) => {
     let formData = new FormData();
     setloading(true);

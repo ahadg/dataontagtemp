@@ -44,7 +44,7 @@ const RfidManagment = () => {
     { id: 1, title: "History" },
     { id: 2, title: "Realtime" },
   ]);
-  const {socket,rfid} = useSelector((state) => state.generalReducers);
+  const {socket,rfid,user} = useSelector((state) => state.generalReducers);
   const [companyfilter, setcompanyfilter] = useState([]);
   const [itemtobemodified,setrfidtobemodified] = useState({})
   const [loading, setloading] = useState(false);
@@ -223,6 +223,9 @@ const RfidManagment = () => {
                   </div>
                   <div className="f-fields flex aic">
                     {/* First */}
+                    {
+                    user.userType == "superadmin"
+                      &&
                     <div className="dropDown flex aic jc flex-col rel">
                       <div className="category flex aic">
                         <div
@@ -273,6 +276,7 @@ const RfidManagment = () => {
                         </div>
                       </div>
                     </div>
+                    }
                     {/* Second */}
                     {/* <div className="dropDown flex aic jc flex-col rel">
                       <div className="category flex aic">

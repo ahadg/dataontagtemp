@@ -132,6 +132,7 @@ const Home = ({ location }) => {
     if (selectedcompany == "All" || !selectedcompany || selectedcompany == "") {
       // data = [...org_tblData]
       // data2 = data
+      settblData([...org_tblData])
     }
     else {
       data = org_tblData.filter(
@@ -173,7 +174,7 @@ const Home = ({ location }) => {
     //}
     console.log("mod_building", mod_building);
     if (mod_building.length > 0) {
-      setbuildings(["None", ...mod_building]);
+      setbuildings(["All", ...mod_building]);
     }
   };
   useEffect(() => {
@@ -207,7 +208,7 @@ const Home = ({ location }) => {
     console.log("mod_data", mod_data);
     console.log("mod_building", mod_floor);
     if (mod_floor.length > 0) {
-      setfloors(["None", ...mod_floor]);
+      setfloors(["All", ...mod_floor]);
     }
 
     settblData([...mod_data]);
@@ -606,6 +607,9 @@ const Home = ({ location }) => {
               <div className="f-fields flex aic">
                 <div className="dialog-fields flex aic">
                   {/* First */}
+                  {
+                  user.userType == "superadmin"
+                    &&
                   <div className="dropDown flex aic jc flex-col rel">
                     <div className="category flex aic">
                       <div
@@ -659,6 +663,7 @@ const Home = ({ location }) => {
                       </div>
                     </div>
                   </div>
+                  }
                   {/* Second */}
                   <div className="dropDown flex aic jc flex-col rel">
                     <div className="category flex aic">
@@ -696,7 +701,7 @@ const Home = ({ location }) => {
                             className="slt flex aic"
                             onClick={(e) => {
                               setHide2(!hide2);
-                              if (item == "None") {
+                              if (item == "All") {
                                 setselectedbuilding(null);
                               } else {
                                 setselectedbuilding(item);
@@ -750,7 +755,7 @@ const Home = ({ location }) => {
                             onClick={(e) => {
                               setHide3(!hide3);
 
-                              if (item == "None") {
+                              if (item == "All") {
                                 setselectedfloor(null);
                               } else {
                                 setselectedfloor(item);

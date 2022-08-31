@@ -1,0 +1,175 @@
+// User Profile Page
+.user-profile-p {
+  padding: 25px 43px;
+  background-color: #f7fbfe;
+  min-height: calc(100vh - 80px);
+  @include media("<=tablet") {
+    padding: 25px 20px;
+  }
+  .bg-none {
+    background: #f9f9f9;
+  }
+  .container {
+    width: 100%;
+    @include media("<=desktop") {
+      flex-direction: column;
+    }
+    .left {
+      flex: 1;
+      border-radius: 5px;
+      margin-right: 20px;
+      background-color: #fff;
+      min-width: 550px;
+      min-height: 400px;
+      padding: 15px;
+      @include media("<=desktop") {
+        margin-right: 0px;
+        margin-bottom: 20px;
+      }
+      @include media("<=tablet") {
+        min-height: 950px;
+      }
+      @include media("<=phoneH") {
+        min-width: 100%;
+      }
+      .asd-header {
+        padding: 8px 0;
+        margin-bottom: 36px;
+      }
+      .txt-field {
+        margin-bottom: 30px;
+        .lbl {
+          font-family: "Poppins";
+          color: #5e5e5e;
+          font-weight: 400;
+          font-size: 18px;
+          line-height: 27px;
+          margin-bottom: 14px;
+        }
+        .txt {
+          padding: 8px;
+          height: 40px;
+          font-family: "Poppins";
+          font-style: normal;
+          font-weight: 400;
+          font-size: 15px;
+          line-height: 22px;
+          color: #5e5e5e;
+          border-radius: 5px;
+          border: 1px solid #e5e5e5;
+        }
+      }
+      .user-info {
+        @include media("<=tablet") {
+          flex-direction: column;
+        }
+        .select-img {
+          flex: 1;
+          .img-box {
+            width: 180px;
+            height: 180px;
+            cursor: pointer;
+            // padding: 14px;
+            border-radius: 50%;
+            background-color: #dffcf3;
+            // border: 2px dashed #00dc98;
+            .img {
+              height: 100%;
+              width: 100%;
+              border-radius: 50%;
+              object-fit: cover;
+            }
+            svg {
+              width: 100px;
+              height: 40px;
+            }
+            .select-file {
+              display: none;
+            }
+          }
+        }
+        .info-right {
+          flex: 1;
+        }
+      }
+      .asd-header-b {
+        margin-top: 20px;
+        margin-bottom: 10px;
+      }
+      .user-data {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-column-gap: 20px;
+        grid-row-gap: 20px;
+        @include media("<=tablet") {
+          grid-template-columns: repeat(1, 1fr);
+        }
+        .data-item {
+          width: 100%;
+          justify-content: space-between;
+          .txt-field {
+            // flex: 0.7;
+            width: 48%;
+          }
+        }
+      }
+    }
+    .right {
+      flex: 0.7;
+      border-radius: 5px;
+      margin-left: 10px;
+      // background-color: #fff;
+      @include media("<=desktop") {
+        margin-left: 0px;
+      }
+      .blk {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        grid-column-gap: 20px;
+        grid-row-gap: 20px;
+
+        .box {
+          height: 220px;
+          width: 100%;
+          padding: 14px;
+          background-color: #fff;
+          border-radius: 5px;
+          @include media("<=phoneH") {
+            height: 100%;
+          }
+          .tag {
+            font-family: "Poppins";
+            font-style: normal;
+            font-weight: 500;
+            font-size: 18px;
+            line-height: 29px;
+            text-align: start;
+            color: #000000;
+          }
+          .desc {
+            padding: 14px 0;
+            font-family: "Poppins";
+            font-style: normal;
+            font-weight: 300;
+            font-size: 14px;
+            line-height: 22px;
+            color: #000000;
+          }
+          .btn {
+            color: #00dc98;
+            background: none;
+            border: 2px solid #00dc98;
+            border-radius: 5px;
+          }
+          &:last-child {
+            .btn {
+              color: #07a6ff;
+              border: 2px solid #07a6ff;
+            }
+          }
+        }
+      }
+    }
+  }
+}

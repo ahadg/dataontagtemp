@@ -169,6 +169,8 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3,editcheckpo
                     />
                   </div>
                 </div>
+                {/* Starting */}
+                <div className="Options"> 
                 <div className="search-box flex flex-col rel">
                   <div className="txt-box flex aic">
                     <div
@@ -214,6 +216,7 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3,editcheckpo
                       <input
                         type="text"
                         className="txt cleanbtn"
+                        placeholder="Search User"
                         onChange={(e) => setsearch2(e.target.value)}
                       />
                       <div className="icon flex aic jc">
@@ -378,7 +381,7 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3,editcheckpo
                 </div>
                 <div className="date-picker flex aic jc pointer">
                 <input
-                    type="text"
+                    type="number"
                     className="txt cleanbtn s14 b4 font"
                     placeholder="Days"
                     onChange={(e) => {
@@ -401,6 +404,8 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3,editcheckpo
                     className="start-date cleanbtn pointer"
                   />
                   <CalendarTodayIcon className="calender-icon" /> */}
+                </div>
+                {/* Ending */}
                 </div>
               </div>
             ))}

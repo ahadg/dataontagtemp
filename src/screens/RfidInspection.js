@@ -45,7 +45,7 @@ const RfidInspection = () => {
   const [inspection, setinspection] = useState([]);
   const [mod_inspection, setmod_inspection] = useState([]);
   const [companies,setcompanies] = useState([])
-  const {socket,rfid} = useSelector((state) => state.generalReducers);
+  const {socket,rfid,user} = useSelector((state) => state.generalReducers);
   const {rfidinspectionrealtime} = useSelector((state) => state.rfidReducers);
   const [userlist,setuserlist] = useState([])
   const [rfidlist,setrfidlist] = useState([])
@@ -232,6 +232,9 @@ const RfidInspection = () => {
                   </div>
                   <div className="f-fields flex aic">
                     {/* First */}
+                    {
+                    user.userType == "superadmin"
+                      &&
                     <div className="dropDown flex aic jc flex-col rel">
                       <div className="category flex aic">
                         <div
@@ -282,6 +285,7 @@ const RfidInspection = () => {
                         </div>
                       </div>
                     </div>
+                    }
                     {/* Second */}
                     <div className="dropDown flex aic jc flex-col rel">
                       <div className="category flex aic">

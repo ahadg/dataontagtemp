@@ -20,7 +20,8 @@ const UserProfile = () => {
   const [password, setPassword] = useState("1234567890");
   const [mobile, setmobile] = useState(user.mobile);
   const [role, setRole] = useState(user.userType);
-  const [company, setCompany] = useState(user.companyName);
+  const [company, setCompany] = useState(user?.companyRef?.companyName);
+  console.log('user',user)
   const updateprofile = async (id) => {
     let formData = new FormData();
     setloading(true);
@@ -72,6 +73,7 @@ const UserProfile = () => {
         }
       );
       dispatch(loaduser())
+      toast.success("Profile updated successfully");
       setloading(false);
     } catch (error) {
       console.log("error1", error);
@@ -201,9 +203,11 @@ const UserProfile = () => {
                 <div className="txt-field flex flex-col">
                   <div className="lbl s12 font">Phone Number</div>
                   <input
-                    type="text"
+                    type="tel"
                     className="txt cleanbtn s12 font"
                     placeholder="Phone Number"
+                    pattern="/^((00|\+)39[\. ]??)??3\d{2}[\. ]??\d{6,7}$/"
+
                     value={mobile}
                     onChange={(e) => setmobile(e.target.value)}
                   />

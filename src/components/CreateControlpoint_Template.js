@@ -49,9 +49,9 @@ const AddNewControlPoint = ({ getfamilies, families, setOpen2 }) => {
     // else if(!priorities.high || !priorities.medium || !priorities.low){
     //   return toast.error("Please fill all priorities fields");
     // }
-    else if(!controlpointimage){
-      return toast.error("Please input a template image");
-    }
+    // else if(!controlpointimage){
+    //   return toast.error("Please input a template image");
+    // }
     let formData = new FormData();
     const config = {
       header: {

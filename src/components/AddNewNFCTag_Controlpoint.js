@@ -171,8 +171,13 @@ const AddNewNFCTag = ({
       setHide2(false);
       setHide3(false);
       setHide4(false);
+      //reminderselections[mainindex]['showList']
+      reminderselections.map((item,index) => {
+        reminderselections[index]['showList'] = false
+      })
+      setreminderseletions([...reminderselections])
     });
-  }, []);
+  }, [reminderselections]);
 
   return (
     <div className="create-new-nfc-taf flex">
@@ -586,6 +591,9 @@ const AddNewNFCTag = ({
                     placeholder="Days before"
                     value={mainitem.daysbefore}
                     onChange={(e) => {
+                      if(e.target.value < 0 || e.target.value == "-"){
+                        return
+                      }
                       reminderselections[mainindex]['daysbefore'] = e.target.value
                       setreminderseletions([...reminderselections])
                     }}

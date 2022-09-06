@@ -51,6 +51,7 @@
         @include media("<=480px") {
           font-size: 16px;
           line-height: 1.3;
+          margin-left: 20px;
         }
       }
       .sidebar-menu-ico {
@@ -79,6 +80,7 @@
           width: 25px;
           min-width: 25px;
           height: 25px;
+          left: 8px;
         }
         svg {
           @include media("<=480px") {
@@ -251,6 +253,9 @@
         margin: 0 8px;
         font-family: "Poppins";
         color: #000000;
+        @include media("<=phoneH") {
+          display: none;
+        }
       }
       .menu-icon {
         cursor: pointer;

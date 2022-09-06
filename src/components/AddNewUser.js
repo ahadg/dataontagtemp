@@ -27,8 +27,13 @@ const AddNewUser = ({ setOpen, companyfilter, getusers }) => {
   const [companyRef, setselectedcompanyRef] = useState("");
   const [loading, setloading] = useState(false);
   const [companyName, setcompanyName] = useState(false);
-
+  const validateEmail = (email) => {
+    return email.match(
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+  };
   const createnewuser = async (id) => {
+    console.log('vallidd',validateEmail(email))
     let formData = new FormData();
     const config = {
       header: {
@@ -42,10 +47,14 @@ const AddNewUser = ({ setOpen, companyfilter, getusers }) => {
       return toast.error("Please input email.");
     } else if (!mobile) {
       return toast.error("Please input phone number.");
+    } else if(!validateEmail(email)) {
+      return toast.error("Please input a valid email.");
     } else if (!password) {
       return toast.error("Please input password.");
     } else if (password != confirmpassword) {
       return toast.error("Password confirmation does not matched.");
+    } else if(mobile.length > 12){
+      return toast.error("Phone number length should'nt be greater than 12.");
     }
     // else if(password){
     //   return toast.error("your password was'nt matched.");
@@ -62,7 +71,7 @@ const AddNewUser = ({ setOpen, companyfilter, getusers }) => {
     setloading(true);
     formData.append("file", img);
     let body;
-    if (selectedrole?.value != "companyadmin") {
+    if (selectedrole.title == "Company user" || selectedrole.title == "Maintenance user") {
       body = {
         userName,
         email,
@@ -99,12 +108,15 @@ const AddNewUser = ({ setOpen, companyfilter, getusers }) => {
       console.log("error1", error);
       if (error.response) {
         if (error.response.data) {
+          setloading(false);
           console.log("error", error.response.data);
           return toast.error(error.response.data.error);
         }
       } else {
+        setloading(false);
         return toast.error("Error in server");
       }
+
     }
     //})
   };
@@ -229,9 +241,10 @@ const AddNewUser = ({ setOpen, companyfilter, getusers }) => {
               <div className="txt-field flex flex-col">
                 <div className="lbl s12 font">Phone Number</div>
                 <input
-                  type="number"
+                  type="tel"
                   className="txt cleanbtn s12 font"
                   placeholder="Phone Number"
+                  pattern="/^((00|\+)39[\. ]??)??3\d{2}[\. ]??\d{6,7}$/"
                   onChange={(e) => setmobile(e.target.value)}
                 />
               </div>
@@ -337,7 +350,7 @@ const AddNewUser = ({ setOpen, companyfilter, getusers }) => {
                           >
                             <div className="unit-name flex aic font s14 b4">
                               <span className="unit-eng flex aic font s14 b4">
-                                {item.companyName}
+                                {item?.companyName}
                               </span>
                             </div>
                           </div>

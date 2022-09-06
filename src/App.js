@@ -19,18 +19,19 @@ import Download from "./screens/Download";
 import Login from "./screens/Login";
 import ForgotPassword from "./screens/ForgotPassword";
 import UsersManagment from "./screens/UsersManagment";
+import CompanyManagment from "./screens/CompanyManagment";
 import RfidManagment from "./screens/RfidManagment";
 import RfidInspection from "./screens/RfidInspection";
 import UserProfile from "./screens/UserProfile";
 import Resetuserinfo from "./screens/Resetuserinfo";
 import TaskManagment from "./screens/TaskManagment";
 import SyncfusionCalender from "./components/SyncfusionCalender";
-import CompanyManagement from "./screens/CompanyManagement";
 
 import io from "socket.io-client";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import toast, { Toaster } from "react-hot-toast";
+import axios from "axios";
 
 function App() {
   const dispatch = useDispatch();
@@ -40,9 +41,7 @@ function App() {
     (state) => state.generalReducers.isAuthenticated
   );
   const user = useSelector((state) => state.generalReducers.user);
-  const notifications = useSelector(
-    (state) => state.generalReducers.notifications
-  );
+  const notifications = useSelector((state) => state.generalReducers.notifications);
   const connectwithsocket = () => {
     //const socket = io.connect(`http://localhost:5000?token=${token}&Id=${uniqueId}`);
     const socket = io.connect(
@@ -61,18 +60,11 @@ function App() {
       } else if (thedata.type == "chat") {
         dispatch({ type: "MESSAGE_UPDATE", payload: thedata });
       } else if (thedata.type == "notification") {
-        console.log("notificationss_inside");
-        dispatch({
-          type: "UPDATE_NOTIFICATIONS_SOCKET_UPDATE",
-          payload: {
-            id: thedata.id,
-            type: "notification",
-            message: thedata.message,
-            createdAt: `${new Date()}`,
-            read: false,
-            details: thedata.details,
-          },
-        });
+        console.log('notificationss_inside')
+        dispatch({ type: "UPDATE_NOTIFICATIONS_SOCKET_UPDATE", payload: {id : thedata.id,type : 'notification',message : thedata.message, createdAt : `${new Date()}`,read: false,details : thedata.details} });
+      } else if (thedata.type == "qraccess") {
+        console.log('notificationss_inside')
+        dispatch({ type: "UPDATE_NOTIFICATIONS_SOCKET_UPDATE", payload: {id : thedata.id,type : 'qraccess',message : thedata.message, createdAt : `${new Date()}`,read: false,details : {senderid : thedata.senderid, touser : thedata.touser}} });
       }
     });
     socket.on("disconnect", () => {
@@ -81,11 +73,38 @@ function App() {
       toast("socket_diconnected.");
     });
   };
+  const getnotifications = async () => {
+    try {
+      console.log("GETTTINGGG_NOTIFICATIONSS")
+      const res = await axios.get(
+        `${process.env.REACT_APP_END_URL}api/getusernotifications`
+      );
+      console.log("getnotifications", res.data);
+      if (res.data) {
+        //setnotifications(res.data.notifcations);
+        dispatch({
+          type: "UPDATE_NOTIFICATIONS",
+          payload: res.data.notifcations,
+        });
+      }
+    } catch (error) {
+      console.log("error1", error);
+      if (error.response) {
+        if (error.response.data) {
+          console.log("error", error.response.data);
+          return toast.error(error.response.data.error);
+        }
+      } else {
+        return toast.error("Error in server");
+      }
+    }
+  };
   useEffect(() => {
     if (isAuthenticated) {
       if (user.token) {
         console.log("got in states", user, isAuthenticated);
         connectwithsocket();
+        getnotifications();
       }
     }
   }, [isAuthenticated]);
@@ -98,7 +117,9 @@ function App() {
   }, []);
   return (
     <div className="App rel">
-      <ToastContainer />
+      <ToastContainer 
+      //autoClose={false} 
+      />
       <Toaster />
       {apploaded ? (
         <BrowserRouter>
@@ -108,16 +129,12 @@ function App() {
               <DeviceSidebar />
               <Route exact path="/" component={Home} />
               <Route exact path="/profile" component={UserProfile} />
-              <Route
-                exact
-                path="/CompanyManagement"
-                component={CompanyManagement}
-              />
               <Route exact path="/checkpoint" component={Checkpoint} />
               <Route exact path="/nfc-managment" component={NfcManagment} />
-              <Route exact path="/smartDevices" component={SmartDevices} />
               <Route exact path="/support" component={Support} />
+              <Route exact path="/smartDevices" component={SmartDevices} />
               <Route exact path="/usersManagment" component={UsersManagment} />
+              <Route exact path="/CompanyManagment" component={CompanyManagment} />
               <Route exact path="/RfidManagment" component={RfidManagment} />
               <Route exact path="/RfidInspection" component={RfidInspection} />
               <Route

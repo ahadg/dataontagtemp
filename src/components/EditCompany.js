@@ -6,11 +6,11 @@ import { CameraIcon, ArrowDownIcon, FireCaylinder } from "../svg/index";
 import axios from "axios";
 import Loader from "../components/Loader";
 import { ToastContainer, toast } from "react-toastify";
-const EditCompany = ({ setOpen, companyfilter, getusers }) => {
+const EditCompany = ({ setOpen, selectedcompany, getcompanies }) => {
   const [img, setImg] = useState();
   const [hide, setHide] = useState(false);
   const [hide2, setHide2] = useState(false);
-  const [selectedCompany2, setselectedcompany2] = useState();
+  console.log("selectedcompany",selectedcompany)
   const [selectedrole, setSelectedrole] = useState();
   const [roles, setroles] = useState([
     { id: 1, title: "Super admin", value: "superadmin" },
@@ -19,21 +19,21 @@ const EditCompany = ({ setOpen, companyfilter, getusers }) => {
     { id: 4, title: "Maintenance admin", value: "maintaineradmin" },
     { id: 5, title: "Maintenance user", value: "maintaineruser" },
   ]);
-  const [userName, setuserName] = useState("");
-  const [email, setemail] = useState("");
-  const [mobile, setmobile] = useState("");
-  const [password, setpassword] = useState("");
-  const [confirmpassword, setconfirmpassword] = useState("");
-  const [companyRef, setselectedcompanyRef] = useState("");
+  const [companyname, setcompanyname] = useState(selectedcompany?.companyname);
+  const [companyemail, setcompanyemail] = useState(selectedcompany?.companyemail);
+  const [mobile, setmobile] = useState(selectedcompany?.phonenumber);
+  const [city, setcity] = useState(selectedcompany?.city);
+  const [province, setprovince] = useState(selectedcompany?.province);
+  const [address, setaddress] = useState(selectedcompany?.address);
+  const [zipcode, setzipcode] = useState(selectedcompany?.zipcode);
   const [loading, setloading] = useState(false);
-  const [companyName, setcompanyName] = useState(false);
-  const validateEmail = (email) => {
-    return email.match(
+  const validatecompanyemail = (companyemail) => {
+    return companyemail.match(
       /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     );
   };
-  const createnewuser = async (id) => {
-    console.log('vallidd',validateEmail(email))
+  const createnewcompany = async (id) => {
+    console.log('vallidd',validatecompanyemail(companyemail))
     let formData = new FormData();
     const config = {
       header: {
@@ -41,69 +41,47 @@ const EditCompany = ({ setOpen, companyfilter, getusers }) => {
         "Access-Control-Allow-Origin": "*",
       },
     };
-    if (!userName) {
-      return toast.error("Please input an username.");
-    } else if (!email) {
-      return toast.error("Please input email.");
+    if (!companyname) {
+      return toast.error("Please input an companyname.");
+    } else if (!companyemail) {
+      return toast.error("Please input companyemail.");
     } else if (!mobile) {
       return toast.error("Please input phone number.");
-    } else if(!validateEmail(email)) {
-      return toast.error("Please input a valid email.");
-    } else if (!password) {
-      return toast.error("Please input password.");
-    } else if (password != confirmpassword) {
-      return toast.error("Password confirmation does not matched.");
+    } else if (!city) {
+      return toast.error("Please input city.");
+    } else if (!province) {
+      return toast.error("Please input province.");
+    } else if (!address) {
+      return toast.error("Please input address.");
+    } else if(!validatecompanyemail(companyemail)) {
+      return toast.error("Please input a valid companyemail.");
     } else if(mobile.length > 12){
       return toast.error("Phone number length should'nt be greater than 12.");
     }
-    // else if(password){
-    //   return toast.error("your password was'nt matched.");
-    // }
-    else if (
-      (selectedrole.title == "Company user" && !selectedCompany2) ||
-      (selectedrole.title == "Maintenance user" && !selectedCompany2)
-    ) {
-      return toast.error("Please select a company.");
-    } else if (!selectedrole) {
-      return toast.error("Please select a role.");
-    }
-    //console.log(body)
     setloading(true);
     formData.append("file", img);
     let body;
-    if (selectedrole.title == "Company user" || selectedrole.title == "Maintenance user") {
-      body = {
-        userName,
-        email,
-        mobile,
-        password,
-        confirmPassword: password,
-        companyRef: selectedCompany2._id,
-        userType: selectedrole?.value,
-      };
-    } else {
-      body = {
-        userName,
-        email,
-        mobile,
-        password,
-        confirmPassword: password,
-        companyName,
-        userType: selectedrole?.value,
-      };
-    }
+    body = {
+      companyname,
+      companyemail,
+      phonenumber: mobile,
+      city,
+      province,
+      address,
+      zipcode
+    };
     console.log(body);
     formData.append("data", JSON.stringify(body));
     try {
       let res2 = await axios.post(
-        `${process.env.REACT_APP_END_URL}api/register`,
+        `${process.env.REACT_APP_END_URL}api/createcompany`,
         formData,
         config
       );
       console.log(res2);
       setloading(false);
       setOpen(false);
-      getusers();
+      getcompanies()
     } catch (error) {
       console.log("error1", error);
       if (error.response) {
@@ -118,27 +96,6 @@ const EditCompany = ({ setOpen, companyfilter, getusers }) => {
     //})
   };
 
-  // const getcompanies = async () => {
-  //   try {
-  //     setloading(true);
-  //     const res = await axios.post(
-  //       `${process.env.REACT_APP_END_URL}api/getallusers`,
-  //     );
-  //     console.log("response_checks", res.data);
-  //     if (res.data) {
-  //       // setfamilies(res.data.families);
-  //       // setOpen(false);
-  //       // setloading(false);
-  //     }
-  //   } catch (error) {
-  //     console.log("error1", error);
-  //     if (error.response) {
-  //       if (error.response.data) {
-  //         console.log("error", error.response.data);
-  //       }
-  //     }
-  //   }
-  // };
 
   useEffect(() => {
     //getcompanies()
@@ -156,7 +113,7 @@ const EditCompany = ({ setOpen, companyfilter, getusers }) => {
       ) : (
         <>
           <div className="asd-header flex aic jc">
-            <div className="lbl s16 b6 font">CREATE NEW COMPANY</div>
+            <div className="lbl s16 b6 font">EDIT COMPANY</div>
           </div>
           <div className="user-info flex">
             <div className="select-img flex aic jc">
@@ -171,9 +128,11 @@ const EditCompany = ({ setOpen, companyfilter, getusers }) => {
                     className="img"
                   />
                 ) : (
-                  <>
-                    <CameraIcon />
-                  </>
+                  <img
+                    style={{ borderRadius: "50px" }}
+                    src={`${process.env.REACT_APP_END_URL}${selectedcompany.image}`}
+                    className="img"
+                  />
                 )}
                 <input
                   type="file"
@@ -196,16 +155,18 @@ const EditCompany = ({ setOpen, companyfilter, getusers }) => {
                   type="text"
                   className="txt cleanbtn s12 font"
                   placeholder="Company Name"
-                  onChange={(e) => setuserName(e.target.value)}
+                  onChange={(e) => setcompanyname(e.target.value)}
+                  value={companyname}
                 />
               </div>
               <div className="txt-field flex flex-col">
-                <div className="lbl s12 font">Company Email</div>
+                <div className="lbl s12 font">Company email</div>
                 <input
                   type="text"
                   className="txt cleanbtn s12 font"
-                  placeholder="Company Email"
-                  onChange={(e) => setemail(e.target.value)}
+                  placeholder="Company email"
+                  onChange={(e) => setcompanyemail(e.target.value)}
+                  value={companyemail}
                 />
               </div>
             </div>
@@ -223,6 +184,7 @@ const EditCompany = ({ setOpen, companyfilter, getusers }) => {
                     placeholder="Phone Number"
                     pattern="/^((00|\+)39[\. ]??)??3\d{2}[\. ]??\d{6,7}$/"
                     onChange={(e) => setmobile(e.target.value)}
+                    value={mobile}
                     />
                 </div>
                 <div className="txt-field flex flex-col">
@@ -231,7 +193,8 @@ const EditCompany = ({ setOpen, companyfilter, getusers }) => {
                     type="city"
                     className="txt cleanbtn s12 font"
                     placeholder="City"
-                    onChange={(e) => setmobile(e.target.value)}
+                    onChange={(e) => setcity(e.target.value)}
+                    value={city}
                     />
                 </div>
             </div>
@@ -242,7 +205,8 @@ const EditCompany = ({ setOpen, companyfilter, getusers }) => {
                     type="province"
                     className="txt cleanbtn s12 font"
                     placeholder="Province"
-                    onChange={(e) => setmobile(e.target.value)}
+                    onChange={(e) => setprovince(e.target.value)}
+                    value={province}
                     />
                 </div>
                 <div className="txt-field flex flex-col">
@@ -251,7 +215,8 @@ const EditCompany = ({ setOpen, companyfilter, getusers }) => {
                     type="address"
                     className="txt cleanbtn s12 font"
                     placeholder="Address"
-                    onChange={(e) => setmobile(e.target.value)}
+                    onChange={(e) => setaddress(e.target.value)}
+                    value={address}
                     />
                 </div>
             </div>
@@ -262,7 +227,8 @@ const EditCompany = ({ setOpen, companyfilter, getusers }) => {
                     type="zip"
                     className="txt cleanbtn s12 font"
                     placeholder="Zip Code"
-                    onChange={(e) => setmobile(e.target.value)}
+                    onChange={(e) => setzipcode(e.target.value)}
+                    value={zipcode}
                     />
                 </div>
                 <div className="txt-field flex flex-col">
@@ -325,10 +291,10 @@ const EditCompany = ({ setOpen, companyfilter, getusers }) => {
               Cancel
             </button>
             <button
-              onClick={() => createnewuser()}
+              onClick={() => createnewcompany()}
               className="btn cleanbtn button s14 font"
             >
-              Edit Company
+              Create User
             </button>
           </div>
         </>

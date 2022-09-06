@@ -46,13 +46,13 @@ const CompanyManagment = () => {
   const [hide, setHide] = useState(false);
   const [hide2, setHide2] = useState(false);
   const [hide3, setHide3] = useState(false);
-  const [selectedCompany, setselectedcompany] = useState();
+  // const [selectedCompany, setselectedcompany] = useState();
   const [selectedrole, setselectedrole] = useState();
   const [companyfilter, setcompanyfilter] = useState([]);
   const [userfilter, setuserfilter] = useState([
     { id: 1, title: "Users" },
   ]);
-  const [selecteduserfilter, setselecteduserfilter] = useState({
+  const [selectedcompanyfilter, setselectedcompanyfilter] = useState({
     id: 1,
     title: "Users",
   });
@@ -62,7 +62,7 @@ const CompanyManagment = () => {
   const [search, setsearch] = useState(undefined);
   const [groupsearch, setgroupsearch] = useState(undefined);
   const [filteruserList, setfilteruserList] = useState([]);
-  const [selecteduser, setselecteduser] = useState({});
+  const [selectedcompany, setselectedcompany] = useState({});
 
 
   const getcompanies = async () => {
@@ -173,7 +173,7 @@ const CompanyManagment = () => {
       setHide2(false);
     });
   }, []);
-
+  console.log('selectedcompany',selectedcompany)
   return (
     <div className="users-page">
       <Header title="Company Managment" rightbarIcon="setting" />
@@ -242,7 +242,7 @@ const CompanyManagment = () => {
                         <div
                           onClick={() => {
                             setOpen4(true);
-                            setselecteduser(item);
+                            setselectedcompany(item);
                           }}
                           className="ico-edit pointer flex aic jc"
                         >
@@ -274,7 +274,7 @@ const CompanyManagment = () => {
           getcompanies={getcompanies}
           companyfilter={companyfilter}
           setOpen={setOpen4}
-          selecteduser={selecteduser}
+          selectedcompany={selectedcompany}
         />
       </Modal>
 

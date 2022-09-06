@@ -306,7 +306,7 @@ const AddNewCompany = ({ setOpen, companyfilter, getcompanies }) => {
               onClick={() => createnewcompany()}
               className="btn cleanbtn button s14 font"
             >
-              Create User
+              Create Company
             </button>
           </div>
         </>

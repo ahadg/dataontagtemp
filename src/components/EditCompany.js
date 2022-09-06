@@ -32,7 +32,7 @@ const EditCompany = ({ setOpen, selectedcompany, getcompanies }) => {
       /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     );
   };
-  const createnewcompany = async (id) => {
+  const editcompany = async (id) => {
     console.log('vallidd',validatecompanyemail(companyemail))
     let formData = new FormData();
     const config = {
@@ -68,13 +68,14 @@ const EditCompany = ({ setOpen, selectedcompany, getcompanies }) => {
       city,
       province,
       address,
-      zipcode
+      zipcode,
+      id : selectedcompany._id
     };
     console.log(body);
     formData.append("data", JSON.stringify(body));
     try {
       let res2 = await axios.post(
-        `${process.env.REACT_APP_END_URL}api/createcompany`,
+        `${process.env.REACT_APP_END_URL}api/editcompany`,
         formData,
         config
       );
@@ -291,10 +292,10 @@ const EditCompany = ({ setOpen, selectedcompany, getcompanies }) => {
               Cancel
             </button>
             <button
-              onClick={() => createnewcompany()}
+              onClick={() => editcompany()}
               className="btn cleanbtn button s14 font"
             >
-              Create User
+              Edit Company
             </button>
           </div>
         </>

@@ -39,6 +39,9 @@
             flex-direction: column;
             margin-right: 12px;
           }
+          @include media("<=tablet") {
+            margin-right: 0px;
+          }
           .dropDown {
             margin-right: 12px;
             @include media("<=desktop") {

@@ -552,7 +552,7 @@ const Checkpoint = () => {
                           >
                             {selectedFamily
                               ? selectedFamily.deviceName
-                              : "None"}
+                              : "Select Family"}
                           </span>
                         </div>
                       </div>
@@ -633,7 +633,7 @@ const Checkpoint = () => {
                           >
                             {selectedSubfamily
                               ? selectedSubfamily.subfamilyname
-                              : "None"}
+                              : "Select Subfamily"}
                           </span>
                         </div>
                       </div>
@@ -664,7 +664,7 @@ const Checkpoint = () => {
                   </div>
                   <div className={`block flex aic abs ${hide2 ? "show" : ""}`}>
                     <div className="manue flex aic col anim">
-                      {selectedFamily && [...selectedFamily?.subfamilies,{subfamilyname : 'No Subfamily'}].map((item, index) => (
+                      {selectedFamily && [...selectedFamily?.subfamilies,{subfamilyname : 'no subfamily'}].map((item, index) => (
                         <div
                           key={index}
                           className="slt flex aic"
@@ -712,7 +712,7 @@ const Checkpoint = () => {
                           >
                             {selectedControlpoint
                               ? selectedControlpoint?.controlpointname
-                              : "None"}
+                              : "Select Template"}
                           </span>
                         </div>
                       </div>
@@ -746,7 +746,7 @@ const Checkpoint = () => {
                   <div className={`block flex aic abs ${hide3 ? "show" : ""}`}>
                     <div className="manue flex aic col anim">
                       {
-                      selectedSubfamily?.subfamilyname == "No subfamily" ?
+                      selectedSubfamily?.subfamilyname == "no subfamily" ?
                       selectedFamily?.nonsubfamilycontrolpoints?.map((item, index) => (
                         <div
                           key={index}
@@ -863,148 +863,6 @@ const Checkpoint = () => {
                 </div>
                 {/* start of checks */}
                 <div className="checklist-blocks flex">
-                <div className="block flex flex-col">
-                    <div className="block-heading s13 b5 font flex aic jc">
-                      Company Admin Checklist
-                    </div>
-                    <div className="items">
-                      {companyadminchecklist.map((item, index) => {
-                        return (
-                          <div className="meta flex flex-col">
-                            <div className="txt-fields flex flex-col">
-                              <div className="icon-action flex aic">
-                                <div 
-                                onClick={() => {
-                                  setopeneditcheckpoint(true);
-                                  seteditcheckpointinfo({
-                                    details : item,
-                                    index
-                                  })
-                                }}
-                                className="icon-edit flex aic">
-                                  <EditIcon />
-                                </div>
-                              <div
-                                onClick={() => {
-                                  setconfirmobj({type : 'companyadminchecklist',index})
-                                  setdeletedialogue(true)
-                                }}
-                                className="icon-del flex aic"
-                              >
-                                <BinBoxIcon />
-                              </div>
-                              </div>
-                              <input
-                                type="text"
-                                placeholder="Check Title..."
-                                className="txt txt-1 cleanbtn s14 b4 font"
-                                value={item.checkName}
-                                // onChange={(e) => {
-                                //   checklist.maintaineradmin.name = e.target.value
-                                //   setchecklist({...checklist})
-                                // }}
-                                disabled
-                              />
-                              <input
-                                type="text"
-                                placeholder="Check Description..."
-                                className="txt cleanbtn s14 b4 font"
-                                value={item.checkDesc}
-                                // onChange={(e) => {
-                                //   checklist.maintaineradmin.description = e.target.value
-                                //   setchecklist(checklist)
-                                // }}
-                                disabled
-                              />
-                            </div>
-                          </div>
-                        );
-                      })}
-                      <div className="btn-block flex aic jc">
-                        <button
-                          onClick={() => {
-                            setOpen3(true);
-                            setchecklisttype("companyadmin");
-                          }}
-                          className="cleanbtn add-new-btn flex aic"
-                        >
-                          <div className="ico s24 b4">+</div>
-                          <div className="txt s12 b6">Add More</div>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="block flex flex-col">
-                    <div className="block-heading s13 b5 font flex aic jc">
-                      Company User Checklist
-                    </div>
-                    <div className="items">
-                      {companyuserchecklist.map((item, index) => {
-                        return (
-                          <div className="meta flex flex-col">
-                            <div className="txt-fields flex flex-col">
-                              <div className="icon-action flex aic">
-                                <div 
-                                onClick={() => {
-                                  setopeneditcheckpoint(true);
-                                  seteditcheckpointinfo({
-                                    details : item,
-                                    index
-                                  })
-                                }}
-                                className="icon-edit flex aic">
-                                  <EditIcon />
-                                </div>
-                                <div
-                                  onClick={() => {
-                                    setconfirmobj({type : 'companyuserchecklist',index})
-                                    setdeletedialogue(true)
-                                  }}
-                                  className="icon-del flex aic"
-                                >
-                                  <BinBoxIcon />
-                                </div>
-                              </div>
-                              <input
-                                type="text"
-                                placeholder="Check Title..."
-                                className="txt txt-1 cleanbtn s14 b4 font"
-                                value={item.checkName}
-                                // onChange={(e) => {
-                                //   checklist.maintaineradmin.name = e.target.value
-                                //   setchecklist({...checklist})
-                                // }}
-                                disabled
-                              />
-                              <input
-                                type="text"
-                                placeholder="Check Description..."
-                                className="txt cleanbtn s14 b4 font"
-                                value={item.checkDesc}
-                                // onChange={(e) => {
-                                //   checklist.maintaineradmin.description = e.target.value
-                                //   setchecklist(checklist)
-                                // }}
-                                disabled
-                              />
-                            </div>
-                          </div>
-                        );
-                      })}
-                      <div className="btn-block flex aic jc">
-                        <button
-                          onClick={() => {
-                            setOpen3(true);
-                            setchecklisttype("companyuser");
-                          }}
-                          className="cleanbtn add-new-btn flex aic"
-                        >
-                          <div className="ico s24 b4">+</div>
-                          <div className="txt s12 b6">Add More</div>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
                   <div className="block flex flex-col">
                     <div className="block-heading s13 b5 font flex aic jc">
                       Maintainer Admin Checklist
@@ -1063,11 +921,49 @@ const Checkpoint = () => {
                         );
                       })}
 
+                      {/* <div className="meta flex flex-col">
+                        <div className="txt-fields flex flex-col">
+                          
+                          <input
+                            type="text"
+                            placeholder="Check Title..."
+                            className="txt txt-1 cleanbtn s14 b4 font"
+                            value={checklist.maintaineradmin.checkName}
+                            onChange={(e) => {
+                              checklist.maintaineradmin.checkName =
+                                e.target.value;
+                              setchecklist({ ...checklist });
+                            }}
+                          />
+                          <input
+                            type="text"
+                            placeholder="Check Description..."
+                            className="txt cleanbtn s14 b4 font"
+                            value={checklist.maintaineradmin.checkDesc}
+                            onChange={(e) => {
+                              checklist.maintaineradmin.checkDesc =
+                                e.target.value;
+                              setchecklist({ ...checklist });
+                            }}
+                          />
+                        </div>
+                      </div> */}
                       <div className="btn-block flex aic jc">
                         <button
                           onClick={() => {
                             setOpen3(true);
                             setchecklisttype("maintaineradmin");
+                            // setmaintaineradminchecklist([
+                            //   ...maintaineradminchecklist,
+                            //   {
+                            //     maintainedBy: "maintaineradmin",
+                            //     checkName: checklist.maintaineradmin.checkName,
+                            //     checkDesc: checklist.maintaineradmin.checkDesc,
+                            //   },
+                            // ]);
+                            // checklist.maintaineradmin.checkName = "";
+                            // checklist.maintaineradmin.checkDesc = "";
+                            // setchecksupdates(Math.random());
                           }}
                           className="cleanbtn button add-new-btn flex aic"
                         >
@@ -1134,11 +1030,263 @@ const Checkpoint = () => {
                           </div>
                         );
                       })}
+                      {/* <div className="meta flex flex-col">
+                        <div className="txt-fields flex flex-col">
+                         
+                          <input
+                            type="text"
+                            placeholder="Check Title..."
+                            className="txt txt-1 cleanbtn s14 b4 font"
+                            value={checklist.maintaineruser.checkName}
+                            onChange={(e) => {
+                              checklist.maintaineruser.checkName =
+                                e.target.value;
+                              setchecklist({ ...checklist });
+                            }}
+                          />
+                          <input
+                            type="text"
+                            placeholder="Check Description..."
+                            className="txt cleanbtn s14 b4 font"
+                            value={checklist.maintaineruser.checkDesc}
+                            onChange={(e) => {
+                              checklist.maintaineruser.checkDesc =
+                                e.target.value;
+                              setchecklist({ ...checklist });
+                            }}
+                          />
+                        </div>
+                      </div> */}
                       <div className="btn-block flex aic jc">
                         <button
                           onClick={() => {
                             setOpen3(true);
                             setchecklisttype("maintaineruser");
+                            // setmaintaineruserchecklist([
+                            //   ...maintaineruserchecklist,
+                            //   {
+                            //     maintainedBy: "maintaineruser",
+                            //     checkName: checklist.maintaineruser.checkName,
+                            //     checkDesc: checklist.maintaineruser.checkDesc,
+                            //   },
+                            // ]);
+                            // checklist.maintaineruser.checkName = "";
+                            // checklist.maintaineruser.checkDesc = "";
+                            // setchecksupdates(Math.random());
+                          }}
+                          className="cleanbtn add-new-btn flex aic"
+                        >
+                          <div className="ico s24 b4">+</div>
+                          <div className="txt s12 b6">Add More</div>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="block flex flex-col">
+                    <div className="block-heading s13 b5 font flex aic jc">
+                      Company Admin Checklist
+                    </div>
+                    <div className="items">
+                      {companyadminchecklist.map((item, index) => {
+                        return (
+                          <div className="meta flex flex-col">
+                            <div className="txt-fields flex flex-col">
+                              <div className="icon-action flex aic">
+                                <div 
+                                onClick={() => {
+                                  setopeneditcheckpoint(true);
+                                  seteditcheckpointinfo({
+                                    details : item,
+                                    index
+                                  })
+                                }}
+                                className="icon-edit flex aic">
+                                  <EditIcon />
+                                </div>
+                              <div
+                                onClick={() => {
+                                  setconfirmobj({type : 'companyadminchecklist',index})
+                                  setdeletedialogue(true)
+                                }}
+                                className="icon-del flex aic"
+                              >
+                                <BinBoxIcon />
+                              </div>
+                              </div>
+                              <input
+                                type="text"
+                                placeholder="Check Title..."
+                                className="txt txt-1 cleanbtn s14 b4 font"
+                                value={item.checkName}
+                                // onChange={(e) => {
+                                //   checklist.maintaineradmin.name = e.target.value
+                                //   setchecklist({...checklist})
+                                // }}
+                                disabled
+                              />
+                              <input
+                                type="text"
+                                placeholder="Check Description..."
+                                className="txt cleanbtn s14 b4 font"
+                                value={item.checkDesc}
+                                // onChange={(e) => {
+                                //   checklist.maintaineradmin.description = e.target.value
+                                //   setchecklist(checklist)
+                                // }}
+                                disabled
+                              />
+                            </div>
+                          </div>
+                        );
+                      })}
+                      {/* <div className="meta flex flex-col">
+                        <div className="txt-fields flex flex-col">
+                        
+                          <input
+                            type="text"
+                            placeholder="Check Title..."
+                            className="txt txt-1 cleanbtn s14 b4 font"
+                            value={checklist.companyadmin.checkName}
+                            onChange={(e) => {
+                              checklist.companyadmin.checkName = e.target.value;
+                              setchecklist({ ...checklist });
+                            }}
+                          />
+                          <input
+                            type="text"
+                            placeholder="Check Description..."
+                            className="txt cleanbtn s14 b4 font"
+                            value={checklist.companyadmin.checkDesc}
+                            onChange={(e) => {
+                              checklist.companyadmin.checkDesc = e.target.value;
+                              setchecklist({ ...checklist });
+                            }}
+                          />
+                        </div>
+                      </div> */}
+                      <div className="btn-block flex aic jc">
+                        <button
+                          onClick={() => {
+                            setOpen3(true);
+                            setchecklisttype("companyadmin");
+                            // setcompanyadminchecklist([
+                            //   ...companyadminchecklist,
+                            //   {
+                            //     maintainedBy: "companyadmin",
+                            //     checkName: checklist.companyadmin.checkName,
+                            //     checkDesc: checklist.companyadmin.checkDesc,
+                            //   },
+                            // ]);
+                            // checklist.companyadmin.checkName = "";
+                            // checklist.companyadmin.checkDesc = "";
+                            // setchecksupdates(Math.random());
+                          }}
+                          className="cleanbtn add-new-btn flex aic"
+                        >
+                          <div className="ico s24 b4">+</div>
+                          <div className="txt s12 b6">Add More</div>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="block flex flex-col">
+                    <div className="block-heading s13 b5 font flex aic jc">
+                      Company User Checklist
+                    </div>
+                    <div className="items">
+                      {companyuserchecklist.map((item, index) => {
+                        return (
+                          <div className="meta flex flex-col">
+                            <div className="txt-fields flex flex-col">
+                              <div className="icon-action flex aic">
+                                <div 
+                                onClick={() => {
+                                  setopeneditcheckpoint(true);
+                                  seteditcheckpointinfo({
+                                    details : item,
+                                    index
+                                  })
+                                }}
+                                className="icon-edit flex aic">
+                                  <EditIcon />
+                                </div>
+                                <div
+                                  onClick={() => {
+                                    setconfirmobj({type : 'companyuserchecklist',index})
+                                    setdeletedialogue(true)
+                                  }}
+                                  className="icon-del flex aic"
+                                >
+                                  <BinBoxIcon />
+                                </div>
+                              </div>
+                              <input
+                                type="text"
+                                placeholder="Check Title..."
+                                className="txt txt-1 cleanbtn s14 b4 font"
+                                value={item.checkName}
+                                // onChange={(e) => {
+                                //   checklist.maintaineradmin.name = e.target.value
+                                //   setchecklist({...checklist})
+                                // }}
+                                disabled
+                              />
+                              <input
+                                type="text"
+                                placeholder="Check Description..."
+                                className="txt cleanbtn s14 b4 font"
+                                value={item.checkDesc}
+                                // onChange={(e) => {
+                                //   checklist.maintaineradmin.description = e.target.value
+                                //   setchecklist(checklist)
+                                // }}
+                                disabled
+                              />
+                            </div>
+                          </div>
+                        );
+                      })}
+                      {/* <div className="meta flex flex-col">
+                        <div className="txt-fields flex flex-col">
+                        
+                          <input
+                            type="text"
+                            placeholder="Check Title..."
+                            className="txt txt-1 cleanbtn s14 b4 font"
+                            value={checklist.companyuser.checkName}
+                            onChange={(e) => {
+                              checklist.companyuser.checkName = e.target.value;
+                              setchecklist({ ...checklist });
+                            }}
+                          />
+                          <input
+                            type="text"
+                            placeholder="Check Description..."
+                            className="txt cleanbtn s14 b4 font"
+                            value={checklist.companyuser.checkDesc}
+                            onChange={(e) => {
+                              checklist.companyuser.checkDesc = e.target.value;
+                              setchecklist({ ...checklist });
+                            }}
+                          />
+                        </div>
+                      </div> */}
+                      <div className="btn-block flex aic jc">
+                        <button
+                          onClick={() => {
+                            setOpen3(true);
+                            setchecklisttype("companyuser");
+                            // setcompanyuserchecklist([
+                            //   ...companyuserchecklist,
+                            //   {
+                            //     maintainedBy: "companyuser",
+                            //     checkName: checklist.companyuser.checkName,
+                            //     checkDesc: checklist.companyuser.checkDesc,
+                            //   },
+                            // ]);
+                            // checklist.companyuser.checkName = "";
+                            // checklist.companyuser.checkDesc = "";
+                            // setchecksupdates(Math.random());
                           }}
                           className="cleanbtn add-new-btn flex aic"
                         >

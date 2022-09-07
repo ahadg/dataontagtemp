@@ -11,7 +11,6 @@
 @import "./rfidManagement.scss";
 @import "./userProfile.scss";
 
-
 /* Custom Css for Sync Fusion Start */
 
 // @import "../../node_modules/@syncfusion/";
@@ -188,281 +187,9 @@ body {
   }
 }
 
-// Header
-.header {
-  top: 0;
-  left: 0;
-  right: 0;
-  background: #fff;
-  z-index: 100;
-  .wrap {
-    width: 100%;
-    padding: 0px 40px;
-    height: 80px;
-    border-bottom: 1px solid #f7fbfe;
-    background: #f7fbfe;
-    margin-left: 100px;
-    @include media("<=tablet") {
-      padding: 0px 20px;
-      margin-left: 0px;
-    }
-    @include media("<=phoneH") {
-      padding: 0px 10px 0px 20px;
-    }
-    .left {
-      flex: 1;
-      // margin-left: 100px;
-      .logo {
-        background: #ffffff;
-        height: 50px;
-        // width: 100px;
-        min-width: 50px;
-        justify-content: center;
-        position: absolute;
-        top: 15px;
-        left: 28px;
-        @include media("<=tablet") {
-          display: none;
-        }
-        .img {
-          height: 35px;
-        }
-      }
-      .title {
-        @include media("<=phoneH") {
-          font-size: 18px;
-        }
-        @include media("<=480px") {
-          font-size: 16px;
-          line-height: 1.3;
-        }
-      }
-      .sidebar-menu-ico {
-        box-shadow: 0px 6px 20px 4px rgba(0, 0, 0, 0.03);
-        background: #fff;
-        width: 35px;
-        min-width: 35px;
-        height: 35px;
-        justify-content: center;
-        border-radius: 50%;
-        margin-right: 20px;
-        // display: none;
-        position: absolute;
-        /* top: 22px; */
-        left: 88px;
-        @include media("<=tablet") {
-          display: flex;
-        }
-        @include media("<=480px") {
-          margin-right: 10px;
-        }
-        svg {
-        }
-      }
-    }
-    .right {
-      .bell-ico {
-        svg {
-          height: 21px;
-        }
-        .numb {
-          top: -1px;
-          right: 0;
-          width: 13px;
-          height: 13px;
-          border-radius: 100%;
-          background-color: #ff9900;
-        }
-      }
-      .manue-notifications {
-        background: #fff;
-        width: 380px;
-        position: absolute;
-        top: 65px;
-        right: 240px;
-        padding: 20px;
-        background: #ffffff;
-        box-shadow: 0px 0px 52px -30px rgba(0, 0, 0, 0.25);
-        border-radius: 8px;
-        &.show {
-          @include dropDownAnim;
-        }
-        .menue-tag {
-          font-weight: 600;
-          font-size: 15px;
-          line-height: 22px;
-          color: #000000;
-          text-align: center;
-        }
-        .notification-filter {
-          .left {
-            flex: 1;
-            .left-tab {
-              margin-right: 10px;
-              cursor: pointer;
-              font-style: normal;
-              font-weight: 400;
-              font-size: 13px;
-              line-height: 18px;
-              color: #aeadad;
-              // padding-bottom: 6px;
-              border-bottom: 2px solid transparent;
-              &.active {
-                color: #0b0b0b;
-                border-bottom: 2px solid #00dc98;
-              }
-            }
-          }
-          .right {
-            flex: 0.5;
-            justify-content: flex-end;
-          }
-        }
-        .notifiaction-list {
-          height: 220px;
-          overflow-y: auto;
-          padding: 20px 10px;
-          &::-webkit-scrollbar {
-            width: 5px;
-          }
-          .list-item {
-            min-height: 70px;
-            padding: 7px 0;
-            border-bottom: 1px solid #e4e4e4;
-            .meta {
-              .le {
-                .icon {
-                  background: #f0f0f0;
-                  height: 34px;
-                  width: 34px;
-                  border-radius: 50%;
-                  .ico {
-                    svg {
-                      height: 16px;
-                      width: 16px;
-                    }
-                  }
-                  .dot {
-                    top: 6px;
-                    right: 0;
-
-                    height: 6px;
-                    width: 6px;
-                    border-radius: 50%;
-                    position: absolute;
-                    background: #00d292;
-                  }
-                }
-              }
-              .ri {
-                padding-left: 14px;
-                .ri-tag {
-                  font-weight: 400;
-                  font-size: 12px;
-                  line-height: 18px;
-                  color: #5e5e5e;
-                }
-                .ri-date {
-                  font-weight: 300;
-                  font-size: 10px;
-                  line-height: 15px;
-                  color: #9a9a9a;
-                }
-              }
-            }
-            .action {
-              justify-content: space-between;
-              padding: 12px 0;
-              .btn {
-                padding: 6px 8px;
-                font-weight: 600;
-                font-size: 10px;
-                border-radius: 3px;
-                width: 80px;
-
-                &:first-child {
-                  color: #a3a3a3;
-                  border: 1px solid #f0f0f0;
-                  background: #f0f0f0;
-                }
-              }
-            }
-          }
-        }
-        .tag {
-          color: #818181;
-          font-family: "Poppins";
-          font-style: normal;
-          font-weight: 400;
-          font-size: 16px;
-          line-height: 29px;
-          padding: 10px 0px;
-          svg {
-            margin-right: 10px;
-            width: 18px;
-            height: 18px;
-          }
-          &:first-child {
-            // opacity: 0.03;
-
-            border-bottom: 0.5px solid #eee;
-          }
-        }
-      }
-      .user-img {
-        margin-left: 15px;
-        .img {
-          height: 42px;
-        }
-      }
-      .user-name {
-        margin: 0 8px;
-        font-family: "Poppins";
-        color: #000000;
-      }
-      .menu-icon {
-        cursor: pointer;
-        svg {
-          path {
-            fill: $themeColor;
-          }
-        }
-      }
-      .manue-profile {
-        background: #fff;
-        width: 180px;
-        position: absolute;
-        top: 85px;
-        right: 30px;
-        padding: 10px 12px;
-        background: #ffffff;
-        box-shadow: 0px 0px 52px -30px rgba(0, 0, 0, 0.25);
-        border-radius: 8px;
-        &.show {
-          @include dropDownAnim;
-        }
-        .tag {
-          color: #818181;
-          font-family: "Poppins";
-          font-style: normal;
-          font-weight: 400;
-          font-size: 16px;
-          line-height: 29px;
-          padding: 10px 0px;
-          cursor: pointer;
-          svg {
-            margin-right: 10px;
-            width: 18px;
-            height: 18px;
-          }
-          &:first-child {
-            // opacity: 0.03;
-
-            border-bottom: 0.5px solid #eee;
-          }
-        }
-      }
-    }
+.mui-date-ranger {
+  @include media("<=phoneH") {
+    padding: 0;
   }
 }
 
@@ -767,139 +494,14 @@ body {
   }
 }
 
-// Home Pages
-.home-p {
-  background-color: #f7fbfe;
-  .container {
-    flex: 1;
-    padding: 0 30px;
-    margin: 1.5em auto 0;
-    .filter-sec {
-      .f-head {
-        .menu-icon {
-        }
-        .lbl {
-          margin-left: 20px;
-          color: #5e5e5e;
-        }
-      }
-      .f-fields {
-        margin: 20px 0;
-        .dialog-fields {
-          flex: 1;
-          .dropDown {
-            width: 20%;
-            margin-right: 40px;
-
-            .cbox {
-              min-height: 40px;
-              border-radius: 7px;
-              svg {
-                path {
-                  fill: $themeColor;
-                }
-              }
-            }
-          }
-        }
-        .date-selector {
-          justify-content: flex-end;
-        }
-      }
-    }
-    .table-sec {
-      background: #fff;
-      border: 2px solid #fff;
-      border-radius: 4px;
-      min-height: 500px;
-      margin: 10px 0;
-      .tbl-row {
-        width: 100%;
-        height: 60px;
-        border-bottom: 1px solid #e5e5e5;
-        &:hover {
-          background-color: #f8fffd;
-          cursor: pointer;
-        }
-        &:first-child {
-          // padding: 8px 4px;
-          .row-item {
-            max-height: 60px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #000000 !important;
-            &:first-child {
-              cursor: pointer;
-              flex: 0.5;
-            }
-          }
-        }
-        .row-item {
-          flex: 1;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 8px 4px;
-          font-size: 12px;
-          color: #5d5d5d;
-          font-weight: 500;
-          text-align: center;
-          max-height: 60px;
-          min-height: 60px;
-
-          .ico-bg {
-            // background: #00d29221;
-            // padding: 4px 5px;
-            border-radius: 50%;
-            border: 1px solid #00dc98;
-            // cursor: pointer;
-            .img {
-              height: 34px;
-              width: 34px;
-              padding: 6px;
-            }
-          }
-          .btn {
-            font-size: 10px;
-            border: 1px solid #00dc98;
-            border-radius: 8px;
-            padding: 6px 8px;
-            font-weight: 600;
-            background: #dffcf3;
-            cursor: pointer;
-            &.green {
-              color: #00dc98;
-            }
-            &.red {
-              color: #ff2d2d;
-            }
-            &.bg-red {
-              background: #ffeaea;
-            }
-            &.bg-green {
-              background: #dffcf3;
-            }
-            &.bd-red {
-              border: 1px solid #ff2d2d;
-            }
-          }
-          &:first-child {
-            flex: 0.5;
-          }
-          &:nth-child(11) {
-            color: #ff2d2d;
-          }
-        }
-      }
-    }
-  }
-}
-
 .check-point {
   padding: 25px 25px;
   border-radius: 8px;
   min-height: 500px;
   min-width: 600px;
+  @include media("<=560px") {
+    min-width: 300px;
+  }
   .check-point-header {
     width: 100%;
     max-height: 20px;
@@ -968,8 +570,14 @@ body {
       }
       .item-detail {
         margin: 6px 0;
+        @include media("<=560px") {
+          flex-direction: column;
+        }
         .detail-left {
           flex: 2;
+          @include media("<=560px") {
+            width: 100%;
+          }
           .warning-tag {
             color: #ff2d2d;
           }
@@ -978,18 +586,29 @@ body {
           }
           .issue-action {
             margin-top: 15px;
+            @include media("<=560px") {
+              flex-direction: column;
+            }
             .btn-fix {
               width: 130px;
               font-size: 12px;
               padding: 8px 10px;
               border-radius: 6px;
               margin-right: 20px;
+              @include media("<=560px") {
+                width: 100%;
+                margin-right: 0;
+              }
             }
             .dropDown {
               border: 1px solid #dcdcdc;
               border-radius: 6px;
               cursor: pointer;
               width: 50%;
+              @include media("<=560px") {
+                width: 100%;
+                margin: 12px 0;
+              }
               svg {
                 path {
                   fill: $themeColor;
@@ -1013,12 +632,15 @@ body {
     }
   }
 }
-
 .control-point-info {
   padding: 25px 25px;
   border-radius: 8px;
   min-height: 500px;
   min-width: 600px;
+  @include media("<=560px") {
+    width: 100%;
+    min-width: 300px;
+  }
   .check-point-header {
     width: 100%;
     max-height: 20px;
@@ -1054,12 +676,20 @@ body {
         font-size: 16px;
         font-weight: 600;
         text-align: center;
+        @include media("<=560px") {
+          font-size: 12px;
+          text-align: start;
+        }
         .img {
           padding: 12px;
           border-radius: 50%;
           height: 100px;
           width: 100px;
           border: 3px solid #00d292;
+          @include media("<=560px") {
+            height: 70px;
+            width: 70px;
+          }
         }
       }
       .right {
@@ -1068,7 +698,9 @@ body {
         font-weight: 500;
         color: #000000;
         text-align: center;
-
+        @include media("<=560px") {
+          font-size: 10px;
+        }
         .copy-icon {
           cursor: pointer;
           margin: 0 10px;
@@ -1111,321 +743,15 @@ body {
   }
 }
 
-// users page
-.users-p {
-  height: calc(100vh - 80px);
-  padding: 25px 43px;
-  background-color: #f7fbfe;
-  @include media("<=tablet") {
-    padding: 25px 20px;
-  }
-  .title-blk {
-    align-items: flex-end;
-    margin-bottom: 20px;
-    @include media("<=560px") {
-      margin-bottom: 24px;
-    }
-    .lit {
-      flex: 1;
-      .filter-sec {
-        flex: 1;
-        .f-head {
-          margin-bottom: 20px;
-          .menu-icon {
-          }
-          .lbl {
-            margin-left: 20px;
-            color: #5e5e5e;
-          }
-        }
-        .f-fields {
-          justify-content: space-between;
-          .dropDown {
-            margin-right: 12px;
-            svg {
-              path {
-                fill: $themeColor;
-              }
-            }
-            .cbox {
-              min-height: 40px;
-              border-radius: 7px;
-              border: 1px solid #fff;
-            }
-          }
-        }
-      }
-    }
-    .rit {
-      // flex: 1;
-      justify-content: flex-end;
-      .add-btn {
-        background: $themeColor;
-        padding: 4px 16px;
-        border-radius: 5px;
-        .ico {
-          margin-right: 5px;
-          margin-top: 2px;
-          svg {
-            height: 23px;
-          }
-        }
-      }
-      .btn-2 {
-        margin-right: 10px;
-        background-color: #fff;
-        border: 1px solid $themeColor;
-        .txt {
-          color: $themeColor !important;
-        }
-      }
-    }
-  }
-  .tbl-block {
-    margin-top: 30px;
-    height: 460px;
-    .family-block {
-      flex: 0.3;
-      display: none;
-      width: 100%;
-      border-radius: 6px;
-      margin-right: 10px;
-      border: 1px solid #e5e5e5;
-      .family-haeder {
-        width: 100%;
-        padding: 15px 12px;
-        border-radius: 6px 6px 0 0;
-        background-color: #fbfbfb;
-        border-bottom: 1.6px solid #e5e5e5;
-        .icon-cyc {
-          height: 28px;
-          width: 28px;
-          border-radius: 100%;
-          margin-right: 10px;
-          border: 1px solid #00dc98;
-        }
-        .family-heading {
-          margin-right: 10px;
-        }
-        .ico {
-          cursor: pointer;
-          width: 22px;
-          height: 22px;
-          border-radius: 100%;
-          border: 1px solid #00dc98;
-        }
-      }
-      .list {
-        width: 100%;
-        overflow-y: auto;
-        .family-item {
-          width: 100%;
-          justify-content: center;
-          padding: 12px 0;
-          border-bottom: 1.2px solid #e5e5e5;
-          &.bg-color {
-            background-color: #fbfbfb;
-          }
-          .item-head {
-            padding: 12px 8px;
-            justify-content: space-around;
-            // cursor: pointer;
-            .title-lbl {
-              cursor: pointer;
-            }
-            &.bd-b {
-              border-bottom: 1.2px solid #e5e5e5;
-            }
-            .icon-fire {
-              height: 28px;
-              width: 28px;
-              border-radius: 100%;
-              border: 1px solid $themeColor;
-            }
-            .lbl {
-              color: #5e5e5e;
-              margin-left: 10px;
-            }
-            .ico-edit {
-              height: 20px;
-              width: 20px;
-              background: #fff;
-              border-radius: 100%;
-              border: 1px solid $themeColor;
-            }
-            .ico {
-              margin: 0 10px;
-            }
-          }
-          .family-detail {
-            width: 100%;
-            display: none;
-            &.show {
-              display: flex;
-            }
-            .detail-item {
-              width: 100%;
-              padding: 12px 0;
-              @include anim;
-              border-left: 2px solid transparent;
-              justify-content: center;
-              &:hover {
-                border-left: 2px solid #00dc98;
-                cursor: pointer;
-                background-color: #dffcf3;
-                .detail-lbl {
-                  color: $themeColor;
-                }
-              }
-              .icon-cyc {
-                height: 28px;
-                width: 28px;
-                border-radius: 100%;
-                border: 1px solid #00dc98;
-              }
-              .detail-lbl {
-                color: #5e5e5e;
-                font-size: 14px;
-                padding: 0 12px;
-              }
-              .ico {
-                cursor: pointer;
-                width: 22px;
-                height: 22px;
-                border-radius: 100%;
-                border: 1px solid $themeColor;
-              }
-            }
-          }
-        }
-      }
-    }
-    .checklist-control {
-      flex: 1;
-      background: #fff;
-      margin-left: 5px;
-      width: 100%;
-      border-radius: 6px;
-      border: 1px solid #fff;
-      .checklist-heading {
-        width: 100%;
-        border-radius: 6px 6px 0 0;
-        padding: 15px 12px;
-        background-color: #fbfbfb;
-        border-bottom: 1.6px solid #fff;
-      }
-      .checklist-blocks {
-        height: 100%;
-        width: 100%;
-        overflow: hidden;
-        .block {
-          flex: 1;
-          border-right: 1.2px solid #e5e5e5;
-          overflow: scroll;
-          // &:last-child {
-          //   border-right: 0;
-          //   flex: 1
-          // }
-          .block-heading {
-            padding: 14px 12px;
-            border-bottom: 1.2px solid #e5e5e5;
-          }
-          .items {
-            overflow: auto;
-            &::-webkit-scrollbar {
-              width: 5px;
-            }
-          }
-          .meta {
-            margin: 16px 10px;
-            padding: 10px;
-            background: #ffffff;
-            border: 1px solid #fafafa;
-            box-sizing: border-box;
-            box-shadow: 0px 14px 30px -19px rgba(0, 0, 0, 0.15);
-            border-radius: 10px;
-            .txt-fields {
-              // border-bottom: 1px solid #e5e5e5;
-              .icon-edit {
-                cursor: pointer;
-                svg {
-                  width: 15px;
-                  height: 16px;
-                }
-              }
-              .icon-del {
-                justify-content: flex-end;
-                padding: 6px 0px;
-                margin-left: 26px;
-                svg {
-                  &:hover {
-                    cursor: pointer;
-                  }
-                }
-              }
-              .icon-action {
-                margin-top: 6px;
-                justify-content: flex-end;
-              }
-              .txt-1 {
-                border-bottom: 1.8px dashed #e5e5e5;
-              }
-              .txt {
-                padding: 10px 6px;
-                font-family: "Poppins" !important;
-                font-style: normal;
-                font-weight: 700;
-                font-size: 13px;
-                line-height: 20px;
-              }
-              .desc {
-                padding: 10px 6px;
-                font-family: "Poppins" !important;
-                font-style: normal;
-                font-weight: 500;
-                font-size: 11px;
-                line-height: 16px;
-                color: #5e5e5e;
-              }
-            }
-          }
-          .btn-block {
-            padding: 15px 12px;
-            .add-new-btn {
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              width: 45%;
-              // height: 45px;
-              border-radius: 30px;
-              background-color: $themeColor;
-              padding: 10px 8px;
-              .txt {
-                color: #fff;
-                margin-left: 10px;
-              }
-              .ico {
-                color: #fff;
-
-                svg {
-                  path {
-                    fill: #fff;
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
-// create new controal point
+// create new control point
 .create-new-controal-point {
   width: 460px;
   //height: 535px;
   height: 100%;
+  @include media("<=560px") {
+    width: 100%;
+    min-width: 300px;
+  }
   .jb {
     justify-content: space-between;
   }
@@ -1503,12 +829,21 @@ body {
       padding: 12px 0;
       width: 100%;
       justify-content: space-between;
+      @include media("<=560px") {
+        flex-direction: column;
+      }
       .btn {
         font-size: 11px;
         padding: 12px 20px;
         width: 160px;
         border-radius: 5px;
         font-weight: 600;
+        @include media("<=560px") {
+          width: 100%;
+          &:first-child {
+            margin-bottom: 12px;
+          }
+        }
       }
       .btn-cancel {
         color: #a3a3a3;
@@ -1521,7 +856,6 @@ body {
     }
   }
 }
-
 // Create New Checkbox Point
 .create-checkpoint {
   min-width: 650px;
@@ -1529,6 +863,10 @@ body {
   height: 620px;
   padding: 22px;
   justify-content: space-between;
+  @include media("<=560px") {
+    min-width: 300px;
+    width: 100%;
+  }
   .checkpoint-hdr {
     .heading {
       color: #000000;
@@ -1547,13 +885,25 @@ body {
     .text-fields {
       width: 100%;
       justify-content: space-between;
+      @include media("<=560px") {
+        flex-direction: column;
+      }
       .hdr-left {
         flex: 0.8;
         margin-right: 8px;
+        @include media("<=560px") {
+          width: 100%;
+          margin-right: 0;
+        }
       }
       .hdr-right {
         flex: 0.8;
         margin-left: 8px;
+        @include media("<=560px") {
+          width: 100%;
+          margin-left: 0;
+          margin-top: 12px;
+        }
       }
     }
   }
@@ -1568,7 +918,10 @@ body {
       padding: 6px;
       border-radius: 5px;
       border: 1px solid #e5e5e5;
-      justify-content: flex-start;
+      @include media("<=560px") {
+        margin: 0;
+        width: 100%;
+      }
       .start-date,
       .form-control {
         width: 100% !important;
@@ -1596,10 +949,17 @@ body {
           margin-bottom: 16px;
         }
         .select-item {
-          justify-content: flex-start;
+          justify-content: space-between;
           padding: 0 6px;
-          gap: 1rem;
+          @include media("<=560px") {
+            flex-direction: column;
+            align-items: start;
+            padding: 0;
+          }
           .radito-select {
+            @include media("<=560px") {
+              margin-bottom: 12px;
+            }
             .lbl {
               color: #5e5e5e;
             }
@@ -1611,7 +971,10 @@ body {
         }
         .search-box {
           margin: 0 14px;
-          width: 100%;
+          @include media("<=560px") {
+            margin: 0;
+            width: 100%;
+          }
           .txt-box {
             width: 100%;
             .txt {
@@ -1719,13 +1082,20 @@ body {
   .btns-action {
     margin: 10px 0;
     justify-content: space-between;
+    @include media("<=560px") {
+      flex-direction: column;
+    }
     .btn {
       width: 169px;
       height: 55px;
       border-radius: 5px;
-
+      @include media("<=560px") {
+        width: 100%;
+        &:first-child {
+          margin-bottom: 12px;
+        }
+      }
       &:first-child {
-        color: #a3a3a3;
         background: #e7e7e7;
         border-color: #e7e7e7;
       }
@@ -1737,6 +1107,10 @@ body {
 .create-family {
   width: 400px;
   // height: 330px;
+  @include media("<=560px") {
+    width: 100%;
+    min-width: 300px;
+  }
   .wrap {
     width: 100%;
     padding: 20px;
@@ -1749,7 +1123,14 @@ body {
       width: 100%;
       margin-bottom: 34px;
       justify-content: space-between;
+      @include media("<=560px") {
+        flex-direction: column;
+        align-items: start;
+      }
       .radito-select {
+        @include media("<=560px") {
+          margin-bottom: 12px;
+        }
         .lbl {
           margin-right: 10px;
         }
@@ -1841,12 +1222,22 @@ body {
       margin-top: 10px;
       width: 100%;
       justify-content: space-between;
+      @include media("<=560px") {
+        flex-direction: column;
+        width: 100%;
+      }
       .btn {
         font-size: 11px;
         padding: 12px 20px;
         width: 160px;
         border-radius: 5px;
         font-weight: 600;
+        @include media("<=560px") {
+          width: 100%;
+          &:first-child {
+            margin-bottom: 12px;
+          }
+        }
       }
       .btn-cancel {
         color: #a3a3a3;
@@ -2075,222 +1466,6 @@ body {
   }
 }
 
-.nfc-management-p {
-  padding: 25px 43px;
-  background-color: #f7fbfe;
-  @include media("<=tablet") {
-    padding: 25px 20px;
-  }
-  .container {
-    width: 100%;
-    .title-blk {
-      align-items: flex-end;
-      margin-bottom: 20px;
-      @include media("<=560px") {
-        margin-bottom: 24px;
-      }
-      .lit {
-        flex: 1;
-        .filter-sec {
-          flex: 1;
-          .f-head {
-            margin-bottom: 20px;
-            .menu-icon {
-            }
-            .lbl {
-              margin-left: 20px;
-              color: #5e5e5e;
-            }
-          }
-          .f-fields {
-            // justify-content: space-between;
-            flex-wrap: wrap;
-            .dropDown {
-              margin-bottom: 15px;
-              margin-right: 12px;
-              width: 30%;
-              svg {
-                path {
-                  fill: $themeColor;
-                }
-              }
-              .cbox {
-                min-height: 40px;
-                border-radius: 7px;
-                border: 1px solid #fff;
-              }
-            }
-            .date-selector {
-              margin-right: 12px;
-              margin-bottom: 15px;
-            }
-            .search-by {
-              width: 300px;
-              margin-bottom: 15px;
-              .search-box , .search-boxs {
-                min-height: 40px;
-                border-radius: 7px;
-                padding: 0 16px;
-                box-sizing: border-box;
-                width: 100%;
-                justify-content: space-between;
-                border: 1px solid #fff;
-                background-color: #fff;
-                .txt {
-                  color: #5e5e5e;
-                  padding-right: 10px;
-                  width: 100%;
-                }
-              }
-            }
-          }
-        }
-      }
-      .rit {
-        // flex: 1;
-        justify-content: flex-end;
-        margin-bottom: 15px;
-        .add-btn {
-          background: $themeColor;
-          padding: 11px 16px;
-          border-radius: 5px;
-          .ico {
-            margin-right: 5px;
-            margin-top: 2px;
-            svg {
-              height: 12px;
-            }
-          }
-        }
-        .btn-2 {
-          margin-right: 10px;
-          background-color: #fff;
-          border: 1px solid $themeColor;
-          .txt {
-            color: $themeColor !important;
-          }
-        }
-      }
-    }
-    .ico-edit {
-      cursor: pointer;
-      width: 22px;
-      height: 22px;
-      border-radius: 100%;
-      border: 1px solid #00dc98;
-    }
-    .ico-copy {
-      cursor: pointer;
-      width: 22px;
-      height: 22px;
-      border-radius: 100%;
-      border: 1px solid #07a6ff;
-    }
-    .table-sec {
-      background: #fff;
-      border: 2px solid #fff;
-      border-radius: 4px;
-      min-height: 500px;
-      margin: 10px 0;
-      &:first-child {
-        // padding: 8px 4px;
-        .tbl-row {
-          border-bottom: none;
-        }
-      }
-      .tbl-row {
-        width: 100%;
-        height: 60px;
-        border-bottom: 1px solid #e5e5e5;
-        &:hover {
-          background-color: #f8fffd;
-          cursor: pointer;
-        }
-        &:first-child {
-          // padding: 8px 4px;
-          border-bottom: none;
-          .row-item {
-            max-height: 60px;
-            font-size: 13px;
-            font-weight: 600;
-            border-bottom: none;
-            color: #000000 !important;
-            &:first-child {
-              cursor: pointer;
-              flex: 0.5;
-            }
-          }
-        }
-        .row-item {
-          flex: 1;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 8px 4px;
-          font-size: 12px;
-          color: #5d5d5d;
-          font-weight: 500;
-          text-align: center;
-          max-height: 60px;
-          min-height: 60px;
-          .ico-bg {
-            // background: #00d29221;
-            // padding: 4px 5px;
-            // border-radius: 4px;
-            border-radius: 50%;
-            border: 1px solid #00dc98;
-            cursor: pointer;
-            .img {
-              height: 34px;
-              width: 34px;
-              padding: 6px;
-            }
-          }
-          .btn {
-            font-size: 10px;
-            border: 1px solid #00dc98;
-            border-radius: 8px;
-            padding: 6px 8px;
-            font-weight: 600;
-            background: #dffcf3;
-            cursor: pointer;
-            &.green {
-              color: #00dc98;
-            }
-            &.red {
-              color: #ff2d2d;
-            }
-            &.bg-red {
-              background: #ffeaea;
-            }
-            &.bg-green {
-              background: #dffcf3;
-            }
-            &.bd-red {
-              border: 1px solid #ff2d2d;
-            }
-          }
-          &:first-child {
-            flex: 0.5;
-          }
-          &:nth-child(11) {
-            color: #ff2d2d;
-          }
-          &:last-child {
-            // justify-content: space-around;
-            .icon-del {
-              margin-right: 12px;
-            }
-            .ico-edit {
-              margin: 0 12px;
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
 .create-new-nfc-taf {
   width: 700px;
   height: 100%;
@@ -2299,6 +1474,10 @@ body {
   // height: 450px;
   padding: 22px 16px;
   // overflow: auto;
+  @include media("<=560px") {
+    width: 100%;
+    min-width: 300px;
+  }
   .wrap {
     width: 100%;
     .heading-tag {
@@ -2316,6 +1495,9 @@ body {
         width: 100%;
         margin: 10px 0;
         justify-content: space-between;
+        @include media("<=560px") {
+          flex-direction: column;
+        }
         .mr-10 {
           margin-right: 10px;
         }
@@ -2422,10 +1604,14 @@ body {
           background: #e7e7e7;
           border: none !important;
           border-radius: 6px;
-          color: #a3a3a3;
+          color: #000000;
           font-size: 14px;
           font-weight: 500;
           font-family: "Poppins";
+          @include media("<=560px") {
+            width: 100%;
+            margin-bottom: 12px;
+          }
         }
         .btn-create {
           border-radius: 6px;
@@ -2433,6 +1619,9 @@ body {
           font-size: 14px;
           font-weight: 500;
           font-family: "Poppins";
+          @include media("<=560px") {
+            width: 100%;
+          }
         }
         .lbl {
           font-size: 12px;
@@ -2442,6 +1631,10 @@ body {
         }
         .field-item-l {
           width: 45%;
+          @include media("<=560px") {
+            width: 100%;
+            margin-bottom: 12px;
+          }
           .icon-fire {
             margin-right: 10px;
             height: 28px;
@@ -2456,6 +1649,10 @@ body {
         }
         .field-item-r {
           width: 45%;
+          @include media("<=560px") {
+            width: 100%;
+            margin-bottom: 12px;
+          }
           .txt-input {
             color: #5e5e5e;
             font-size: 14px;
@@ -2513,231 +1710,15 @@ body {
   }
 }
 
-.smart-devices-p {
-  padding: 25px 43px;
-  background-color: #f7fbfe;
-  min-height: calc(100vh - 80px);
-  @include media("<=tablet") {
-    padding: 25px 20px;
-  }
-  .container {
-    width: 100%;
-    .title-blk {
-      align-items: flex-end;
-      margin-bottom: 20px;
-      @include media("<=560px") {
-        margin-bottom: 24px;
-      }
-      .lit {
-        flex: 1;
-        .filter-sec {
-          flex: 1;
-          .f-head {
-            margin-bottom: 20px;
-          }
-
-          .f-fields {
-            // justify-content: space-between;
-            flex-wrap: wrap;
-            .dropDown {
-              margin-bottom: 15px;
-              margin-right: 12px;
-              width: 30%;
-              svg {
-                path {
-                  fill: $themeColor;
-                }
-              }
-              .cbox {
-                min-height: 40px;
-                border-radius: 7px;
-                border: 1px solid #fff;
-              }
-            }
-            .date-picker {
-              // border: 1px solid #e5e5e5;
-              margin-bottom: 15px;
-              margin-right: 12px;
-              padding: 1px 6px;
-              border-radius: 7px;
-              background: #ffffff;
-              svg {
-                path {
-                  fill: $themeColor;
-                }
-              }
-              .rdt .form-control {
-                border: none !important;
-                width: 100% !important;
-                height: 100% !important;
-                padding: 10px !important;
-                font-size: 14px !important;
-                background: transparent !important;
-              }
-            }
-            .search-by {
-              width: 300px;
-              margin-bottom: 15px;
-              .search-box {
-                min-height: 40px;
-                border-radius: 7px;
-                padding: 0 16px;
-                box-sizing: border-box;
-                width: 100%;
-                justify-content: space-between;
-                border: 1px solid #fff;
-                background-color: #fff;
-
-                .txt {
-                  color: #5e5e5e;
-                  padding-right: 10px;
-                  width: 100%;
-                }
-              }
-            }
-          }
-        }
-      }
-      .rit {
-        // flex: 1;
-        justify-content: flex-end;
-        margin-bottom: 15px;
-        .add-btn {
-          background: $themeColor;
-          padding: 11px 16px;
-          border-radius: 5px;
-          .ico {
-            margin-right: 5px;
-            margin-top: 2px;
-            svg {
-              height: 12px;
-            }
-          }
-        }
-        .btn-2 {
-          margin-right: 10px;
-          background-color: #fff;
-          border: 1px solid $themeColor;
-          .txt {
-            color: $themeColor !important;
-          }
-        }
-      }
-    }
-    .add-device-card {
-      width: 290px;
-      height: 400px;
-      padding: 12px;
-      margin-right: 30px;
-      margin-bottom: 30px;
-      border-radius: 6px;
-      // background-color: #fff;
-      border: 2px dashed #989898;
-      .ico {
-        svg {
-          width: 42px;
-          height: 42px;
-          path {
-            fill: #989898;
-          }
-        }
-      }
-      .lbl {
-        color: #989898;
-        font-family: "Poppins";
-        font-style: normal;
-        font-weight: 500;
-        font-size: 18px;
-        line-height: 28px;
-      }
-    }
-    .devices-block {
-      flex-wrap: wrap;
-      .device-card {
-        width: 290px;
-        height: 400px;
-        padding: 12px;
-        margin-right: 30px;
-        margin-bottom: 30px;
-        border-radius: 6px;
-        background-color: #fff;
-        border: 1px solid transparent;
-        @include anim;
-        &:hover {
-          border: 1px solid $themeColor;
-        }
-        .card-header {
-          padding: 14px 12px;
-          flex: 0.3;
-          border-bottom: 1.2px solid #ececec;
-          .device-img {
-            flex: 0.6;
-            .img {
-              width: 65px;
-              height: 65px;
-            }
-          }
-          .device-name {
-            flex: 1;
-          }
-        }
-        .device-info {
-          padding: 14px 0;
-          flex: 1;
-          .info-item {
-            margin-bottom: 8px;
-            .lbl {
-              color: #000000;
-              font-size: 16px;
-              font-weight: 600;
-              margin-bottom: 2px;
-            }
-            .val {
-              color: #474747;
-              font-size: 12px;
-            }
-          }
-        }
-        .action {
-          flex: 0.2;
-          .btn-edit {
-            margin-right: 10px;
-            background: transparent;
-            border-radius: 6px;
-            display: flex !important;
-            width: 46px;
-            height: 46px;
-            padding: 4px;
-            svg {
-              width: 16px;
-              height: 16px;
-              // path {
-              //   fill: #fff;
-              // }
-            }
-          }
-          .btn {
-            display: flex !important;
-            width: 90%;
-            border-radius: 6px;
-            .icon {
-              margin-right: 5px;
-            }
-            .lbl {
-              font-size: 16px;
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
 .device-history {
   height: 560px;
   width: 560px;
   padding: 20px;
   background-color: #ffffff;
+  @include media("<=560px") {
+    min-width: 320px;
+    width: 100%;
+  }
   .device-history-wrap {
     .device-history-tag {
       color: #000000;
@@ -2830,7 +1811,7 @@ body {
       width: 5px;
     }
     @include media(">=phone", "<=480px") {
-      width: 100%;
+      width: 90%;
     }
     &.show {
       right: 0;
@@ -2848,6 +1829,13 @@ body {
       .circle {
         bottom: -256px;
         // box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+        @include media("<=560px") {
+          bottom: -190px;
+          svg {
+            height: 320px;
+            width: 330px;
+          }
+        }
       }
       .timer-block {
         position: absolute;
@@ -2856,6 +1844,10 @@ body {
         justify-content: center;
         top: 158px;
         right: 168px;
+        @include media("<=560px") {
+          top: 108px;
+          right: 124px;
+        }
         .lbl-time {
           font-weight: 500;
           font-size: 13px;
@@ -2866,6 +1858,10 @@ body {
           font-size: 46px;
           line-height: 44px;
           color: #ffffff;
+          @include media("<=560px") {
+            font-size: 36px;
+            line-height: 34px;
+          }
         }
       }
     }
@@ -2884,9 +1880,20 @@ body {
             height: 32px;
             width: 32px;
             margin-right: 12px;
+            @include media(">=phone", "<=480px") {
+              height: 26px;
+              width: 26px;
+              .svg {
+                height: 14px;
+                width: 14px;
+              }
+            }
           }
           .lbl {
             font-weight: 600;
+            @include media(">=phone", "<=480px") {
+              font-size: 14px;
+            }
           }
         }
         .right {
@@ -2895,6 +1902,9 @@ body {
             color: #474747;
             font-weight: 500;
             font-size: 13px;
+            @include media(">=phone", "<=480px") {
+              font-size: 10px;
+            }
           }
         }
       }
@@ -2906,6 +1916,9 @@ body {
   min-width: 550px;
   min-height: 400px;
   padding: 15px;
+  @include media("<=560px") {
+    min-width: 310px;
+  }
   .asd-header {
     padding: 8px 0;
     margin-bottom: 36px;
@@ -2925,8 +1938,14 @@ body {
     }
   }
   .device-info {
+    @include media("<=560px") {
+      flex-direction: column;
+    }
     .select-img {
       flex: 1;
+      @include media("<=560px") {
+        justify-content: center;
+      }
       .img-box {
         cursor: pointer;
         padding: 14px;
@@ -2959,6 +1978,9 @@ body {
     .data-item {
       width: 100%;
       justify-content: space-between;
+      @include media("<=560px") {
+        flex-direction: column;
+      }
       .date-picker {
         border: 1px solid #e5e5e5;
         padding: 4px;
@@ -2980,9 +2002,10 @@ body {
         }
       }
       .txt-field {
-        // flex: 0.7;
-
         width: 48%;
+        @include media("<=560px") {
+          width: 100%;
+        }
       }
       .dropDown {
         .cbox {
@@ -2998,248 +2021,30 @@ body {
     width: 100%;
     margin: 25px 0;
     justify-content: space-between;
+    @include media("<=560px") {
+      flex-direction: column;
+    }
     .btn {
       width: 140px;
       border-radius: 6px;
+      @include media("<=560px") {
+        width: 100%;
+      }
       &:first-child {
         color: #a3a3a3;
         border: #e7e7e7;
         background: #e7e7e7;
+        @include media("<=560px") {
+          margin-bottom: 12px;
+        }
       }
     }
   }
 }
-
 // Users Managment
 .users-page {
   .css-1t1j96h-MuiPaper-root-MuiDialog-paper {
     max-width: 752px !important;
-  }
-}
-
-// User Managment Page
-.users-management-p {
-  padding: 25px 43px;
-  background-color: #f7fbfe;
-  @include media("<=tablet") {
-    padding: 25px 20px;
-  }
-  .container {
-    width: 100%;
-    .title-blk {
-      align-items: flex-end;
-      margin-bottom: 20px;
-      @include media("<=560px") {
-        margin-bottom: 24px;
-      }
-      .lit {
-        flex: 1;
-        .filter-sec {
-          flex: 1;
-          .f-head {
-            margin-bottom: 20px;
-            .menu-icon {
-            }
-            .lbl {
-              margin-left: 20px;
-              color: #5e5e5e;
-            }
-          }
-          .f-fields {
-            // justify-content: space-between;
-            flex-wrap: wrap;
-            .dropDown {
-              margin-bottom: 15px;
-              margin-right: 12px;
-              width: 24%;
-              // .category {
-              //   width: 70%;
-              // }
-              svg {
-                path {
-                  fill: $themeColor;
-                }
-              }
-              .cbox {
-                min-height: 40px;
-                border-radius: 7px;
-                border: 1px solid #fff;
-              }
-            }
-            .date-selector {
-              margin-right: 12px;
-              margin-bottom: 15px;
-            }
-            .search-by {
-              width: 300px;
-              margin-bottom: 15px;
-              .search-box {
-                min-height: 40px;
-                border-radius: 7px;
-                padding: 0 16px;
-                box-sizing: border-box;
-                width: 100%;
-                justify-content: space-between;
-                border: 1px solid #fff;
-                background-color: #fff;
-                .txt {
-                  color: #5e5e5e;
-                  padding-right: 10px;
-                  width: 100%;
-                }
-              }
-            }
-          }
-        }
-      }
-      .rit {
-        // flex: 1;
-
-        justify-content: flex-end;
-        margin-bottom: 15px;
-
-        .creat-btn {
-          padding: 6px 16px;
-          margin-right: 10px;
-          border-radius: 5px;
-          background-color: #fff;
-          border: 1.5px solid $themeColor;
-          .ico {
-            margin-right: 5px;
-            margin-top: 2px;
-            svg {
-              height: 20px;
-            }
-          }
-          .txt {
-            color: $themeColor;
-            font-weight: 600;
-          }
-        }
-        .add-btn {
-          background: $themeColor;
-          padding: 12px 16px;
-          border-radius: 5px;
-          .ico {
-            margin-right: 5px;
-            margin-top: 2px;
-            svg {
-              height: 12px;
-            }
-          }
-        }
-        .btn-2 {
-          margin-right: 10px;
-          background-color: #fff;
-          border: 1px solid $themeColor;
-          .txt {
-            color: $themeColor !important;
-          }
-        }
-      }
-    }
-    .ico-edit {
-      cursor: pointer;
-      width: 22px;
-      height: 22px;
-      border-radius: 100%;
-      border: 1px solid #00dc98;
-    }
-    .table-sec {
-      background: #fff;
-      border: 2px solid #fff;
-      border-radius: 4px;
-      min-height: 500px;
-      margin: 10px 0;
-
-      .tbl-row {
-        width: 100%;
-        height: 60px;
-        border-bottom: 1px solid #e5e5e5;
-        &:hover {
-          background-color: #f8fffd;
-          cursor: pointer;
-        }
-        &:first-child {
-          .row-item {
-            max-height: 60px;
-            font-size: 13px;
-            font-weight: 600;
-            border-bottom: none;
-            color: #000000 !important;
-            &:first-child {
-              cursor: pointer;
-              flex: 0.6;
-            }
-            &:last-child {
-              margin-left: 12px;
-            }
-          }
-        }
-        &:last-child {
-          border-bottom: none;
-        }
-        .row-item {
-          flex: 1;
-          display: flex;
-          align-items: center;
-          padding: 8px 4px;
-          font-size: 12px;
-          color: #5d5d5d;
-          font-weight: 500;
-          text-align: center;
-          max-height: 60px;
-          min-height: 60px;
-          .ico-bg {
-            border-radius: 50%;
-            // border: 1px solid #00dc98;
-            cursor: pointer;
-            .img {
-              height: 55px;
-              width: 55px;
-              padding: 6px;
-            }
-          }
-          .btn {
-            font-size: 10px;
-            border: 1px solid #00dc98;
-            border-radius: 8px;
-            padding: 6px 8px;
-            font-weight: 600;
-            background: #dffcf3;
-            cursor: pointer;
-            &.green {
-              color: #00dc98;
-            }
-            &.red {
-              color: #ff2d2d;
-            }
-            &.bg-red {
-              background: #ffeaea;
-            }
-            &.bg-green {
-              background: #dffcf3;
-            }
-            &.bd-red {
-              border: 1px solid #ff2d2d;
-            }
-          }
-          &:first-child {
-            flex: 0.6;
-            justify-content: center;
-          }
-          &:last-child {
-            // justify-content: space-around;
-            .icon-del {
-              margin-right: 12px;
-            }
-            .ico-edit {
-              margin: 0 12px;
-            }
-          }
-        }
-      }
-    }
   }
 }
 
@@ -3248,6 +2053,9 @@ body {
   min-width: 550px;
   min-height: 400px;
   padding: 15px;
+  @include media("<=560px") {
+    min-width: 320px;
+  }
   .asd-header {
     padding: 8px 0;
     margin-bottom: 36px;
@@ -3330,6 +2138,9 @@ body {
     }
   }
   .user-info {
+    @include media("<=560px") {
+      flex-direction: column;
+    }
     .select-img {
       flex: 1;
       .img-box {
@@ -3368,10 +2179,15 @@ body {
     .data-item {
       width: 100%;
       justify-content: space-between;
+      @include media("<=560px") {
+        flex-direction: column;
+      }
       .txt-field {
         // flex: 0.7;
-
         width: 48%;
+        @include media("<=560px") {
+          width: 100%;
+        }
       }
       .dropDown {
         .cbox {
@@ -3404,6 +2220,9 @@ body {
   min-width: 550px;
   min-height: 600px;
   padding: 15px;
+  @include media("<=560px") {
+    min-width: 320px;
+  }
   .asd-header {
     padding: 8px 0;
     margin-bottom: 36px;
@@ -3542,243 +2361,15 @@ body {
   }
 }
 
-// User Managment Page
-.rfid-management-p {
-  padding: 25px 43px;
-  background-color: #f7fbfe;
-  @include media("<=tablet") {
-    padding: 25px 20px;
-  }
-  .container {
-    width: 100%;
-    .title-blk {
-      align-items: flex-end;
-      margin-bottom: 20px;
-      @include media("<=560px") {
-        margin-bottom: 24px;
-      }
-      .lit {
-        flex: 1;
-        .filter-sec {
-          flex: 1;
-          .f-head {
-            margin-bottom: 20px;
-            .menu-icon {
-            }
-            .lbl {
-              margin-left: 20px;
-              color: #5e5e5e;
-            }
-          }
-          .f-fields {
-            // justify-content: space-between;
-            flex-wrap: wrap;
-            .dropDown {
-              margin-bottom: 15px;
-              margin-right: 12px;
-              width: 24%;
-              // .category {
-              //   width: 70%;
-              // }
-              svg {
-                path {
-                  fill: $themeColor;
-                }
-              }
-              .cbox {
-                min-height: 40px;
-                border-radius: 7px;
-                border: 1px solid #fff;
-              }
-            }
-            .date-selector {
-              margin-right: 12px;
-              margin-bottom: 15px;
-            }
-            .search-by {
-              width: 300px;
-              margin-bottom: 15px;
-              .search-box {
-                min-height: 40px;
-                border-radius: 7px;
-                padding: 0 16px;
-                box-sizing: border-box;
-                width: 100%;
-                justify-content: space-between;
-                border: 1px solid #fff;
-                background-color: #fff;
-                .txt {
-                  color: #5e5e5e;
-                  padding-right: 10px;
-                  width: 100%;
-                }
-              }
-            }
-          }
-        }
-      }
-      .rit {
-        // flex: 1;
-        justify-content: flex-end;
-        margin-bottom: 15px;
-        .creat-btn {
-          padding: 6px 16px;
-          margin-right: 10px;
-          border-radius: 5px;
-          background-color: #fff;
-          border: 1.5px solid $themeColor;
-          .ico {
-            margin-right: 5px;
-            margin-top: 2px;
-            svg {
-              height: 20px;
-            }
-          }
-          .txt {
-            color: $themeColor;
-            font-weight: 600;
-          }
-        }
-        .add-btn {
-          background: $themeColor;
-          padding: 6px 16px;
-          border-radius: 5px;
-          .ico {
-            margin-right: 5px;
-            margin-top: 2px;
-            svg {
-              height: 20px;
-              path {
-                fill: #fff;
-              }
-            }
-          }
-        }
-        .btn-2 {
-          margin-right: 10px;
-          background-color: #fff;
-          border: 1px solid $themeColor;
-          .txt {
-            color: $themeColor !important;
-          }
-        }
-      }
-    }
-    .ico-edit {
-      cursor: pointer;
-      width: 22px;
-      height: 22px;
-      border-radius: 100%;
-      border: 1px solid #00dc98;
-    }
-    .table-sec {
-      background: #fff;
-      border: 2px solid #fff;
-      border-radius: 4px;
-      min-height: 500px;
-      margin: 10px 0;
-
-      .tbl-row {
-        width: 100%;
-        height: 60px;
-        border-bottom: 1px solid #e5e5e5;
-        &:hover {
-          background-color: #f8fffd;
-          cursor: pointer;
-        }
-        &:first-child {
-          .row-item {
-            max-height: 60px;
-            font-size: 13px;
-            font-weight: 600;
-            border-bottom: none;
-            color: #000000 !important;
-            &:first-child {
-              cursor: pointer;
-              flex: 0.6;
-            }
-            &:last-child {
-              flex: 0.8;
-              // margin-left: 12px;
-            }
-          }
-        }
-        &:last-child {
-          border-bottom: none;
-        }
-        .row-item {
-          flex: 1;
-          display: flex;
-          align-items: center;
-          padding: 8px 4px;
-          font-size: 12px;
-          color: #5d5d5d;
-          font-weight: 500;
-          text-align: center;
-          max-height: 60px;
-          min-height: 60px;
-          .ico-bg {
-            border-radius: 50%;
-            border: 1px solid #00dc98;
-            cursor: pointer;
-            .img {
-              height: 35px;
-              width: 35px;
-              padding: 3px;
-            }
-          }
-          .btn {
-            font-size: 10px;
-            border: 1px solid #00dc98;
-            border-radius: 8px;
-            padding: 6px 8px;
-            font-weight: 600;
-            background: #dffcf3;
-            cursor: pointer;
-            &.green {
-              color: #00dc98;
-            }
-            &.red {
-              color: #ff2d2d;
-            }
-            &.bg-red {
-              background: #ffeaea;
-            }
-            &.bg-green {
-              background: #dffcf3;
-            }
-            &.bd-red {
-              border: 1px solid #ff2d2d;
-            }
-          }
-          &:first-child {
-            flex: 0.6;
-            justify-content: center;
-          }
-          // &:nth-child(4) {
-          //   flex: 1.5;
-          // }
-          &:last-child {
-            flex: 0.8;
-            // justify-content: space-around;
-            .icon-del {
-              margin-right: 12px;
-            }
-            .ico-edit {
-              margin: 0 12px;
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
 //Add New RFID
 .add-new-rfid {
   min-width: 550px;
   min-height: 400px;
   padding: 15px;
+  @include media("<=560px") {
+    width: 100%;
+    min-width: 320px;
+  }
   .asd-header {
     padding: 8px 0;
     margin-bottom: 36px;
@@ -3798,19 +2389,23 @@ body {
     }
   }
   .user-info {
+    @include media("<=560px") {
+      flex-direction: column;
+    }
     .select-img {
       flex: 1;
       .img-box {
         width: 160px;
         height: 160px;
         cursor: pointer;
-        padding: 14px;
+        padding: 6px;
         border-radius: 50%;
         background-color: #dffcf3;
         border: 2px dashed #00dc98;
         .img {
           height: 100%;
           width: 100%;
+          border-radius: 50%;
           object-fit: cover;
         }
         svg {
@@ -3859,10 +2454,15 @@ body {
     .data-item {
       width: 100%;
       justify-content: space-between;
+      @include media("<=560px") {
+        flex-direction: column;
+      }
       .txt-field {
         // flex: 0.7;
-
         width: 48%;
+        @include media("<=560px") {
+          width: 100%;
+        }
       }
       .date-picker {
         border: 1px solid #e5e5e5;
@@ -3907,6 +2507,10 @@ body {
   min-width: 550px;
   min-height: 400px;
   padding: 25px;
+  @include media("<=560px") {
+    width: 100%;
+    min-width: 320px;
+  }
   .asd-header {
     padding: 8px 0;
   }
@@ -4076,9 +2680,18 @@ body {
     width: 100%;
     margin: 25px 0;
     justify-content: space-between;
+    @include media("<=560px") {
+      flex-direction: column;
+    }
     .btn {
       min-width: 140px;
       border-radius: 6px;
+      @include media("<=560px") {
+        width: 100%;
+        &:first-child {
+          margin-bottom: 12px;
+        }
+      }
       &:first-child {
         color: #a3a3a3;
         border: #e7e7e7;
@@ -5061,7 +3674,9 @@ body {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-
+  @include media("<=tablet") {
+    flex-direction: column;
+  }
 }
 .search-boxs {
   min-height: 40px;
@@ -5073,6 +3688,14 @@ body {
   border: 1px solid #fff;
   background-color: #fff;
   gap: 1rem;
+  @include media("<=tablet") {
+    width: 100%;
+  }
+  .date-picker {
+    @include media("<=tablet") {
+      width: 100%;
+    }
+  }
 }
 .add-new-Expiry {
   cursor: pointer;

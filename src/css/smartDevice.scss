@@ -31,6 +31,9 @@
           .f-fields {
             // justify-content: space-between;
             flex-wrap: wrap;
+            @include media("<=desktop") {
+              justify-content: space-between;
+            }
             .dropDown {
               margin-bottom: 15px;
               margin-right: 12px;
@@ -74,9 +77,6 @@
             .search-by {
               width: 300px;
               margin-bottom: 15px;
-              @include media("<=desktop") {
-                margin-right: 12px;
-              }
               @include media("<=tablet") {
                 margin-right: 0px;
                 width: 100%;
@@ -167,8 +167,10 @@
       //   margin: 20px 0;
       @include media("<=desktop") {
         grid-template-columns: repeat(3, 1fr);
+        grid-gap: 12px;
       }
       @include media("<=tablet") {
+        grid-gap: 12px;
         grid-template-columns: repeat(2, 1fr);
       }
       @include media("<=560px") {

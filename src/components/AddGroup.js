@@ -93,7 +93,7 @@ const AddGroup = ({ setOpen2, userList, getusergroup }) => {
   return (
     <div className="add-new-group flex flex-col">
       <div className="asd-header flex aic jc">
-        <div className="lbl s16 b6 font">CREATE NWE GROUP</div>
+        <div className="lbl s16 b6 font">CREATE NEW GROUP</div>
       </div>
       <div className="group-info flex">
         <div className="select-img flex aic jc">
@@ -219,6 +219,7 @@ const AddGroup = ({ setOpen2, userList, getusergroup }) => {
                                 console.log("mod_selector", mod_selector);
                                 console.log("mod_selector", selectedUser);
                                 setSelectedUser([...selectedUser]);
+                                e.stopPropagation()
                               }}
                             >
                               <div className="action-icon">
@@ -250,6 +251,7 @@ const AddGroup = ({ setOpen2, userList, getusergroup }) => {
                           <div
                             className="action-ico pointer"
                             onClick={(e) => {
+                              e.stopPropagation()
                               const index = selectedUser.findIndex((item2) => {
                                 // console.log('mod_selector',item)
                                 // console.log('mod_selector',item.userName)
@@ -274,6 +276,7 @@ const AddGroup = ({ setOpen2, userList, getusergroup }) => {
                           <div
                             className="action-ico pointer"
                             onClick={(e) => {
+                              e.stopPropagation()
                               setSelectedUser([...selectedUser, item.userName]);
                             }}
                           >

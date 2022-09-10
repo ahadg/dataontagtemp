@@ -4,11 +4,11 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DateRangePicker from "@mui/lab/DateRangePicker";
 import { CalendarIcon } from "../svg";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer, toast } from 'react-toastify';
 export default function CustomDateRangeInputs({ setValue, value }) {
   return (
     <div
-      className="mui-date-ranger flex aic jc"
+      className="flex aic jc"
       style={{
         backgroundColor: "white",
         height: "40px",

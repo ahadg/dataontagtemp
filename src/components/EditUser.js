@@ -15,12 +15,12 @@ import Loader from "../components/Loader";
 import { ToastContainer, toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 const EditUser = ({ setOpen, companyfilter, getusers, selecteduser }) => {
-  console.log("companyfilter", companyfilter);
+  console.log('companyfilter',companyfilter)
   const user = useSelector((state) => state.generalReducers.user);
   const [showList, setShowList] = useState(false);
   const [selectedUser, setSelectedUser] = useState();
   const [search, setsearch] = useState("");
-  const [selectedcontrolpoints, setselectedcontrolpoints] = useState([]);
+  const [selectedcontrolpoints,setselectedcontrolpoints] = useState([])
   const [img, setImg] = useState();
   const [img2, setImg2] = useState(selecteduser.image);
   const [hide, setHide] = useState(false);
@@ -56,7 +56,7 @@ const EditUser = ({ setOpen, companyfilter, getusers, selecteduser }) => {
   const [companyRef, setselectedcompanyRef] = useState("");
   const [loading, setloading] = useState(false);
   const [companyName, setcompanyName] = useState(false);
-  const [passwordmodified, setpasswordmodified] = useState(false);
+  const [passwordmodified,setpasswordmodified] = useState(false)
 
   const getcontrolpointlist = async () => {
     try {
@@ -102,7 +102,7 @@ const EditUser = ({ setOpen, companyfilter, getusers, selecteduser }) => {
       return toast.error("Please input email.");
     } else if (!mobile) {
       return toast.error("Please input phone number.");
-    } else if (!validateEmail(email)) {
+    } else if(!validateEmail(email)) {
       return toast.error("Please input a valid email.");
     } else if (passwordmodified && !password) {
       return toast.error("Please input password.");
@@ -110,7 +110,7 @@ const EditUser = ({ setOpen, companyfilter, getusers, selecteduser }) => {
       return toast.error("Password length should be greater than 7.");
     } else if (passwordmodified && cpassword != password) {
       return toast.error("Sorry! your password did'nt matched.");
-    } else if (mobile.length > 12) {
+    } else if(mobile.length > 12){
       return toast.error("Phone number length should'nt be greater than 12.");
     }
     setloading(true);
@@ -127,7 +127,7 @@ const EditUser = ({ setOpen, companyfilter, getusers, selecteduser }) => {
         companyRef: selectedCompany2._id,
         userType: selectedrole?.value,
         selectedcontrolpoints,
-        passwordmodified,
+        passwordmodified
       };
     } else {
       body = {
@@ -140,7 +140,7 @@ const EditUser = ({ setOpen, companyfilter, getusers, selecteduser }) => {
         companyName,
         userType: selectedrole?.value,
         selectedcontrolpoints,
-        passwordmodified,
+        passwordmodified
       };
     }
     console.log(body);
@@ -168,7 +168,7 @@ const EditUser = ({ setOpen, companyfilter, getusers, selecteduser }) => {
     }
     //})
   };
-  console.log("controlpoints", controlpoints);
+  console.log('controlpoints',controlpoints)
   useEffect(() => {
     document.addEventListener("click", () => {
       setHide(false);
@@ -191,7 +191,7 @@ const EditUser = ({ setOpen, companyfilter, getusers, selecteduser }) => {
           >
             {img ? (
               <img
-                // style={{ width: "160px", height: "120px" }}
+                style={{ width: "160px", height: "120px" }}
                 src={URL.createObjectURL(img)}
                 className="img"
               />
@@ -253,12 +253,12 @@ const EditUser = ({ setOpen, companyfilter, getusers, selecteduser }) => {
               placeholder="********"
               value={password}
               onChange={(e) => {
-                setpassword(e.target.value);
-                setpasswordmodified(true);
+                setpassword(e.target.value)
+                setpasswordmodified(true)
               }}
             />
           </div>
-          <div className="txt-field flex flex-col">
+           <div className="txt-field flex flex-col">
             <div className="lbl s12 font">Confirm Password</div>
             <input
               //disabled
@@ -269,18 +269,19 @@ const EditUser = ({ setOpen, companyfilter, getusers, selecteduser }) => {
               onChange={(e) => setcpassword(e.target.value)}
             />
           </div>
+        
         </div>
         <div className="txt-field flex flex-col">
-          <div className="lbl s12 font">Phone Number</div>
-          <input
-            type="tel"
-            className="txt cleanbtn s12 font"
-            placeholder="Phone Number"
-            pattern="/^((00|\+)39[\. ]??)??3\d{2}[\. ]??\d{6,7}$/"
-            value={Number(mobile)}
-            onChange={(e) => setmobile(e.target.value)}
-          />
-        </div>
+            <div className="lbl s12 font">Phone Number</div>
+            <input
+              type="tel"
+              className="txt cleanbtn s12 font"
+              placeholder="Phone Number"
+              pattern="/^((00|\+)39[\. ]??)??3\d{2}[\. ]??\d{6,7}$/"
+              value={Number(mobile)}
+              onChange={(e) => setmobile(e.target.value)}
+            />
+          </div>
         <div className="data-item flex aic">
           <div className="txt-field flex flex-col">
             <div className="lbl s12 font">Role</div>
@@ -502,113 +503,92 @@ const EditUser = ({ setOpen, companyfilter, getusers, selecteduser }) => {
                     </div>
                   </div>
                   <div className="user-list flex flex-col">
-                    {controlpoints?.map((item, index) =>
-                      search?.toLowerCase() ? (
-                        item?.controlpointname?.toLowerCase()?.search(search) >
-                          -1 && (
-                          <div className="list-item flex aic">
-                            <div className="name s13 font b5">
-                              {item.controlpointname}
-                            </div>
-                            {selectedcontrolpoints.findIndex(
-                              (item2) =>
-                                item2.controlpointname == item.controlpointname
-                            ) > -1 ? (
-                              <div
-                                className="action-ico pointer"
-                                onClick={(e) => {
-                                  const index = selectedcontrolpoints.findIndex(
-                                    (item2) =>
-                                      item2.controlpointname ==
-                                      item.controlpointname
-                                  );
-                                  console.log("mod_selector", index);
-                                  const mod_selector =
-                                    selectedcontrolpoints.splice(index, 1);
-                                  console.log("mod_selector", mod_selector);
-                                  console.log(
-                                    "mod_selector",
-                                    selectedcontrolpoints
-                                  );
-                                  setselectedcontrolpoints([
-                                    ...selectedcontrolpoints,
-                                  ]);
-                                }}
-                              >
-                                <div className="action-icon">
-                                  <RoundRemoveIcon />
+                  {controlpoints?.map((item, index) =>
+                          search?.toLowerCase() ? (
+                            item?.controlpointname?.toLowerCase()?.search(search) > -1 && (
+                              <div className="list-item flex aic">
+                                <div className="name s13 font b5">
+                                  {item.controlpointname}
                                 </div>
+                                {selectedcontrolpoints.findIndex((item2) =>  item2.controlpointname == item.controlpointname) > -1 ? (
+                                  <div
+                                    className="action-ico pointer"
+                                    onClick={(e) => {
+                                      const index = selectedcontrolpoints.findIndex((item2) =>  item2.controlpointname == item.controlpointname);
+                                      console.log("mod_selector", index);
+                                      const mod_selector = selectedcontrolpoints.splice(
+                                        index,
+                                        1
+                                      );
+                                      console.log("mod_selector", mod_selector);
+                                      console.log("mod_selector", selectedcontrolpoints);
+                                      setselectedcontrolpoints([...selectedcontrolpoints]);
+                                    }}
+                                  >
+                                    <div className="action-icon">
+                                      <RoundRemoveIcon />
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <div
+                                    className="action-ico pointer"
+                                    onClick={(e) => {
+                                      setselectedcontrolpoints([
+                                        ...selectedcontrolpoints,
+                                        item,
+                                      ]);
+                                      e.stopPropagation();
+                                    }}
+                                  >
+                                    <div className="action-icon">
+                                      <RoundAdd />
+                                    </div>
+                                  </div>
+                                )}
                               </div>
-                            ) : (
-                              <div
-                                className="action-ico pointer"
-                                onClick={(e) => {
-                                  setselectedcontrolpoints([
-                                    ...selectedcontrolpoints,
-                                    item,
-                                  ]);
-                                  e.stopPropagation();
-                                }}
-                              >
-                                <div className="action-icon">
-                                  <RoundAdd />
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        )
-                      ) : (
-                        <div className="list-item flex aic">
-                          <div className="name s13 font b5">
-                            {item.controlpointname}
-                          </div>
-                          {selectedcontrolpoints.findIndex(
-                            (item2) =>
-                              item2.controlpointname == item.controlpointname
-                          ) > -1 ? (
-                            <div
-                              className="action-ico pointer"
-                              onClick={(e) => {
-                                const index = selectedcontrolpoints.findIndex(
-                                  (item2) =>
-                                    item2.controlpointname ==
-                                    item.controlpointname
-                                );
-                                console.log("mod_selector", index);
-                                const mod_selector =
-                                  selectedcontrolpoints.splice(index, 1);
-                                console.log("mod_selector", mod_selector);
-                                console.log(
-                                  "mod_selector",
-                                  selectedcontrolpoints
-                                );
-                                setselectedcontrolpoints([
-                                  ...selectedcontrolpoints,
-                                ]);
-                              }}
-                            >
-                              <div className="action-ico">
-                                <RoundRemoveIcon />
-                              </div>
-                            </div>
+                            )
                           ) : (
-                            <div
-                              className="action-ico pointer"
-                              onClick={(e) => {
-                                setselectedcontrolpoints([
-                                  ...selectedcontrolpoints,
-                                  item,
-                                ]);
-                              }}
-                            >
-                              <div className="action-icon">
-                                <RoundAdd />
+                            <div className="list-item flex aic">
+                              <div className="name s13 font b5">
+                                {item.controlpointname}
                               </div>
+                              {selectedcontrolpoints.findIndex((item2) =>  item2.controlpointname == item.controlpointname) > -1 ? (
+                                <div
+                                  className="action-ico pointer"
+                                  onClick={(e) => {
+                                    const index = selectedcontrolpoints.findIndex((item2) =>  item2.controlpointname == item.controlpointname);
+                                    console.log("mod_selector", index);
+                                    const mod_selector = selectedcontrolpoints.splice(
+                                      index,
+                                      1
+                                    );
+                                    console.log("mod_selector", mod_selector);
+                                    console.log("mod_selector", selectedcontrolpoints);
+                                    setselectedcontrolpoints([...selectedcontrolpoints]);
+                                  }}
+                                >
+                                  <div className="action-ico">
+                                    <RoundRemoveIcon />
+                                  </div>
+                                </div>
+                              ) : (
+                                <div
+                                  className="action-ico pointer"
+                                  onClick={(e) => {
+                                    setselectedcontrolpoints([
+                                      ...selectedcontrolpoints,
+                                      item,
+                                    ]);
+                                  }}
+                                >
+                                  <div className="action-icon">
+                                    <RoundAdd />
+                                  </div>
+                                </div>
+                              )}
                             </div>
-                          )}
-                        </div>
-                      )
-                    )}
+                          )
+                        )}
                   </div>
                 </div>
               </div>

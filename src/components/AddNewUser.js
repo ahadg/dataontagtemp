@@ -33,7 +33,7 @@ const AddNewUser = ({ setOpen, companyfilter, getusers }) => {
     );
   };
   const createnewuser = async (id) => {
-    console.log("vallidd", validateEmail(email));
+    console.log('vallidd',validateEmail(email))
     let formData = new FormData();
     const config = {
       header: {
@@ -47,13 +47,13 @@ const AddNewUser = ({ setOpen, companyfilter, getusers }) => {
       return toast.error("Please input email.");
     } else if (!mobile) {
       return toast.error("Please input phone number.");
-    } else if (!validateEmail(email)) {
+    } else if(!validateEmail(email)) {
       return toast.error("Please input a valid email.");
     } else if (!password) {
       return toast.error("Please input password.");
     } else if (password != confirmpassword) {
       return toast.error("Password confirmation does not matched.");
-    } else if (mobile.length > 12) {
+    } else if(mobile.length > 12){
       return toast.error("Phone number length should'nt be greater than 12.");
     }
     // else if(password){
@@ -71,10 +71,7 @@ const AddNewUser = ({ setOpen, companyfilter, getusers }) => {
     setloading(true);
     formData.append("file", img);
     let body;
-    if (
-      selectedrole.title == "Company user" ||
-      selectedrole.title == "Maintenance user"
-    ) {
+    if (selectedrole.title == "Company user" || selectedrole.title == "Maintenance user") {
       body = {
         userName,
         email,
@@ -119,6 +116,7 @@ const AddNewUser = ({ setOpen, companyfilter, getusers }) => {
         setloading(false);
         return toast.error("Error in server");
       }
+
     }
     //})
   };
@@ -171,7 +169,7 @@ const AddNewUser = ({ setOpen, companyfilter, getusers }) => {
               >
                 {img ? (
                   <img
-                    // style={{ width: "160px", height: "120px" }}
+                    style={{ width: "160px", height: "120px" }}
                     src={URL.createObjectURL(img)}
                     className="img"
                   />

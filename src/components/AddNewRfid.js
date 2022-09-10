@@ -9,10 +9,10 @@ import {
   Scan,
   ScanIcon,
 } from "../svg/index";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux"; 
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
-const AddNewRfid = ({ setOpen, companyfilter, getrfids }) => {
+import { ToastContainer, toast } from 'react-toastify';
+const AddNewRfid = ({ setOpen,companyfilter,getrfids }) => {
   const [img, setImg] = useState();
   const [hide2, setHide2] = useState(false);
   const [selectedCompany2, setselectedcompany2] = useState();
@@ -20,12 +20,12 @@ const AddNewRfid = ({ setOpen, companyfilter, getrfids }) => {
   const [rfid2, setrfid2] = useState("");
   const [startDate, setstartDate] = useState(new Date().getTime());
   const [endDate, setEndDate] = useState(new Date().getTime());
-  const [loading, setloading] = useState(false);
-  const { socket, rfid } = useSelector((state) => state.generalReducers);
+  const [loading,setloading] = useState(false)
+  const {socket,rfid} = useSelector((state) => state.generalReducers);
   const [scan, setScan] = useState(false);
   useEffect(() => {
-    setrfid2(rfid);
-  }, [rfid]);
+    setrfid2(rfid)
+ },[rfid])
   const createnewrfid = async (id) => {
     let formData = new FormData();
     setloading(true);
@@ -36,16 +36,16 @@ const AddNewRfid = ({ setOpen, companyfilter, getrfids }) => {
       },
     };
     //console.log(body)
-    setloading(true);
+    setloading(true)
     formData.append("file", img);
     let body;
-    body = {
-      deviceName,
-      rfid: rfid2,
-      companyRef: selectedCompany2?._id,
-      manufacturingdate: startDate,
-      expirydate: endDate,
-    };
+      body = {
+        deviceName,
+        rfid : rfid2 ,
+        companyRef : selectedCompany2?._id,
+        manufacturingdate : startDate,
+        expirydate : endDate
+      };
     formData.append("data", JSON.stringify(body));
     try {
       let res2 = await axios.post(
@@ -54,9 +54,9 @@ const AddNewRfid = ({ setOpen, companyfilter, getrfids }) => {
         config
       );
       console.log(res2);
-      getrfids();
+      getrfids()
       setloading(false);
-      setOpen(false);
+      setOpen(false)
       //getusers()
     } catch (error) {
       console.log("error1", error);
@@ -65,7 +65,8 @@ const AddNewRfid = ({ setOpen, companyfilter, getrfids }) => {
           console.log("error", error.response.data);
           return toast.error(error.response.data.error);
         }
-      } else {
+      }
+      else {
         return toast.error("Error in server");
       }
     }
@@ -91,7 +92,7 @@ const AddNewRfid = ({ setOpen, companyfilter, getrfids }) => {
           >
             {img ? (
               <img
-                // style={{ width: "160px", height: "120px" }}
+                style={{ width: "160px", height: "120px" }}
                 src={URL.createObjectURL(img)}
                 className="img"
               />
@@ -149,54 +150,54 @@ const AddNewRfid = ({ setOpen, companyfilter, getrfids }) => {
         {/* <div className="lbl s14 b6 font">Other Information</div> */}
       </div>
       <div className="user-data flex flex-col">
-        <div className="dropDown flex aic jc flex-col rel">
-          <div className="category flex aic">
-            <div
-              className="cbox cleanbtn flex aic rel"
-              onClick={(e) => {
-                e.stopPropagation();
-                setHide2(!hide2);
-              }}
-            >
-              <div className="slt flex aic">
-                <div className="unit-name flex aic font s14 b4">
-                  <span
-                    className="unit-eng flex aic font s14 b4"
-                    placeholder="Company Filter"
-                  >
-                    {selectedCompany2
-                      ? selectedCompany2.companyName
-                      : "Company Filter"}
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex aic jc">
-                <ArrowDownIcon />
-              </div>
-            </div>
-          </div>
-          <div className={`block flex aic abs ${hide2 ? "show" : ""}`}>
-            <div className="manue flex aic col anim">
-              {companyfilter.map((item, index) => (
+      <div className="dropDown flex aic jc flex-col rel">
+              <div className="category flex aic">
                 <div
-                  key={index}
-                  className="slt flex aic"
+                  className="cbox cleanbtn flex aic rel"
                   onClick={(e) => {
+                    e.stopPropagation();
                     setHide2(!hide2);
-                    setselectedcompany2(item);
                   }}
                 >
-                  <div className="unit-name flex aic font s14 b4">
-                    <span className="unit-eng flex aic font s14 b4">
-                      {item.companyName}
-                    </span>
+                  <div className="slt flex aic">
+                    <div className="unit-name flex aic font s14 b4">
+                      <span
+                        className="unit-eng flex aic font s14 b4"
+                        placeholder="Company Filter"
+                      >
+                        {selectedCompany2
+                          ? selectedCompany2.companyName
+                          : "Company Filter"}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex aic jc">
+                    <ArrowDownIcon />
                   </div>
                 </div>
-              ))}
+              </div>
+              <div className={`block flex aic abs ${hide2 ? "show" : ""}`}>
+                <div className="manue flex aic col anim">
+                  {companyfilter.map((item, index) => (
+                    <div
+                      key={index}
+                      className="slt flex aic"
+                      onClick={(e) => {
+                        setHide2(!hide2);
+                        setselectedcompany2(item);
+                      }}
+                    >
+                      <div className="unit-name flex aic font s14 b4">
+                        <span className="unit-eng flex aic font s14 b4">
+                          {item.companyName}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
         <div className="data-item flex aic">
           <div className="txt-field flex flex-col">
             <div className="lbl s12 font">Manufacturing Date</div>
@@ -239,12 +240,9 @@ const AddNewRfid = ({ setOpen, companyfilter, getrfids }) => {
         >
           Cancel
         </button>
-        <button
-          onClick={() => createnewrfid(false)}
-          className="btn cleanbtn button s14 font"
-        >
-          Create RFID
-        </button>
+        <button 
+        onClick={() => createnewrfid(false)}
+        className="btn cleanbtn button s14 font">Create RFID</button>
       </div>
     </div>
   );

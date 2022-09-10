@@ -41,9 +41,7 @@ function App() {
     (state) => state.generalReducers.isAuthenticated
   );
   const user = useSelector((state) => state.generalReducers.user);
-  const notifications = useSelector(
-    (state) => state.generalReducers.notifications
-  );
+  const notifications = useSelector((state) => state.generalReducers.notifications);
   const connectwithsocket = () => {
     //const socket = io.connect(`http://localhost:5000?token=${token}&Id=${uniqueId}`);
     const socket = io.connect(
@@ -62,31 +60,11 @@ function App() {
       } else if (thedata.type == "chat") {
         dispatch({ type: "MESSAGE_UPDATE", payload: thedata });
       } else if (thedata.type == "notification") {
-        console.log("notificationss_inside");
-        dispatch({
-          type: "UPDATE_NOTIFICATIONS_SOCKET_UPDATE",
-          payload: {
-            id: thedata.id,
-            type: "notification",
-            message: thedata.message,
-            createdAt: `${new Date()}`,
-            read: false,
-            details: thedata.details,
-          },
-        });
+        console.log('notificationss_inside')
+        dispatch({ type: "UPDATE_NOTIFICATIONS_SOCKET_UPDATE", payload: {id : thedata.id,type : 'notification',message : thedata.message, createdAt : `${new Date()}`,read: false,details : thedata.details} });
       } else if (thedata.type == "qraccess") {
-        console.log("notificationss_inside");
-        dispatch({
-          type: "UPDATE_NOTIFICATIONS_SOCKET_UPDATE",
-          payload: {
-            id: thedata.id,
-            type: "qraccess",
-            message: thedata.message,
-            createdAt: `${new Date()}`,
-            read: false,
-            details: { senderid: thedata.senderid, touser: thedata.touser },
-          },
-        });
+        console.log('notificationss_inside')
+        dispatch({ type: "UPDATE_NOTIFICATIONS_SOCKET_UPDATE", payload: {id : thedata.id,type : 'qraccess',message : thedata.message, createdAt : `${new Date()}`,read: false,details : {senderid : thedata.senderid, touser : thedata.touser}} });
       }
     });
     socket.on("disconnect", () => {
@@ -97,7 +75,7 @@ function App() {
   };
   const getnotifications = async () => {
     try {
-      console.log("GETTTINGGG_NOTIFICATIONSS");
+      console.log("GETTTINGGG_NOTIFICATIONSS")
       const res = await axios.get(
         `${process.env.REACT_APP_END_URL}api/getusernotifications`
       );
@@ -139,8 +117,8 @@ function App() {
   }, []);
   return (
     <div className="App rel">
-      <ToastContainer
-      //autoClose={false}
+      <ToastContainer 
+      //autoClose={false} 
       />
       <Toaster />
       {apploaded ? (
@@ -156,11 +134,7 @@ function App() {
               <Route exact path="/support" component={Support} />
               <Route exact path="/smartDevices" component={SmartDevices} />
               <Route exact path="/usersManagment" component={UsersManagment} />
-              <Route
-                exact
-                path="/CompanyManagment"
-                component={CompanyManagment}
-              />
+              <Route exact path="/CompanyManagment" component={CompanyManagment} />
               <Route exact path="/RfidManagment" component={RfidManagment} />
               <Route exact path="/RfidInspection" component={RfidInspection} />
               <Route

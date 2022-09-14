@@ -2,16 +2,21 @@ import React, { useState, useEffect } from "react";
 import Datetime from "react-datetime";
 import "react-datetime/css/react-datetime.css";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import { CameraIcon, ArrowDownIcon, FireCaylinder } from "../svg/index";
+import { CameraIcon, ArrowDownIcon, FireCaylinder ,RoundAdd,
+  RoundRemoveIcon,
+  SearchIcon,} from "../svg/index";
 import axios from "axios";
 import Loader from "../components/Loader";
 import { ToastContainer, toast } from "react-toastify";
-const AddNewUser = ({ setOpen, companyfilter, getusers }) => {
+import { useDispatch, useSelector } from "react-redux";
+const AddNewUser = ({ setOpen, companyfilter, getusers,companies }) => {
   const [img, setImg] = useState();
+  const user = useSelector((state) => state.generalReducers.user);
   const [hide, setHide] = useState(false);
   const [hide2, setHide2] = useState(false);
   const [selectedCompany2, setselectedcompany2] = useState();
   const [selectedrole, setSelectedrole] = useState();
+  const [search, setsearch] = useState("");
   const [roles, setroles] = useState([
     { id: 1, title: "Super admin", value: "superadmin" },
     { id: 2, title: "Company admin", value: "companyadmin" },
@@ -20,6 +25,8 @@ const AddNewUser = ({ setOpen, companyfilter, getusers }) => {
     { id: 5, title: "Maintenance user", value: "maintaineruser" },
   ]);
   const [userName, setuserName] = useState("");
+  const [showList2, setShowList2] = useState(false);
+  const [selectedcompanies,setselectedcompanies] = useState([])
   const [email, setemail] = useState("");
   const [mobile, setmobile] = useState("");
   const [password, setpassword] = useState("");
@@ -80,6 +87,7 @@ const AddNewUser = ({ setOpen, companyfilter, getusers }) => {
         confirmPassword: password,
         companyRef: selectedCompany2._id,
         userType: selectedrole?.value,
+        selectedcompanies
       };
     } else {
       body = {
@@ -90,6 +98,7 @@ const AddNewUser = ({ setOpen, companyfilter, getusers }) => {
         confirmPassword: password,
         companyName,
         userType: selectedrole?.value,
+        selectedcompanies
       };
     }
     console.log(body);
@@ -279,94 +288,179 @@ const AddNewUser = ({ setOpen, companyfilter, getusers }) => {
                   </div>
                   <div className={`block flex aic abs ${hide ? "show" : ""}`}>
                     <div className="manue flex aic col anim">
-                      {roles.map((item, index) => (
-                        <div
-                          key={index}
-                          className="slt flex aic"
-                          onClick={(e) => {
-                            setHide(!hide);
-                            setSelectedrole(item);
-                          }}
-                        >
-                          <div className="unit-name flex aic font s14 b4">
-                            <span className="unit-eng flex aic font s14 b4">
-                              {item.title}
-                            </span>
+                      {roles.map((item, index) => {
+                        if(item.value == "superadmin" && user?.userType != "superadmin"){
+                          return
+                        }
+                        else {
+                         return <div
+                            key={index}
+                            className="slt flex aic"
+                            onClick={(e) => {
+                              setHide(!hide);
+                              setSelectedrole(item);
+                            }}
+                          >
+                            <div className="unit-name flex aic font s14 b4">
+                              <span className="unit-eng flex aic font s14 b4">
+                                {item.title}
+                              </span>
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        }
+                      })}
                     </div>
                   </div>
                 </div>
               </div>
               <div className="txt-field flex flex-col">
-                <div className="lbl s12 font">
-                  {selectedrole?.value != "companyadmin"
-                    ? "Select Company"
-                    : "Input company"}
-                </div>
-                {selectedrole?.value != "companyadmin" &&
-                selectedrole?.value != "superadmin" &&
-                selectedrole?.value != "maintaineradmin" ? (
-                  <div className="dropDown flex aic jc flex-col rel">
-                    <div className="category flex aic">
-                      <div
-                        className="cbox cleanbtn flex aic rel"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setHide2(!hide2);
-                        }}
-                      >
-                        <div className="slt flex aic">
-                          <div className="unit-name flex aic font s14 b4">
-                            <span
-                              className="unit-eng flex aic font s14 b4"
-                              placeholder="Company Filter"
-                            >
-                              {selectedCompany2
-                                ? selectedCompany2.companyName
-                                : "Company Filter"}
-                            </span>
-                          </div>
+           
+              <div className="fields-row flex aic">
+              <div className="data-item flex aic">
+                  <div className="txt-field flex flex-col" style={{width:'100%'}}>
+                    <div className="lbl s12 font">Company Selection</div>
+                    <div
+                      className="search-box txt  flex flex-col rel pointer"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowList2(!showList2);
+                      }}
+                    >
+                      <div className="txt-box flex aic">
+                        <div
+                          // type="text"
+                          className="flex aic txt-b s12 cleanbtn flex-wrap"
+                          // value={selectedUser}
+                        >
+                          {selectedcompanies?.map((item, index) => (
+                            <div className="flex s12">
+                              {item.companyname}, {""}
+                            </div>
+                          ))}
                         </div>
-
-                        <div className="flex aic jc">
+                        <div
+                          className="icon flex aic jc pointer"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setShowList2(!showList2);
+                          }}
+                        >
                           <ArrowDownIcon />
                         </div>
                       </div>
-                    </div>
-                    <div
-                      className={`block flex aic abs ${hide2 ? "show" : ""}`}
-                    >
-                      <div className="manue flex aic col anim">
-                        {companyfilter.map((item, index) => (
-                          <div
-                            key={index}
-                            className="slt flex aic"
-                            onClick={(e) => {
-                              setHide2(!hide2);
-                              setselectedcompany2(item);
-                            }}
-                          >
-                            <div className="unit-name flex aic font s14 b4">
-                              <span className="unit-eng flex aic font s14 b4">
-                                {item?.companyName}
-                              </span>
-                            </div>
+                      <div
+                        className={`list-box flex flex-col abs ${
+                          showList2 ? "show" : ""
+                        }`}
+                      >
+                        <div
+                          className="txt-search flex aic"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <input
+                            type="text"
+                            className="txt-s cleanbtn"
+                            placeholder="Search company"
+                            onChange={(e) => setsearch(e.target.value)}
+                          />
+                          <div className="icon flex aic jc">
+                            <SearchIcon />
                           </div>
-                        ))}
+                        </div>
+                        <div className="user-list flex flex-col">
+                        {companies?.map((item, index) =>
+                                search?.toLowerCase() ? (
+                                  item?.companyname?.toLowerCase()?.search(search) > -1 && (
+                                    <div className="list-item flex aic">
+                                      <div className="name s13 font b5">
+                                        {item.companyname}
+                                      </div>
+                                      {selectedcompanies.findIndex((item2) =>  item2.companyname == item.companyname) > -1 ? (
+                                        <div
+                                          className="action-ico pointer"
+                                          onClick={(e) => {
+                                            const index = selectedcompanies.findIndex((item2) =>  item2.companyname == item.companyname);
+                                            console.log("mod_selector", index);
+                                            const mod_selector = selectedcompanies.splice(
+                                              index,
+                                              1
+                                            );
+                                            console.log("mod_selector", mod_selector);
+                                            console.log("mod_selector", selectedcompanies);
+                                            setselectedcompanies([...selectedcompanies]);
+                                          }}
+                                        >
+                                          <div className="action-icon">
+                                            <RoundRemoveIcon />
+                                          </div>
+                                        </div>
+                                      ) : (
+                                        <div
+                                          className="action-ico pointer"
+                                          onClick={(e) => {
+                                            setselectedcompanies([
+                                              ...selectedcompanies,
+                                              item,
+                                            ]);
+                                            e.stopPropagation();
+                                          }}
+                                        >
+                                          <div className="action-icon">
+                                            <RoundAdd />
+                                          </div>
+                                        </div>
+                                      )}
+                                    </div>
+                                  )
+                                ) : (
+                                  <div className="list-item flex aic">
+                                    <div className="name s13 font b5">
+                                      {item.companyname}
+                                    </div>
+                                    {selectedcompanies.findIndex((item2) =>  item2.companyname == item.companyname) > -1 ? (
+                                      <div
+                                        className="action-ico pointer"
+                                        onClick={(e) => {
+                                          const index = selectedcompanies.findIndex((item2) =>  item2.companyname == item.companyname);
+                                          console.log("mod_selector", index);
+                                          const mod_selector = selectedcompanies.splice(
+                                            index,
+                                            1
+                                          );
+                                          console.log("mod_selector", mod_selector);
+                                          console.log("mod_selector", selectedcompanies);
+                                          setselectedcompanies([...selectedcompanies]);
+                                        }}
+                                      >
+                                        <div className="action-ico">
+                                          <RoundRemoveIcon />
+                                        </div>
+                                      </div>
+                                    ) : (
+                                      <div
+                                        className="action-ico pointer"
+                                        onClick={(e) => {
+                                          setselectedcompanies([
+                                            ...selectedcompanies,
+                                            item,
+                                          ]);
+                                        }}
+                                      >
+                                        <div className="action-icon">
+                                          <RoundAdd />
+                                        </div>
+                                      </div>
+                                    )}
+                                  </div>
+                                )
+                              )}
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                ) : (
-                  <input
-                    type="text"
-                    className="txt cleanbtn s12 font"
-                    placeholder="Company name"
-                    onChange={(e) => setcompanyName(e.target.value)}
-                  />
-                )}
+                </div>
+               </div> 
               </div>
+            </div>
+          </div>
             </div>
           </div>
           <div className="action flex aic">

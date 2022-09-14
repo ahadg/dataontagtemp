@@ -387,7 +387,9 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                 </div>
                 {/* Starting */}
                 <div className="Options">
-                <div className="search-box flex flex-col rel">
+                <div className="search-box flex flex-col rel"
+                style={{width:'100%'}}
+                >
                   <div className="txt-box flex aic">
                     <div
                       // type="text"

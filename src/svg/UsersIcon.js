@@ -4,17 +4,16 @@ function UsersIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="26"
+      width="25"
       height="28"
       fill="none"
-      viewBox="0 0 26 28"
+      viewBox="0 0 25 28"
     >
       <path
-        stroke="#CDCDCD"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="3"
-        d="M23.667 26v-2.667A5.333 5.333 0 0018.333 18H7.668a5.333 5.333 0 00-5.333 5.333V26M13 12.667A5.333 5.333 0 1013 2a5.333 5.333 0 000 10.667z"
+        fill="#CDCDCD"
+        fillRule="evenodd"
+        d="M8.833 7.333a3.833 3.833 0 117.667 0 3.833 3.833 0 01-7.667 0zM12.667.5a6.833 6.833 0 100 13.667 6.833 6.833 0 000-13.667zm-5.334 16A6.833 6.833 0 00.5 23.333V26a1.5 1.5 0 003 0v-2.667A3.833 3.833 0 017.333 19.5H18a3.833 3.833 0 013.833 3.833V26a1.5 1.5 0 003 0v-2.667A6.833 6.833 0 0018 16.5H7.333z"
+        clipRule="evenodd"
       ></path>
     </svg>
   );

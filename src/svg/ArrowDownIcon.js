@@ -9,7 +9,7 @@ function ArrowDownIcon() {
       fill="none"
       viewBox="0 0 20 20"
     >
-      <path fill="#000" d="M5 6l5 5 5-5 2 1-7 7-7-7 2-1z"></path>
+      <path fill="#00dc98" d="M5 6l5 5 5-5 2 1-7 7-7-7 2-1z"></path>
     </svg>
   );
 }

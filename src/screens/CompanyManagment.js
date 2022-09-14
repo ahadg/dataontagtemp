@@ -17,7 +17,7 @@ import {
   CameraIcon,
   ActionIcon,
 } from "../svg";
-
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import Loader from "../components/Loader";
 import moment from "moment";
@@ -46,6 +46,7 @@ const CompanyManagment = () => {
   const [hide, setHide] = useState(false);
   const [hide2, setHide2] = useState(false);
   const [hide3, setHide3] = useState(false);
+  
   // const [selectedCompany, setselectedcompany] = useState();
   const [selectedrole, setselectedrole] = useState();
   const [companyfilter, setcompanyfilter] = useState([]);
@@ -56,14 +57,35 @@ const CompanyManagment = () => {
     id: 1,
     title: "Users",
   });
-
+  const user = useSelector((state) => state.generalReducers.user);
   const [companies,setcompanies] = useState([])
   const [loading, setloading] = useState(false);
   const [search, setsearch] = useState(undefined);
   const [groupsearch, setgroupsearch] = useState(undefined);
   const [filteruserList, setfilteruserList] = useState([]);
   const [selectedcompany, setselectedcompany] = useState({});
-
+  const [controlpoints, setcontrolpoints] = useState([]);
+  const getcontrolpointlist = async () => {
+    try {
+      const res = await axios.get(
+        `${process.env.REACT_APP_END_URL}api/getcontrolpointlist`
+      );
+      console.log("response_checks-getcontrolpointlist", res.data);
+      if (res.data) {
+        setcontrolpoints(res.data.controlpoints);
+      }
+    } catch (error) {
+      console.log("error1", error);
+      if (error.response) {
+        if (error.response.data) {
+          console.log("error", error.response.data);
+          return toast.error(error.response.data.error);
+        }
+      } else {
+        return toast.error("Error in server");
+      }
+    }
+  };
 
   const getcompanies = async () => {
     try {
@@ -168,6 +190,7 @@ const CompanyManagment = () => {
 
   useEffect(() => {
     getcompanies();
+    getcontrolpointlist()
     document.addEventListener("click", () => {
       setHide(false);
       setHide2(false);
@@ -238,26 +261,30 @@ const CompanyManagment = () => {
                       <div className="row-item font">{item.province}</div>
                       <div className="row-item font">{item.address}</div>
                       <div className="row-item font">{item.zipcode}</div>
-                      <div className="row-item font">
-                        <div
-                          onClick={() => {
-                            setOpen4(true);
-                            setselectedcompany(item);
-                          }}
-                          className="ico-edit pointer flex aic jc"
-                        >
-                          <EditIcon />
+                      {
+                        (user.userType == "superadmin" || user.userType == "maintaineradmin")
+                        &&
+                        <div className="row-item font">
+                          <div
+                            onClick={() => {
+                              setOpen4(true);
+                              setselectedcompany(item);
+                            }}
+                            className="ico-edit pointer flex aic jc"
+                          >
+                            <EditIcon />
+                          </div>
+                          <div
+                            onClick={() => {
+                              setOpen3(true);
+                              setcompanytobedelete(item);
+                            }}
+                            className="icon-del flex aic"
+                          >
+                            <DeleteIcon />
+                          </div>
                         </div>
-                        <div
-                          onClick={() => {
-                            setOpen3(true);
-                            setcompanytobedelete(item);
-                          }}
-                          className="icon-del flex aic"
-                        >
-                          <DeleteIcon />
-                        </div>
-                      </div>
+                      }
                     </div>
                   ))}
                 </div>
@@ -272,17 +299,19 @@ const CompanyManagment = () => {
       <Modal open={open4} onClose={() => setOpen4(false)}>
         <EditCompany
           getcompanies={getcompanies}
-          companyfilter={companyfilter}
+          companies={companies}
           setOpen={setOpen4}
           selectedcompany={selectedcompany}
+          controlpoints={controlpoints}
         />
       </Modal>
 
       <Modal open={open} onClose={() => setOpen(false)}>
         <AddNewCompany
           getcompanies={getcompanies}
-          companyfilter={companyfilter}
+          companies={companies}
           setOpen={setOpen}
+          controlpoints={controlpoints}
         />
       </Modal>
 

@@ -131,7 +131,9 @@ const UserProfile = () => {
               <div className="asd-header flex aic jc">
                 <div className="lbl s16 b6 font">Profile Info</div>
               </div>
-              <div className="asd-header flex aic jc">
+              {
+                user?.createdAt ?
+                <div className="asd-header flex aic jc">
                 <div className="lbl s16 font">Date Created : {`
                         ${moment(Number(user.createdAt ? user.createdAt : new Date(1646384612799) )).format("D")}-${moment(
                           Number(user.createdAt ? user.createdAt : new Date(1646384612799))
@@ -144,9 +146,16 @@ const UserProfile = () => {
                         ).format("mm")}`
                       }</div>
               </div>
-              <div className="asd-header flex aic jc">
+              : ''
+              }
+             
+              {
+                user?.createdBy?.userName ?
+                <div className="asd-header flex aic jc">
                 <div className="lbl s16  font">Created By : {user?.createdBy?.userName}</div>
               </div>
+              : ''
+              }
               <div className="user-info flex">
                 <div className="select-img flex aic jc">
                   <div

@@ -130,16 +130,16 @@ function App() {
               <Route exact path="/" component={Home} />
               <Route exact path="/profile" component={UserProfile} />
               <Route exact path="/checkpoint" component={Checkpoint} />
-              <Route exact path="/nfc-managment" component={NfcManagment} />
+              <Route exact path="/nfc-management" component={NfcManagment} />
               <Route exact path="/support" component={Support} />
               <Route exact path="/smartDevices" component={SmartDevices} />
-              <Route exact path="/usersManagment" component={UsersManagment} />
-              <Route exact path="/CompanyManagment" component={CompanyManagment} />
-              <Route exact path="/RfidManagment" component={RfidManagment} />
+              <Route exact path="/usersManagement" component={UsersManagment} />
+              <Route exact path="/CompanyManagement" component={CompanyManagment} />
+              <Route exact path="/RfidManagement" component={RfidManagment} />
               <Route exact path="/RfidInspection" component={RfidInspection} />
               <Route
                 exact
-                path="/support-managment"
+                path="/support-management"
                 component={SupportManagment}
               />
               <Route exact path="/task-managment" component={TaskManagment} />

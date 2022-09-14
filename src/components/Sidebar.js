@@ -16,6 +16,7 @@ import {
   RifdInspecIcon,
 } from "../svg";
 import { useDispatch, useSelector } from "react-redux";
+import CompanyIcon from "../svg/CompanyIcon";
 const Siderbar = ({ history }) => {
   const dispatch = useDispatch();
   const { showSidebar } = useSelector((state) => state.generalReducers);
@@ -24,13 +25,13 @@ const Siderbar = ({ history }) => {
   const nav = [
     { label: "Inspection", slug: "/", icon: <RoundIcon /> },
     { label: "Template", slug: "/checkpoint", icon: <ListIcon /> },
-    { label: "Controlpoint", slug: "/nfc-managment", icon: <NFCIcon /> },
+    { label: "Controlpoint", slug: "/nfc-management", icon: <NFCIcon /> },
     { label: "Smart Devices", slug: "/smartDevices", icon: <SmartDevices /> },
-    { label: "Users Managment", slug: "/usersManagment", icon: <UsersIcon /> },
-    { label: "Company Managment", slug: "/CompanyManagment", icon: <UsersIcon /> },
+    { label: "Users Managment", slug: "/usersManagement", icon: <UsersIcon /> },
+    { label: "Company Managment", slug: "/CompanyManagement", icon: <CompanyIcon /> },
     {
-      label: "RFID Managment",
-      slug: "/RfidManagment",
+      label: "RFID Management",
+      slug: "/RfidManagement",
       icon: <RifdManageIcon />,
     },
     {
@@ -39,8 +40,8 @@ const Siderbar = ({ history }) => {
       icon: <RifdInspecIcon />,
     },
     {
-      label: "Support Managment",
-      slug: "/support-managment",
+      label: "Support Manaegment",
+      slug: "/support-management",
       icon: <SupportIcon />,
     },
     // {

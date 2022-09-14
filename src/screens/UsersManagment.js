@@ -25,16 +25,20 @@ import CustomDateRangeInputs from "../components/CustomDateRangeInputs";
 import AddNewUser from "../components/AddNewUser";
 import EditUser from "../components/EditUser";
 import AddGroup from "../components/AddGroup";
+import EditGroup from "../components/EditGroup";
 import { ToastContainer, toast } from 'react-toastify';
 import { useDispatch, useSelector } from "react-redux";
 const UsersManagment = () => {
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
+  const [open5, setOpen5] = useState(false);
+  const [open6, setOpen6] = useState(false);
   const [open4, setOpen4] = useState(false);
   const [open3, setOpen3] = useState(false);
   const [hide, setHide] = useState(false);
   const [hide2, setHide2] = useState(false);
   const [hide3, setHide3] = useState(false);
+  const [companies,setcompanies] = useState([])
   const [selectedCompany, setselectedcompany] = useState();
   const { showRightbar,user } = useSelector((state) => state.generalReducers);
   const [selectedrole, setselectedrole] = useState();
@@ -58,7 +62,16 @@ const UsersManagment = () => {
   const [groupsearch, setgroupsearch] = useState(undefined);
   const [filteruserList,setfilteruserList] = useState([])
   const [selecteduser,setselecteduser] = useState({})
-
+  const [selectedgroup,setselectedgroup] = useState({})
+  console.log('filterdgroups',filterdgroups)
+  const returnnames = (grouplist) => {
+   let names = ""
+   grouplist.map((item) => {
+     console.log('iteeeem',item)
+     names += ` ,${item?._id?.userName}`
+   })
+   return names
+  }
   useEffect(() => {
     console.log('selectedCompany',selectedCompany)
     let listtobefiltered = [...userList]
@@ -76,9 +89,14 @@ const UsersManagment = () => {
       );
     }
     if (search != undefined) {
+      let thesearch  = search.toLowerCase()
       listtobefiltered = listtobefiltered.filter((item) => {
+        console.log('item2245',item)
         if (
-          item.userName.search(search) > -1
+         (item.userName)?.toLowerCase()?.search(thesearch) > -1 ||  
+         (item.email)?.toLowerCase()?.search(thesearch) > -1 ||  
+         (item?.mobile?.toString())?.search(thesearch.toString()) > -1 ||  
+         (item.createdBy?.companyName)?.toLowerCase()?.search(thesearch) > -1 
         ) {
           return true;
         }
@@ -95,7 +113,7 @@ const UsersManagment = () => {
     else if (groupsearch != undefined) {
       const searchedids = groups.filter((item) => {
         if (
-          item.groupname.search(groupsearch) > -1
+          (item.groupname).toLowerCase().search((groupsearch).toLowerCase()) > -1
         ) {
           return true;
         }
@@ -103,6 +121,34 @@ const UsersManagment = () => {
       setfilterdgroups([...searchedids]);
     }
   }, [groupsearch]);
+
+  const getcompanies = async () => {
+    try {
+      setloading(true);
+      const res = await axios.get(
+        `${process.env.REACT_APP_END_URL}api/getcompanies`
+      );
+      console.log("response_checks", res.data);
+      if (res.data) {
+        // setfamilies(res.data.families);
+        // setOpen(false);
+        setloading(false);
+        setcompanies(res.data.companies);
+        //setfilteruserList(res.data.users);
+        setcompanyfilter(res.data.companies);
+      }
+    } catch (error) {
+      console.log("error1", error);
+      if (error.response) {
+        if (error.response.data) {
+          console.log("error", error.response.data);
+          return toast.error(error.response.data.error);
+        }
+      } else {
+        return toast.error("Error in server");
+      }
+    }
+  };
   
   const getusers = async () => {
     try {
@@ -170,6 +216,7 @@ const UsersManagment = () => {
   ])
   const [deleteloading, setdeleteloading] = useState(false);
   const [usertobedelete, setusertobedelete] = useState({});
+  const [grouptobedelete, setgrouptobedelete] = useState({});
   const deleteuser = async (id) => {
     try {
       setdeleteloading(true);
@@ -181,6 +228,32 @@ const UsersManagment = () => {
         getusers();
         setdeleteloading(false);
         setOpen3(false);
+      }
+    } catch (error) {
+      console.log("error1", error);
+      if (error.response) {
+        if (error.response.data) {
+          console.log("error", error.response.data);
+          return toast.error(error.response.data.error);
+        }
+      }
+      else {
+        return toast.error("Error in server");
+      }
+    }
+  };
+
+  const deletegroup = async (id) => {
+    try {
+      setdeleteloading(true);
+      const res = await axios.delete(
+        `${process.env.REACT_APP_END_URL}api/deleteusergroup/${grouptobedelete._id}`
+      );
+      console.log("response_checks", res.data);
+      if (res.data) {
+        getusergroup();
+        setdeleteloading(false);
+        setOpen6(false);
       }
     } catch (error) {
       console.log("error1", error);
@@ -231,9 +304,45 @@ const UsersManagment = () => {
     );
   };
 
+  const GroupConfirm = () => {
+    return (
+      <>
+        <div className="confirm-delte flex aic flex-col">
+          {deleteloading ? (
+            <Loader />
+          ) : (
+            <>
+              <div className="heading-tag flex aic jc s16 font b6">
+                <div>Delete Group</div>
+              </div>
+              <div className="desc flex aic jc s14 font b5">
+                Do You Want To Delete Group?
+              </div>
+              <div className="actions-row flex aic">
+                <button
+                  className="btn-cancle button cleanbtn"
+                  onClick={(e) => setOpen6(false)}
+                >
+                  No! Cancel
+                </button>
+                <button
+                  onClick={() => deletegroup()}
+                  className="btn-create button cleanbtn"
+                >
+                  Yes! Delete
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+      </>
+    );
+  };
+
   useEffect(() => {
     getusers()
     getusergroup()
+    getcompanies()
     document.addEventListener("click", () => {
       setHide(false);
       setHide2(false);
@@ -424,7 +533,7 @@ const UsersManagment = () => {
                             setsearch(e.target.value);
                           }}
                           type="text"
-                          placeholder="Search Users "
+                          placeholder="Search "
                           className="txt cleanbtn s16"
                         />
                         <SearchIcon />
@@ -585,6 +694,7 @@ const UsersManagment = () => {
                   <FilterIcon />
                 </div>
                 <div className="row-item">Group Name</div>
+                <div className="row-item">Members</div>
                 <div className="row-item">Number of members</div>
                 <div className="row-item">Action</div>
               </div>
@@ -598,13 +708,23 @@ const UsersManagment = () => {
                     </div>
                   </div>
                   <div className="row-item font">{item.groupname}</div>
+                  <div className="row-item font">{returnnames(item.grouplist)}</div>
                   <div className="row-item font">{(item.grouplist).length}</div>
                   <div className="row-item font">
                     <div 
+                     onClick={() => {
+                      setOpen5(true)
+                      setselectedgroup(item)
+                    }}
                     className="ico-edit pointer flex aic jc">
                       <EditIcon />
                     </div>
-                    <div className="icon-del flex aic">
+                    <div 
+                     onClick={() => {
+                      setOpen6(true)
+                      setgrouptobedelete(item)
+                    }}
+                    className="icon-del flex aic">
                       <DeleteIcon />
                     </div>
                   </div>
@@ -619,17 +739,23 @@ const UsersManagment = () => {
       <Modal open={open3} onClose={() => setOpen3(false)}>
         <Confirm />
       </Modal>
+      <Modal open={open6} onClose={() => setOpen6(false)}>
+        <GroupConfirm />
+      </Modal>
 
       <Modal open={open4} onClose={() => setOpen4(false)}>
-        <EditUser getusers={getusers} companyfilter={companyfilter} setOpen={setOpen4} selecteduser={selecteduser}/>
+        <EditUser companies={companies} getusers={getusers} companyfilter={companyfilter} setOpen={setOpen4} selecteduser={selecteduser}/>
       </Modal>
 
       <Modal open={open} onClose={() => setOpen(false)}>
-        <AddNewUser getusers={getusers} companyfilter={companyfilter} setOpen={setOpen}/>
+        <AddNewUser companies={companies} getusers={getusers} companyfilter={companyfilter} setOpen={setOpen}/>
       </Modal>
 
       <Modal open={open2} onClose={() => setOpen2(false)}>
         <AddGroup getusergroup={getusergroup} setOpen2={setOpen2} userList={userList}/>
+      </Modal>
+      <Modal open={open5} onClose={() => setOpen5(false)}>
+        <EditGroup selectedgroup={selectedgroup} getusergroup={getusergroup} setOpen5={setOpen5} userList={userList}/>
       </Modal>
     </div>
   );

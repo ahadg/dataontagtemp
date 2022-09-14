@@ -165,7 +165,6 @@
         }
         &:hover {
           background-color: #f8fffd;
-          cursor: pointer;
         }
         &:first-child {
           background-color: transparent;
@@ -246,6 +245,7 @@
             // justify-content: space-around;
             .icon-del {
               margin-right: 12px;
+              cursor: pointer;
             }
             .ico-edit {
               margin: 0 12px;

@@ -196,9 +196,9 @@ const AddGroup = ({ setOpen2, userList, getusergroup }) => {
                 <div className="user-list flex flex-col">
                   {userList.map((item, index) =>
                     search ? (
-                      item.userName.search(search) > -1 && (
+                      (item.userName).toLowerCase().search(search.toLowerCase()) > -1 && (
                         <div className="list-item flex aic">
-                          <div className="name s13 font b5">{item.user}</div>
+                          <div className="name s13 font b5">{item.userName}</div>
                           {selectedUser.includes(item.userName) ? (
                             <div
                               className="action-ico pointer"

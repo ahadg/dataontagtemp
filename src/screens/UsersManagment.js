@@ -439,7 +439,7 @@ const UsersManagment = () => {
                                 placeholder="Company Filter"
                               >
                                 {selectedCompany
-                                  ? selectedCompany.companyName
+                                  ? selectedCompany.companyname
                                   : "Company Filter"}
                               </span>
                             </div>
@@ -454,7 +454,7 @@ const UsersManagment = () => {
                         className={`block flex aic abs ${hide ? "show" : ""}`}
                       >
                         <div className="manue flex aic col anim">
-                          {companyfilter?.map((item, index) => (
+                          {companies?.map((item, index) => (
                             <div
                               key={index}
                               className="slt flex aic"
@@ -465,7 +465,7 @@ const UsersManagment = () => {
                             >
                               <div className="unit-name flex aic font s14 b4">
                                 <span className="unit-eng flex aic font s14 b4">
-                                  {item?.companyName}
+                                  {item?.companyname}
                                 </span>
                               </div>
                             </div>

@@ -5,7 +5,7 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import { CameraIcon, ArrowDownIcon, FireCaylinder } from "../svg/index";
 import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify';
-const AddSmartDevice = ({setOpen,getdevices}) => {
+const AddSmartDevice = ({setOpen,getdevices,companies}) => {
   const [img, setImg] = useState();
   const [hide, setHide] = useState(false);
   const [selectedState, setSelectedState] = useState();
@@ -22,30 +22,7 @@ const AddSmartDevice = ({setOpen,getdevices}) => {
   const [deviceamperes,setdeviceamperes] = useState('')
   const [endDate, setEndDate] = useState(new Date().getTime());
   
-  const getcompanies = async (id) => {
-    try {
-      let res2 = await axios.get(
-        `${process.env.REACT_APP_END_URL}api/getusers`
-      );
-      console.log(res2);
-      setStatusData(res2.data.users)
-    } catch (error) {
-      console.log("error1", error);
-      if (error.response) {
-        if (error.response.data) {
-          console.log("error", error.response.data);
-          return toast.error(error.response.data.error);
-        }
-      }
-      else {
-        return toast.error("Error in server");
-      }
-    }
-    //})
-  };
-  useEffect(() => {
-   getcompanies()
-  },[])
+
   const createSmartdevice = async () => {
     setdisabled(true)
     let formData = new FormData();
@@ -257,7 +234,7 @@ const AddSmartDevice = ({setOpen,getdevices}) => {
                         className="unit-eng flex aic font s14 b4"
                         placeholder="Company Name"
                       >
-                        {selectedState ? selectedState.companyName : "Company Name"}
+                        {selectedState ? selectedState.companyname : "Company Name"}
                       </span>
                     </div>
                   </div>
@@ -269,7 +246,7 @@ const AddSmartDevice = ({setOpen,getdevices}) => {
               </div>
               <div className={`block flex aic abs ${hide ? "show" : ""}`}>
                 <div className="manue flex aic col anim">
-                  {statusData.map((item, index) => (
+                  {companies.map((item, index) => (
                     <div
                       key={index}
                       className="slt flex aic"
@@ -283,7 +260,7 @@ const AddSmartDevice = ({setOpen,getdevices}) => {
                           <FireCaylinder />
                         </div> */}
                         <span className="unit-eng flex aic font s14 b4">
-                          {item.companyName}
+                          {item.companyname}
                         </span>
                       </div>
                     </div>

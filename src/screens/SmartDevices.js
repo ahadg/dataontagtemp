@@ -92,7 +92,7 @@ const SmartDevices = () => {
       setDevices(res2.data.devices);
       setfiltereddevices(res2.data.devices)
       setloading(false);
-      setcompanies(res2.data.companies)
+      //setcompanies(res2.data.companies)
     } catch (error) {
       console.log("error1", error);
       if (error.response) {
@@ -106,8 +106,35 @@ const SmartDevices = () => {
     }
     //})
   };
+  const getcompanies = () => {
+    try {
+      //setloading(true);
+      axios.get(
+        `${process.env.REACT_APP_END_URL}api/getcompanies`
+      ).then((res) => {
+        console.log("response_checks", res.data);
+        if (res.data) {
+          // let thecompanies = res.data.companies.map((item) => {
+          //   return item.companyname
+          // })
+          setcompanies(res.data.companies);
+        }
+      })
+    } catch (error) {
+      console.log("error1", error);
+      if (error.response) {
+        if (error.response.data) {
+          console.log("error", error.response.data);
+          return toast.error(error.response.data.error);
+        }
+      } else {
+        return toast.error("Error in server");
+      }
+    }
+  };
   useEffect(() => {
     getdevices();
+    getcompanies()
   }, []);
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
@@ -165,18 +192,18 @@ const SmartDevices = () => {
                         className={`block flex aic abs ${hide ? "show" : ""}`}
                       >
                         <div className="manue flex aic col anim">
-                          {["All",...companies]?.map((item, index) => (
+                          {[{companyname : "All"},...companies]?.map((item, index) => (
                             <div
                               key={index}
                               className="slt flex aic"
                               onClick={(e) => {
                                 setHide(!hide);
-                                setselectedcompany(item);
+                                setselectedcompany(item?.companyname);
                               }}
                             >
                               <div className="unit-name flex aic font s14 b4">
                                 <span className="unit-eng flex aic font s14 b4">
-                                  {item}
+                                  {item?.companyname}
                                 </span>
                               </div>
                             </div>
@@ -320,6 +347,7 @@ const SmartDevices = () => {
         <AddSmartDevice
           setOpen={setOpen}
           getdevices={getdevices}
+          companies={companies}
           // setloading={setloading}
         />
       </Modal>

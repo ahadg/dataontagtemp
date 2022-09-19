@@ -25,8 +25,9 @@ const AddNewNFCTag = ({
   userList,
   getfamilies,
   syncfusionselected,
+  setschedulartitle
 }) => {
-  console.log('userList',userList)
+  //console.log('userList',userList)
   const user = useSelector((state) => state.generalReducers.user);
   const [showList, setShowList] = useState(false);
   const [gowithoutsubfamily, setgowithoutsubfamily] = useState(false);
@@ -71,7 +72,7 @@ const AddNewNFCTag = ({
   const [endDate, setEndDate] = useState(new Date().getTime());
   const [tagId, settagId] = useState();
   const [loader, setloader] = useState(false);
-  console.log('selectedUsers',selectedUsers)
+  //console.log('selectedUsers',selectedUsers)
   const createnewtag = async () => {
     if (!selectedfamily) {
       return toast.error("Please select family.");
@@ -92,6 +93,7 @@ const AddNewNFCTag = ({
     }
     try {
       setloading(true);
+      setloader(true)
       let mod_reminderselction = reminderselections.map((item) => {
         //var result = new Date(syncfusionselected[0]?.StartTime);
         var result = moment(syncfusionselected[0]?.StartTime);
@@ -125,7 +127,8 @@ const AddNewNFCTag = ({
           },
           selectedchecklistname: selectedChecklist,
           selectedUsers: theusers,
-          selectedCompany: selectedCompany,
+          selectedCompany: selectedCompany.companyname,
+          selectedCompanyId : selectedCompany._id,
           gowithoutsubfamily: gowithoutsubfamily,
           startDate: syncfusionselected[0]?.StartTime,
           endDate: syncfusionselected[0]?.EndTime,
@@ -172,10 +175,10 @@ const AddNewNFCTag = ({
       setHide3(false);
       setHide4(false);
       //reminderselections[mainindex]['showList']
-      reminderselections.map((item,index) => {
-        reminderselections[index]['showList'] = false
-      })
-      setreminderseletions([...reminderselections])
+      // reminderselections.map((item,index) => {
+      //   reminderselections[index]['showList'] = false
+      // })
+      // setreminderseletions([...reminderselections])
     });
   }, [reminderselections]);
 
@@ -464,7 +467,7 @@ const AddNewNFCTag = ({
                               placeholder="Company Filter"
                             >
                               {selectedCompany
-                                ? selectedCompany
+                                ? selectedCompany.companyname
                                 : "Company Filter"}
                             </span>
                           </div>
@@ -492,7 +495,7 @@ const AddNewNFCTag = ({
                                 <FireCaylinder />
                               </div>
                               <span className="unit-eng flex aic font s14 b4">
-                                {item}
+                                {item.companyname}
                               </span>
                             </div>
                           </div>
@@ -547,6 +550,7 @@ const AddNewNFCTag = ({
                   // to={"/syncfusion-calender"}
                   className="txt-input b6 s18 flex aic jc pointer"
                   onClick={(e) => {
+                    setschedulartitle(`${selectedfamily?.deviceName}-${selectedfamily?.subfamilyname}-${selectedcontrolpoint.controlpointname}`)
                     setOpen5(true);
                   }}
                 >

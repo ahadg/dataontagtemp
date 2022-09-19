@@ -59,7 +59,7 @@ const NfcManagment = () => {
   const [search, setsearch] = useState(undefined);
   const [deleteloading, setdeleteloading] = useState(false);
   const [userList, setuserList] = useState([]);
-
+  const [schedulartitle,setschedulartitle] = useState("")
   const getusers = async () => {
     try {
       //setloading(true);
@@ -155,8 +155,30 @@ const NfcManagment = () => {
       console.log("response_checks", res.data);
       if (res.data) {
         setfamilies(res.data.families);
-        setcompanies(res.data.companies);
+        //setcompanies(res.data.companies);
         setloading(false);
+      }
+    } catch (error) {
+      console.log("error1", error);
+      if (error.response) {
+        if (error.response.data) {
+          console.log("error", error.response.data);
+          return toast.error(error.response.data.error);
+        }
+      } else {
+        return toast.error("Error in server");
+      }
+    }
+  };
+  const getcompanies = async () => {
+    try {
+      setloading(true);
+      const res = await axios.get(
+        `${process.env.REACT_APP_END_URL}api/getcompanies`
+      );
+      console.log("response_checks", res.data);
+      if (res.data) {
+        setcompanies(res.data.companies);
       }
     } catch (error) {
       console.log("error1", error);
@@ -174,6 +196,7 @@ const NfcManagment = () => {
   useEffect(() => {
     getfamilies();
     getusers();
+    getcompanies()
   }, []);
   useEffect(() => {
     if (value) {
@@ -187,11 +210,11 @@ const NfcManagment = () => {
   useEffect(() => {
     let searchedids = [];
     if (selectedCompany) {
-      if (selectedCompany == "All") {
+      if (selectedCompany.companyname == "All") {
         searchedids = [...org_tagids];
       } else {
         searchedids = org_tagids.filter(
-          (item) => item?.family?.createdBy?.companyName == selectedCompany
+          (item) => item?.tagIds?.selectedCompany == selectedCompany?.companyname
         );
       }
     }
@@ -321,7 +344,7 @@ const NfcManagment = () => {
                                 placeholder="Company Filter"
                               >
                                 {selectedCompany
-                                  ? selectedCompany
+                                  ? selectedCompany.companyname
                                   : "Company Filter"}
                               </span>
                             </div>
@@ -336,7 +359,7 @@ const NfcManagment = () => {
                         className={`block flex aic abs ${hide ? "show" : ""}`}
                       >
                         <div className="manue flex aic col anim">
-                          {["All", ...companies].map((item, index) => (
+                          {[{companyname : "All"}, ...companies].map((item, index) => (
                             <div
                               key={index}
                               className="slt flex aic"
@@ -347,7 +370,7 @@ const NfcManagment = () => {
                             >
                               <div className="unit-name flex aic font s14 b4">
                                 <span className="unit-eng flex aic font s14 b4">
-                                  {item}
+                                  {item.companyname}
                                 </span>
                               </div>
                             </div>
@@ -437,7 +460,7 @@ const NfcManagment = () => {
                       {item?.controlpoint?.controlpointname}
                     </div>
                     <div className="row-item font">
-                      {item?.family?.createdBy?.companyName}
+                      {item?.tagIds?.selectedCompany}
                     </div>
                     <div className="row-item font">
                       {item.tagIds?.location.buildingname}
@@ -522,6 +545,7 @@ const NfcManagment = () => {
           setfamilies={setfamilies}
           setOpen={setOpen}
           setOpen5={setOpen5}
+          setschedulartitle={setschedulartitle}
           setloading={setloading}
           getfamilies={getfamilies}
           companies={companies}
@@ -579,6 +603,7 @@ const NfcManagment = () => {
       <Modal open={open5} onClose={() => setOpen5(false)}>
         <div className="flex flex-col">
           <div className="sync-calender-hdr flex aic je">
+             {schedulartitle}
             <div
               className="close-icon flex aic jc pointer"
               onClick={(e) => setOpen5(false)}

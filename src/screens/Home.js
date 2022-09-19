@@ -50,7 +50,7 @@ const Home = ({ location }) => {
   const [search, setsearch] = useState(undefined);
   const [selectedUser, setSelectedUser] = useState();
   const [companies, setcompanies] = useState([]);
-  const [selectedcompany, setselectedcompany] = useState("");
+  const [selectedcompany, setselectedcompany] = useState("All");
   const [buildings, setbuildings] = useState([]);
   // const [allbuildings,setallbuilding] = useState('')
   // const [allbuildings,setallbuilding] = useState('')
@@ -76,51 +76,10 @@ const Home = ({ location }) => {
   const [value, setValue] = React.useState([null, null]);
   console.log("date", value);
   const [tblData, settblData] = useState([
-    // {
-    //   id: "3F10065769234",
-    //   inspector: "Muddasir Nazir",
-    //   dataTime: "21 Jan 2021 at 2:31pm",
-    //   desc: "CO2 fire extinguisher n.1 – 2kg",
-    //   compName: "ShiningStarMedia.AI",
-    //   buildName: "Building No.1",
-    //   floor: "7",
-    //   location: "Main Door",
-    //   dateManuFect: "01 Jan 2019",
-    //   dateExpiry: "01 Jan 2023",
-    //   status: "No Issue",
-    // },
   ]);
   const [org_tblData, setorg_tblData] = useState([])
   console.log("tblData", tblData);
   console.log("org_tblData", org_tblData);
-  // useEffect(() => {
-  //   let searchedids = [];
-  //   if (selectedCompany) {
-  //     if (selectedCompany == "All") {
-  //       searchedids = [...tblData];
-  //     } else {
-  //       searchedids = org_tagids.filter(
-  //         (item) => item?.family?.createdBy?.companyName == selectedCompany
-  //       );
-  //     }
-  //   }
-  //   if (search != undefined) {
-  //     searchedids = tblData.filter((item) => {
-  //       if (
-  //         item?.controlpointId?.tagIds?.location.buildingname?.search(search) > -1 ||
-  //         item?.controlpointId?.tagIds?.location.floor?.search(search) > -1 ||
-  //         item?.controlpointId?.tagIds?.location.location?.search(search) > -1 ||
-  //         //item?.controlpointId?.controlpoint?.controlpointname?.toLowerCase()?.search(search?.toLowerCase()) > -1
-  //       ) {
-  //         return true;
-  //       }
-  //       // if (item.tagIds.tagId)
-  //       //   return item.tagIds.tagId.search(search) != -1;
-  //       // }
-  //     });
-  //   }
-  //   setmod_tagids([...searchedids]);
-  // }, [search, selectedCompany]);
   console.log('search',search)
   const filterdatabycompany = (paramsdata) => {
     let data = [...org_tblData];
@@ -128,6 +87,7 @@ const Home = ({ location }) => {
     if(paramsdata){
       data = paramsdata
     }
+    //console.log()
     console.log('paramsdata',paramsdata)
     if (selectedcompany == "All" || !selectedcompany || selectedcompany == "") {
       // data = [...org_tblData]
@@ -137,9 +97,10 @@ const Home = ({ location }) => {
     else {
       data = org_tblData.filter(
         (item) =>
-          item?.controlpointId?.createdBy?.companyName == selectedcompany
+          item?.selectedCompany == selectedcompany
       );
       data2 = data
+      settblData([...data])
     }
     data2 = data
     console.log('search',search)
@@ -224,7 +185,10 @@ const Home = ({ location }) => {
   }, [selectedbuilding]);
   // filter by floor
   useEffect(() => {
-    if (selectedfloor) {
+    if(selectedfloor == "All") {
+      settblData([...the_buildingcheck]);
+    }
+    else if (selectedfloor) {
       let mod_data = [];
       the_buildingcheck.map((item, index) => {
         const tagindex = item?.controlpointId?.tagIds?.findIndex(
@@ -254,6 +218,55 @@ const Home = ({ location }) => {
       }
     }
   }, [checkid, random]);
+  const getcompanies = () => {
+    try {
+      //setloading(true);
+      axios.get(
+        `${process.env.REACT_APP_END_URL}api/getcompanies`
+      ).then((res) => {
+        console.log("response_checks", res.data);
+        if (res.data) {
+          let thecompanies = res.data.companies.map((item) => {
+            return item.companyname
+          })
+          setcompanies(thecompanies);
+        }
+      })
+    } catch (error) {
+      console.log("error1", error);
+      if (error.response) {
+        if (error.response.data) {
+          console.log("error", error.response.data);
+          return toast.error(error.response.data.error);
+        }
+      } else {
+        return toast.error("Error in server");
+      }
+    }
+  };
+  const [userList, setuserList] = useState([]);
+  const getusers = () => {
+    try {
+      axios.get(
+        `${process.env.REACT_APP_END_URL}api/getallusers`
+      ).then((res) => {
+        console.log("responsess", res.data);
+        if (res.data) {
+          setuserList(res.data.users);
+        }
+      })   
+    } catch (error) {
+      console.log("error1", error);
+      if (error.response) {
+        if (error.response.data) {
+          console.log("error", error.response.data);
+          return toast.error(error.response.data.error);
+        }
+      } else {
+        return toast.error("Error in server");
+      }
+    }
+  };
   const getallchecks = async () => {
     setloading(true);
     try {
@@ -269,15 +282,16 @@ const Home = ({ location }) => {
           date,
         }
       );
-      console.log("response_checks", res.data);
+      console.log("response_checksss", res.data);
       if (res.data.success == "true") {
         settblData(res.data.checks);
         setorg_tblData(res.data.checks)
         setthe_checklists(res.data.checks);
-        setcompanies(res.data.companies);
+        //setcompanies(res.data.companies);
         setloading(false);
-        filterdatabycompany(res.data.checks)    
-      
+        //filterdatabycompany(res.data.checks)    
+        getusers();
+        getcompanies()
         if (checkid) {
           let theindex = res.data.checks.findIndex(
             (item) => item._id == checkid
@@ -287,32 +301,6 @@ const Home = ({ location }) => {
             setOpen(true);
           }
         }
-      }
-    } catch (error) {
-      console.log("error1", error);
-      if (error.response) {
-        if (error.response.data) {
-          console.log("error", error.response.data);
-          return toast.error(error.response.data.error);
-        }
-      } else {
-        return toast.error("Error in server");
-      }
-    }
-  };
-  const [userList, setuserList] = useState([]);
-  const getusers = async () => {
-    try {
-      //setloading(true);
-      const res = await axios.get(
-        `${process.env.REACT_APP_END_URL}api/getallusers`
-      );
-      console.log("response_checks", res.data);
-      if (res.data) {
-        // setfamilies(res.data.families);
-        setuserList(res.data.users);
-        // setfilteruserList(res.data.users)
-        //setcompanyfilter(res.data.companies)
       }
     } catch (error) {
       console.log("error1", error);
@@ -365,7 +353,6 @@ const Home = ({ location }) => {
 
   useEffect(() => {
     getallchecks();
-    getusers();
   }, []);
   useEffect(() => {
     if (value) {
@@ -437,12 +424,12 @@ const Home = ({ location }) => {
         {/* <div className="lbl b7 flex jc aic font">Control Point Status</div> */}
         <div className="check-list flex flex-col">
           {checklists.map((item, index) => {
-            return item.status == "normal" ? (
+            return item?.status == "normal" ? (
               <div className="check-item flex flex-col">
                 <div className="item-header flex aic">
                   <div className="header-left flex flex-col">
                     <div className="tag b6 font">Check {index + 1}</div>
-                    <div className="des s12 b5 font">{item.checkDesc}</div>
+                    <div className="des s12 b5 font">{item?.checkDesc}</div>
                   </div>
                   <div className="header-right flex aic">
                     <div className="status-icon flex aic jc green">
@@ -457,7 +444,7 @@ const Home = ({ location }) => {
                 <div className="item-header flex aic">
                   <div className="header-left flex flex-col">
                     <div className="tag b6 font">Check {index + 1}</div>
-                    <div className="des s12 b5 font">{item.checkDesc}</div>
+                    <div className="des s12 b5 font">{item?.checkDesc}</div>
                   </div>
                   <div className="header-right flex aic">
                     <div className="status-icon flex aic jc red">
@@ -471,14 +458,14 @@ const Home = ({ location }) => {
                     <div className="flex flex-col">
                       <div className="warning-tag s12 font b5">Issue</div>
                       <div className="warning-desc s12 b5 font">
-                        {item.issue}
+                        {item?.issue}
                       </div>
                     </div>
                     <div className="issue-action flex aic">
                       <div
                         onClick={() =>
-                          sendfixrequest(item.issue, item.checkDesc, {
-                            checkid: selectedcheck._id,
+                          sendfixrequest(item.issue, item?.checkDesc, {
+                            checkid: selectedcheck?._id,
                             index,
                           })
                         }
@@ -502,7 +489,7 @@ const Home = ({ location }) => {
                                   placeholder="Search Requirments"
                                 >
                                   {selectedUser
-                                    ? selectedUser.userName
+                                    ? selectedUser?.userName
                                     : "Assign User to fix"}
                                 </span>
                               </div>
@@ -549,7 +536,7 @@ const Home = ({ location }) => {
                       }}
                     >
                       <img
-                        src={`${process.env.REACT_APP_END_URL}${item.image}.jpeg`}
+                        src={`${process.env.REACT_APP_END_URL}${item?.image}.jpeg`}
                         className="img"
                       />
                     </div>
@@ -682,7 +669,7 @@ const Home = ({ location }) => {
                             >
                               {selectedbuilding
                                 ? selectedbuilding
-                                : "Building Filter"}
+                                : "All"}
                             </span>
                           </div>
                         </div>
@@ -756,7 +743,7 @@ const Home = ({ location }) => {
                               setHide3(!hide3);
 
                               if (item == "All") {
-                                setselectedfloor(null);
+                                setselectedfloor("All");
                               } else {
                                 setselectedfloor(item);
                               }

@@ -54,7 +54,7 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
       });
     }
   }, [socket_notification]);
-  const updatereadstatus = async (id) => {
+  const updatereadstatus = async (id,item) => {
     try {
       //setloading(true);
       await axios.post(`${process.env.REACT_APP_END_URL}api/updatereadstatus`, {
@@ -63,6 +63,18 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
       let theindex = notifications.findIndex((item) => item._id == id);
       notifications[theindex]["read"] = true;
       //setnotifications([...notifications]);
+      if (item?.details?.checkid) {
+        history.push(
+          `/?checkid=${
+            item?.details?.checkid
+          }&random=${Math.random()}`
+        );
+      }
+      else if(item?.title == "New support request recieved") {
+        history.push(
+          `/support-management?from=${item?.from?.name}`
+        );
+      }
       dispatch({ type: "UPDATE_NOTIFICATIONS", payload: [...notifications] });
     } catch (error) {
       console.log("error1", error);
@@ -201,7 +213,7 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
                       onClick={() => {
                         console.log("clicked");
                         if (!item.read) {
-                          updatereadstatus(item._id);
+                          updatereadstatus(item._id,item);
                         }
                       }}
                       className="list-item flex flex-col jc"
@@ -246,6 +258,11 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
                             `/?checkid=${
                               item?.details?.checkid
                             }&random=${Math.random()}`
+                          );
+                        }
+                        else if(item?.title == "New support request recieved") {
+                          history.push(
+                            `/support-management?from=${item?.from?.name}`
                           );
                         }
                       }}

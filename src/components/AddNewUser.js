@@ -66,12 +66,13 @@ const AddNewUser = ({ setOpen, companyfilter, getusers,companies }) => {
     // else if(password){
     //   return toast.error("your password was'nt matched.");
     // }
-    else if (
-      (selectedrole.title == "Company user" && !selectedCompany2) ||
-      (selectedrole.title == "Maintenance user" && !selectedCompany2)
-    ) {
-      return toast.error("Please select a company.");
-    } else if (!selectedrole) {
+    // else if (
+    //   (selectedrole.title == "Company user" && !selectedCompany2) ||
+    //   (selectedrole.title == "Maintenance user" && !selectedCompany2)
+    // ) {
+    //   return toast.error("Please select a company.");
+    // } 
+    else if (!selectedrole) {
       return toast.error("Please select a role.");
     }
     //console.log(body)
@@ -85,7 +86,7 @@ const AddNewUser = ({ setOpen, companyfilter, getusers,companies }) => {
         mobile,
         password,
         confirmPassword: password,
-        companyRef: selectedCompany2._id,
+        //companyRef: selectedCompany2._id,
         userType: selectedrole?.value,
         selectedcompanies
       };
@@ -214,10 +215,13 @@ const AddNewUser = ({ setOpen, companyfilter, getusers,companies }) => {
               <div className="txt-field flex flex-col">
                 <div className="lbl s12 font">Email</div>
                 <input
-                  type="text"
+                  type="email"
                   className="txt cleanbtn s12 font"
                   placeholder="Email"
+                  title="Email (format: name@domain.com)" 
+                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                   onChange={(e) => setemail(e.target.value)}
+                  required
                 />
               </div>
             </div>
@@ -233,6 +237,7 @@ const AddNewUser = ({ setOpen, companyfilter, getusers,companies }) => {
                   type="password"
                   className="txt cleanbtn s12 font"
                   placeholder="Password"
+                  pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$"
                   onChange={(e) => setpassword(e.target.value)}
                 />
               </div>
@@ -242,6 +247,7 @@ const AddNewUser = ({ setOpen, companyfilter, getusers,companies }) => {
                   type="password"
                   className="txt cleanbtn s12 font"
                   placeholder="Confirm Password"
+                  pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$"
                   onChange={(e) => setconfirmpassword(e.target.value)}
                 />
               </div>
@@ -258,7 +264,9 @@ const AddNewUser = ({ setOpen, companyfilter, getusers,companies }) => {
                 />
               </div>
             </div>
-            <div className="data-item flex aic">
+            <div className="data-item flex aic"
+            style={{alignItems: 'flex-start'}}
+            >
               <div className="txt-field flex flex-col">
                 <div className="lbl s12 font">Role</div>
                 <div className="dropDown flex aic jc flex-col rel">

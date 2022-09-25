@@ -214,6 +214,7 @@ const UsersManagment = () => {
       Role: "Super Admin",
     }
   ])
+  console.log('userList',userList)
   const [deleteloading, setdeleteloading] = useState(false);
   const [usertobedelete, setusertobedelete] = useState({});
   const [grouptobedelete, setgrouptobedelete] = useState({});

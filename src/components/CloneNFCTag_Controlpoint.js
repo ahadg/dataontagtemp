@@ -98,7 +98,7 @@ const EditNFCTag = ({
     setSelectedfamily(edittagdata.family)
     setSelectedSubfamily(edittagdata.subfamily)
     setSelectedTemplate(edittagdata.controlpoint)
-    setSelectedCompany(edittagdata?.family?.createdBy?.companyName)
+    setSelectedCompany(edittagdata.tagIds.selectedCompany);
 },[])
 
   const clonenfc = async () => {
@@ -489,7 +489,7 @@ const EditNFCTag = ({
                         className="slt flex aic"
                         onClick={(e) => {
                           setHide4(!hide4);
-                          setSelectedCompany(item);
+                          setSelectedCompany(item?.companyname);
                           setcompanymodified(true)
                           setSelectedTemplate('')
                           setSelectedSubfamily('')
@@ -501,7 +501,7 @@ const EditNFCTag = ({
                             <FireCaylinder />
                           </div>
                           <span className="unit-eng flex aic font s14 b4">
-                            {item}
+                            {item?.companyname}
                           </span>
                         </div>
                       </div>

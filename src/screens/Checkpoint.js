@@ -40,6 +40,9 @@ const Checkpoint = () => {
   const [openEditCtrlPoint, setOpenEditCtrlPoint] = useState(false);
   const [selectedFamily, setselectedFamily] = useState();
   const [selectedFamilyIndex, setselectedFamilyIndex] = useState();
+  const [seachfamily, setseachfamily] = useState();
+  const [seachsubfamily, setseachsubfamily] = useState();
+  const [seachtemplate, setseachtemplate] = useState();
 
   const [selectedSubfamily, setSelectedSubfamily] = useState();
   const [selectedControlpoint, setSelectedControlpoint] = useState();
@@ -581,7 +584,49 @@ const Checkpoint = () => {
                   </div>
                   <div className={`block flex aic abs ${hide ? "show" : ""}`}>
                     <div className="manue flex aic col anim">
+                      {/* search bar */}
+                      <div
+                        className="txt-search slt flex aic just"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <input
+                          type="text"
+                          className="txt-s cleanbtn"
+                          placeholder="Search Family"
+                          onChange={(e) => {
+                            setseachfamily(e.target.value)
+                          }}
+                        />
+                        <div className=" icon flex aic jc searching ">
+                          <SearchIcon />
+                        </div>
+                      </div>
+                      {/* search bar */}
+
                       {families.map((item, index) => (
+                        seachfamily ? (
+                          item?.deviceName?.toLowerCase()?.search(seachfamily) > -1 && (
+                            <div
+                            key={index}
+                            className="slt flex aic"
+                            onClick={(e) => {
+                              setHide(!hide);
+                              setselectedFamily(item);
+                              setselectedFamilyIndex(index);
+                              setSelectedSubfamily();
+                              setSelectedControlpoint();
+  
+                              setHide2(!hide2);
+                            }}
+                          >
+                            <div className="unit-name flex aic font s14 b4">
+                              <span className="unit-eng flex aic font s14 b4">
+                                {item.deviceName}
+                              </span>
+                            </div>
+                          </div>
+                          )
+                        ) : (
                         <div
                           key={index}
                           className="slt flex aic"
@@ -601,7 +646,7 @@ const Checkpoint = () => {
                             </span>
                           </div>
                         </div>
-                      ))}
+                      )))}
                     </div>
                   </div>
                 </div>
@@ -664,23 +709,62 @@ const Checkpoint = () => {
                   </div>
                   <div className={`block flex aic abs ${hide2 ? "show" : ""}`}>
                     <div className="manue flex aic col anim">
-                      {selectedFamily && [...selectedFamily?.subfamilies,{subfamilyname : 'No Subfamily'}].map((item, index) => (
-                        <div
-                          key={index}
-                          className="slt flex aic"
-                          onClick={(e) => {
-                            setHide3(!hide3);
-                            setSelectedSubfamily(item);
-                            setHide2(!hide2);
+                      {/* search bar */}
+                      <div
+                        className="txt-search slt flex aic just"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <input
+                          type="text"
+                          className="txt-s cleanbtn"
+                          placeholder="Search Sub-Family"
+                          onChange={(e) => {
+                            setseachsubfamily(e.target.value)
                           }}
-                        >
-                          <div className="unit-name flex aic font s14 b4">
-                            <span className="unit-eng flex aic font s14 b4">
-                              {item.subfamilyname}
-                            </span>
-                          </div>
+                        />
+                        <div className=" icon flex aic jc searching ">
+                          <SearchIcon />
                         </div>
-                      ))}
+                      </div>
+                      {/* search bar */}
+                      
+                      {selectedFamily && [...selectedFamily?.subfamilies,{subfamilyname : 'No Subfamily'}].map((item, index) => (
+                        seachsubfamily ? 
+                        (
+                          item?.subfamilyname?.toLowerCase()?.search(seachsubfamily) > -1 && (
+                            <div
+                            key={index}
+                            className="slt flex aic"
+                            onClick={(e) => {
+                              setHide3(!hide3);
+                              setSelectedSubfamily(item);
+                              setHide2(!hide2);
+                            }}
+                          >
+                            <div className="unit-name flex aic font s14 b4">
+                              <span className="unit-eng flex aic font s14 b4">
+                                {item.subfamilyname}
+                              </span>
+                            </div>
+                          </div> )
+                        ) : (
+                          <div
+                            key={index}
+                            className="slt flex aic"
+                            onClick={(e) => {
+                              setHide3(!hide3);
+                              setSelectedSubfamily(item);
+                              setHide2(!hide2);
+                            }}
+                          >
+                            <div className="unit-name flex aic font s14 b4">
+                              <span className="unit-eng flex aic font s14 b4">
+                                {item.subfamilyname}
+                              </span>
+                            </div>
+                          </div>
+                        ))
+                      )}
                     </div>
                   </div>
                 </div>
@@ -745,40 +829,105 @@ const Checkpoint = () => {
                   </div>
                   <div className={`block flex aic abs ${hide3 ? "show" : ""}`}>
                     <div className="manue flex aic col anim">
-                      {
-                      selectedSubfamily?.subfamilyname == "No subfamily" ?
-                      selectedFamily?.nonsubfamilycontrolpoints?.map((item, index) => (
-                        <div
-                          key={index}
-                          className="slt flex aic"
-                          onClick={(e) => {
-                            setHide3(!hide3);
-                            setSelectedControlpoint(item?.controlpoint);
+                      {/* search bar */}
+                      <div
+                        className="txt-search slt flex aic just"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <input
+                          type="text"
+                          className="txt-s cleanbtn"
+                          placeholder="Search Template"
+                          onChange={(e) => {
+                            setseachtemplate(e.target.value)
                           }}
-                        >
-                          <div className="unit-name flex aic font s14 b4">
-                            <span className="unit-eng flex aic font s14 b4">
-                              {item?.controlpoint?.controlpointname}
-                            </span>
-                          </div>
+                        />
+                        <div className=" icon flex aic jc searching ">
+                          <SearchIcon />
                         </div>
+                      </div>
+                      {/* search bar */}
+
+                      {
+                      selectedSubfamily?.subfamilyname == "No Subfamily" ?
+                      selectedFamily?.nonsubfamilycontrolpoints?.map((item, index) => (
+                        seachtemplate ? 
+                        (
+                          item?.controlpoint?.controlpointname?.toLowerCase()?.search(seachtemplate) > -1 && 
+                          (
+                            <div
+                              key={index}
+                              className="slt flex aic"
+                              onClick={(e) => {
+                                setHide3(!hide3);
+                                setSelectedControlpoint(item?.controlpoint);
+                              }}
+                            >
+                              <div className="unit-name flex aic font s14 b4">
+                                <span className="unit-eng flex aic font s14 b4">
+                                  {item?.controlpoint?.controlpointname}
+                                </span>
+                              </div>
+                            </div> 
+                          )
+                        ) 
+                        :
+                        (
+                          <div
+                            key={index}
+                            className="slt flex aic"
+                            onClick={(e) => {
+                              setHide3(!hide3);
+                              setSelectedControlpoint(item?.controlpoint);
+                            }}
+                          >
+                            <div className="unit-name flex aic font s14 b4">
+                              <span className="unit-eng flex aic font s14 b4">
+                                {item?.controlpoint?.controlpointname}
+                              </span>
+                            </div>
+                          </div> 
+                        )
                       ))
                       :
                       selectedSubfamily?.controlpoints?.map((item, index) => (
-                        <div
-                          key={index}
-                          className="slt flex aic"
-                          onClick={(e) => {
-                            setHide3(!hide3);
-                            setSelectedControlpoint(item);
-                          }}
-                        >
-                          <div className="unit-name flex aic font s14 b4">
-                            <span className="unit-eng flex aic font s14 b4">
-                              {item.controlpointname}
-                            </span>
-                          </div>
-                        </div>
+                        seachtemplate ? 
+                        (
+                          item.controlpointname?.toLowerCase()?.search(seachtemplate) > -1 && 
+                          ( 
+                            <div
+                              key={index}
+                              className="slt flex aic"
+                              onClick={(e) => {
+                                setHide3(!hide3);
+                                setSelectedControlpoint(item);
+                              }}
+                            >
+                              <div className="unit-name flex aic font s14 b4">
+                                <span className="unit-eng flex aic font s14 b4">
+                                  {item.controlpointname}
+                                </span>
+                              </div>
+                            </div> 
+                          ) 
+                        )
+                        :
+                        (
+                          <div
+                            key={index}
+                            className="slt flex aic"
+                            onClick={(e) => {
+                              setHide3(!hide3);
+                              setSelectedControlpoint(item);
+                            }}
+                          >
+                            <div className="unit-name flex aic font s14 b4">
+                              <span className="unit-eng flex aic font s14 b4">
+                                {item.controlpointname}
+                              </span>
+                            </div>
+                          </div> 
+                        )
                       ))
                       }
                     </div>

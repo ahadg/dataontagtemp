@@ -76,7 +76,24 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
       date: new Date().getTime(),
     },
   ]);
-  console.log("problemnotifications", problemnotifications);
+  const [selecteduserscheck,setselecteduserscheck] = useState([])
+  console.log("checkssslist", { checklisttype, modify_checlist, setOpen3 });
+  console.log("selecteduserscheck",selecteduserscheck)
+  const checkuseralreadyselected = (mainusername,mainindex) => {
+    let res = true
+    selecteduserscheck.map((item,index) => {
+      console.log("compare",{mainusername,mainindex},item)
+      if(item.username == mainusername){
+        if(item.selectedIndex == mainindex) {
+          res = true
+        }
+        else {
+          res = false
+        }
+      }
+    })
+    return res
+  }
   // useEffect(() => {
   //   document.addEventListener("click", () => {
   //     setShowList(false);
@@ -114,7 +131,10 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
   return (
     <div className="create-checkpoint flex flex-col">
       <div className="checkpoint-hdr flex flex-col aic">
-        <div className="heading s14 font b6">Create CheckPoint</div>
+        <div className="heading s14 font b6">Create CheckPoint for {checklisttype == "maintaineradmin" && "Maintainer Admin"}
+        {checklisttype == "maintaineruser" && "Maintainer User"}
+        {checklisttype == "companyadmin" && "Company Admin"}
+        {checklisttype == "companyuser" && "Company User"}</div>
         <div className="text-fields flex aic">
           <div className="hdr-left flex flex-col">
             <div className="lbl s13 font ">Checkpoint Title</div>
@@ -137,7 +157,7 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
         </div>
       </div>
       <div className="checkpoint-notifi flex flex-col aic">
-        <div className="heading s14 font b6">Create Notification</div>
+        <div className="heading s14 font b6">Create Notifications</div>
         <div className="add-notifi flex aic">
           {/* <div className="alert-side flex flex-col">
             <div className="notifi-tag s15 b6">Alert Notifications</div>
@@ -363,6 +383,8 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                         problemnotifications[index]["users"] = [];
                         problemnotifications[index]["groups"] = [];
                         setproblemnotifications([...problemnotifications]);
+                        let filteredusers = selecteduserscheck.filter(function(el) { return el.selectedIndex != index; }); 
+                        setselecteduserscheck(filteredusers)
                       }}
                       className={`cleanbtn radio-btn rel ${
                         item.type === "user" ? "on" : ""
@@ -378,6 +400,8 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                         problemnotifications[index]["users"] = [];
                         problemnotifications[index]["groups"] = [];
                         setproblemnotifications([...problemnotifications]);
+                        let filteredusers = selecteduserscheck.filter(function(el) { return el.selectedIndex != index; }); 
+                        setselecteduserscheck(filteredusers)
                       }}
                       className={`cleanbtn radio-btn rel ${
                         item.type === "group" ? "on" : ""
@@ -447,7 +471,7 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                       {checktype(item).map((item2, index2) =>
                         search2 ? (
                           item.type == "user" ? (
-                            item2?.userName?.search(search2) > -1 && (
+                            item2?.userName?.search(search2) > -1 && checkuseralreadyselected(item2?.userName,index) && (
                               <div className="list-item flex aic">
                                 <div className="name s13 font b5">
                                   {item2?.userName}
@@ -470,6 +494,8 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                                       setproblemnotifications([
                                         ...problemnotifications,
                                       ]);
+                                      let filteredusers = selecteduserscheck.filter(function(el) { return el.username != item2?.userName; }); 
+                                      setselecteduserscheck(filteredusers)
                                     }}
                                   >
                                     <div className="action-icon">
@@ -487,6 +513,8 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                                       setproblemnotifications([
                                         ...problemnotifications,
                                       ]);
+                                      setselecteduserscheck([...selecteduserscheck,{username : item2?.userName,selectedIndex : index}])
+                                      //setselecteduserscheck([...selecteduserscheck,{username : item2?.userName,selectedIndex : index2}])
                                       e.stopPropagation();
                                     }}
                                   >
@@ -549,7 +577,7 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                               </div>
                             )
                           )
-                        ) : item.type == "user" ? (
+                        ) : item.type == "user" && checkuseralreadyselected(item2?.userName,index) ? (
                           <div className="list-item flex aic">
                             <div className="name s13 font b5">
                               {console.log("itetete", item)}
@@ -574,6 +602,8 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                                     ...problemnotifications,
                                   ]);
                                   e.stopPropagation();
+                                  let filteredusers = selecteduserscheck.filter(function(el) { return el.username != item2?.userName; }); 
+                                  setselecteduserscheck(filteredusers)
                                 }}
                               >
                                 <div className="action-icon">
@@ -595,6 +625,7 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                                   setproblemnotifications([
                                     ...problemnotifications,
                                   ]);
+                                  setselecteduserscheck([...selecteduserscheck,{username : item2?.userName,selectedIndex : index}])
                                   e.stopPropagation();
                                 }}
                               >
@@ -604,7 +635,7 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                               </div>
                             )}
                           </div>
-                        ) : (
+                        ) : item.type == "group" && (
                           <div className="list-item flex aic">
                             <div className="name s13 font b5">
                               {item2?.groupname}
@@ -667,10 +698,13 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
                   <input
                     type="number"
                     className="txt cleanbtn s14 b4 font h-full w-full"
-                    placeholder="Days"
+                    placeholder="Dayssss"
                     onChange={(e) => {
-                      problemnotifications[index]["days"] = e.target.value;
-                      setproblemnotifications([...problemnotifications]);
+                      if(e.target.value > -1 && e.target.value != '-'){
+                        problemnotifications[index]["days"] = e.target.value;
+                        setproblemnotifications([...problemnotifications]);
+                      }
+                   
                       //setStartDate2(new Date(value).getTime());
                     }}
                     value={problemnotifications[index]["days"]}
@@ -735,7 +769,8 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3 }) => {
               problemnotifications})
             let foundemptyuser = false
             let foundemptydaysval = false
-            if(!checkDesc || !checkName) {
+            //!checkDesc || 
+            if(!checkName) {
               return toast.error("Please Input all fields")
             }
             problemnotifications.map((item) => {

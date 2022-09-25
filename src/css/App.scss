@@ -3704,3 +3704,9 @@ body {
   color: $themeColor;
   font-weight: 500;
 }
+.just {
+  justify-content: space-between;
+}
+.searching svg path {
+  fill: white !important;
+}

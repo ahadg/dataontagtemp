@@ -120,7 +120,7 @@ const UserProfile = ({location}) => {
           <div className="feild flex flex-col">
             <div className="lbl font s14 c68">Confirm password</div>
             <input type="password" 
-              placeholder="New password"
+              placeholder="Confirm password"
               value={password}
               onChange={(e) => setpassword(e.target.value)}
             className="iput font s14 c000" />

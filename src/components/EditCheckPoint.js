@@ -129,7 +129,7 @@ const CreateCheckPoint = ({ checklisttype, modify_checlist, setOpen3,editcheckpo
         </div>
       </div>
       <div className="checkpoint-notifi flex flex-col aic">
-        <div className="heading s14 font b6">Create Notification</div>
+        <div className="heading s14 font b6">Create Notifications</div>
         <div className="add-notifi flex aic">
           <div className="center-line"></div>
           <div className="problem-side flex flex-col">

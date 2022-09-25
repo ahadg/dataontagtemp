@@ -20,7 +20,7 @@ const UserProfile = () => {
   const [password, setPassword] = useState("1234567890");
   const [mobile, setmobile] = useState(user.mobile);
   const [role, setRole] = useState(user.userType);
-  const [company, setCompany] = useState(user?.companyRef?.companyName);
+  const [company, setCompany] = useState(user?.createdBy?.companyName);
   console.log('user',user)
   const updateprofile = async (id) => {
     let formData = new FormData();
@@ -135,14 +135,14 @@ const UserProfile = () => {
                 user?.createdAt ?
                 <div className="asd-header flex aic jc">
                 <div className="lbl s16 font">Date Created : {`
-                        ${moment(Number(user.createdAt ? user.createdAt : new Date(1646384612799) )).format("D")}-${moment(
-                          Number(user.createdAt ? user.createdAt : new Date(1646384612799))
-                        ).format("MM")}-${moment(Number(user.createdAt ? user.createdAt : new Date(1646384612799))).format(
+                        ${moment((user.createdAt ? user.createdAt : new Date(1646384612799) )).format("D")}-${moment(
+                          (user.createdAt ? user.createdAt : new Date(1646384612799))
+                        ).format("MM")}-${moment((user.createdAt ? user.createdAt : new Date(1646384612799))).format(
                           "YYYY"
                         )}`}
                         {' at '}
-                        {`${moment(Number(user.createdAt ? user.createdAt : new Date(1646384612799))).format("HH")}:${moment(
-                          Number(user.createdAt ? user.createdAt : new Date(1646384612799))
+                        {`${moment((user.createdAt ? user.createdAt : new Date(1646384612799))).format("HH")}:${moment(
+                          (user.createdAt ? user.createdAt : new Date(1646384612799))
                         ).format("mm")}`
                       }</div>
               </div>

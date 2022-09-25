@@ -55,9 +55,9 @@ const Home = ({ location }) => {
   // const [allbuildings,setallbuilding] = useState('')
   // const [allbuildings,setallbuilding] = useState('')
   console.log("buildings", buildings);
-  const [selectedbuilding, setselectedbuilding] = useState();
+  const [selectedbuilding, setselectedbuilding] = useState("All");
   const [floors, setfloors] = useState([]);
-  const [selectedfloor, setselectedfloor] = useState("");
+  const [selectedfloor, setselectedfloor] = useState("All");
   const [statusData, setStatusData] = useState([
     { id: 1, title: "ExtSup s.r.l." },
   ]);
@@ -576,6 +576,16 @@ const Home = ({ location }) => {
     );
   };
 
+  const findSubfamily = (subfamilyid,subfamilies) => {
+    let subfamilyname = ""
+    subfamilies?.map((item) => {
+      if(subfamilyid == item?._id) {
+        subfamilyname  = item?.subfamilyname
+      }
+    })
+    return subfamilyname
+  }
+
   return (
     <>
       <Header title="Inspections" />
@@ -595,7 +605,7 @@ const Home = ({ location }) => {
                 <div className="dialog-fields flex aic">
                   {/* First */}
                   {
-                  user.userType == "superadmin"
+                  user.userType == "superadmin" || user.userType == "maintaineradmin" || user.userType == "maintaineruser"
                     &&
                   <div className="dropDown flex aic jc flex-col rel">
                     <div className="category flex aic">
@@ -613,7 +623,7 @@ const Home = ({ location }) => {
                               placeholder="Company Filter"
                             >
                               {selectedcompany
-                                ? selectedcompany
+                                ? selectedcompany == "All" ? "All Companies" : selectedcompany
                                 : "Company Filter"}
                             </span>
                           </div>
@@ -668,7 +678,7 @@ const Home = ({ location }) => {
                               placeholder="Building Filter"
                             >
                               {selectedbuilding
-                                ? selectedbuilding
+                                ? selectedbuilding == "All" ? "All Buldings" : selectedbuilding
                                 : "All"}
                             </span>
                           </div>
@@ -722,7 +732,9 @@ const Home = ({ location }) => {
                               className="unit-eng flex aic font s14 b4"
                               placeholder="Floor Filter"
                             >
-                              {selectedfloor ? selectedfloor : "Floor Filter"}
+                              {selectedfloor ? 
+                              selectedfloor == "All" ? "All Floors" :  selectedfloor
+                              : "Floor Filter"}
                             </span>
                           </div>
                         </div>
@@ -866,8 +878,10 @@ const Home = ({ location }) => {
                           />
                         </div>
                       </div>
-                      <div className="row-item font">
-                        {item?.controlpointId?.controlpointname}
+                      <div className="row-item font" style={{display : "flex",flexDirection : 'column'}}>
+                        <div>{item?.controlpointId?.familyId?.deviceName}</div>
+                        <div>{item?.controlpointId?.controlpointname}</div>
+                        <div>{findSubfamily(item?.controlpointId?.subfamilyid,item?.controlpointId?.familyId?.subfamilies)}</div>
                       </div>
                       {/* <div className="row-item font">{item.tagId}</div> */}
                       <div className="row-item font">

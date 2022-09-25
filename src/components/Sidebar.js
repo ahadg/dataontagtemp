@@ -82,6 +82,9 @@ const Siderbar = ({ history }) => {
             if((user.userType == "companyuser" || user.userType == "maintaineruser") && item.label == "Template"){
                 return
             }
+            else if((user.userType == "companyuser" || user.userType == "companyadmin") && item.label == "Company Managment") {
+              return 
+            }
             else {
                return  <NavLink exact to={item.slug} className="item flex aic rel">
                <div className="ico flex aic">{item.icon}</div>

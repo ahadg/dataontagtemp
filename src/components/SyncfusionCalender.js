@@ -16,17 +16,10 @@ import {
 } from "@syncfusion/ej2-react-schedule";
 import { DataManager, Query } from '@syncfusion/ej2-data';
 
-const SyncfusionCalender = ({setsyncfusionselected}) => {
+const SyncfusionCalender = ({setsyncfusionselected,syncfusionselected}) => {
   let result = new DataManager()
-  let data = [
-    // {
-    //     "Subject": "aSa",
-    //     "Id": 1,
-    //     "StartTime": "2022-06-28T22:00:00.000Z",
-    //     "EndTime": "2022-06-28T22:30:00.000Z",
-    //     "IsAllDay": false
-    // }
-]
+  let data = syncfusionselected
+console.log("syncfusionselectedtttt",syncfusionselected)
   return (
     <div className="App">
       <ScheduleComponent dataBinding={(e) => 

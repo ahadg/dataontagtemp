@@ -550,7 +550,7 @@ const AddNewNFCTag = ({
                   // to={"/syncfusion-calender"}
                   className="txt-input b6 s18 flex aic jc pointer"
                   onClick={(e) => {
-                    setschedulartitle(`${selectedfamily?.deviceName}-${selectedfamily?.subfamilyname}-${selectedcontrolpoint.controlpointname}`)
+                    setschedulartitle(`${selectedfamily?.deviceName ? selectedfamily?.deviceName : "Not selected"}-${selectedSubfamily?.subfamilyname ? selectedSubfamily?.subfamilyname : "Not selected"}-${selectedcontrolpoint?.controlpointname ? selectedcontrolpoint?.controlpointname : "Not selected"}`)
                     setOpen5(true);
                   }}
                 >

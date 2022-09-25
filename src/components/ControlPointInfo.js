@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import moment from "moment";
 import { CopyIcon, CloseIcon } from "../svg";
 import { ToastContainer, toast } from "react-toastify";
+import Loader from "../components/Loader";
+import axios from "axios";
 const ControlPointInfo = ({
   setOpen3,
   selectedcontrolpoint,
@@ -9,7 +11,9 @@ const ControlPointInfo = ({
 }) => {
   console.log("selectedcontrolpoint", selectedcontrolpoint);
   console.log("theinspection", theinspection);
-
+  const [thecompany,setthecompany] = useState("")
+  const [loading,setloading] = useState(false)
+  console.log("thecompany", thecompany);
   const CopyFun = async (text) => {
     await navigator.clipboard.writeText(text)
     toast("Successfully Tag ID Copied!", {
@@ -23,8 +27,54 @@ const ControlPointInfo = ({
     });
     setOpen3(false);
   };
+  const getcompanyByid = (id) => {
+    try {
+      setloading(true);
+      console.log('id',id)
+      axios.post(
+        `${process.env.REACT_APP_END_URL}api/getcompanyByid`, {
+          id
+        }
+      ).then((res) => {
+        console.log("response_checks", res.data);
+        if (res.data) {
+           setthecompany(res.data?.company)
+           setloading(false)
+        }
+      })
+    } catch (error) {
+      console.log("error1", error);
+      if (error.response) {
+        if (error.response.data) {
+          console.log("error", error.response.data);
+          return toast.error(error.response.data.error);
+        }
+      } else {
+        return toast.error("Error in server");
+      }
+    }
+  };
+
+  useEffect(() => {
+    getcompanyByid(selectedcontrolpoint?.selectedCompanyId)
+  },[])
+  
+  const findSubfamily = (subfamilyid,subfamilies) => {
+    let subfamilyname = ""
+    subfamilies?.map((item) => {
+      if(subfamilyid == item?._id) {
+        subfamilyname  = item?.subfamilyname
+      }
+    })
+    return subfamilyname
+  }
   return (
     <div className="control-point-info  flex flex-col">
+   
+    {loading ? (
+            <Loader />
+          ) : (
+            <>
       <div className="check-point-header flex jc">
         <div className="box-h flex aic jc">
           <div className="lbl b7 flex jc aic font">Control Point INFO</div>
@@ -57,9 +107,9 @@ const ControlPointInfo = ({
         <div className="check-points-item flex aic">
           <div className="left flex">Tag ID :</div>
           <div className="right flex aic">
-            {theinspection.tagId}
+            {theinspection?.tagId}
             <div 
-            className="copy-icon flex aic jc" onClick={(e) => CopyFun(theinspection.tagId)}>
+            className="copy-icon flex aic jc" onClick={(e) => CopyFun(theinspection?.tagId)}>
               <CopyIcon />
             </div>
           </div>
@@ -67,14 +117,22 @@ const ControlPointInfo = ({
         <div className="check-points-item flex aic">
           <div className="left flex">Company :</div>
           <div className="right flex">
-            {selectedcontrolpoint.controlpointId?.createdBy?.companyName}
+            {thecompany?.companyname}
           </div>
         </div>
         <div className="check-points-item flex aic">
           <div className="left flex">Company Address :</div>
           <div className="right flex">
-            {selectedcontrolpoint.controlpointId?.createdBy?.companyAddress}
+            {thecompany?.address}
           </div>
+        </div>
+        <div className="check-points-item flex aic">
+          <div className="left flex">Family :</div>
+          <div className="right flex ">{selectedcontrolpoint?.controlpointId?.familyId?.deviceName}</div>
+        </div>
+        <div className="check-points-item flex aic">
+          <div className="left flex">Subfamily :</div>
+          <div className="right flex ">{findSubfamily(selectedcontrolpoint?.controlpointId?.subfamilyid,selectedcontrolpoint?.controlpointId?.familyId?.subfamilies)}</div>
         </div>
         <div className="check-points-item flex aic">
           <div className="left flex">Inspector :</div>
@@ -107,23 +165,27 @@ const ControlPointInfo = ({
         <div className="check-points-item flex aic">
           <div className="left flex">Manufacturing :</div>
           <div className="right flex ">{`${moment(
-            Number(theinspection.manufacturingdate)
+            Number(theinspection?.manufacturingdate)
           ).format("D")}-${moment(
-            Number(theinspection.manufacturingdate)
+            Number(theinspection?.manufacturingdate)
           ).format("MM")}-${moment(
-            Number(theinspection.manufacturingdate)
+            Number(theinspection?.manufacturingdate)
           ).format("YYYY")}`}</div>
         </div>
         <div className="check-points-item flex aic">
           <div className="left flex">Expiry :</div>
-          <div className="right flex crrr">{`${moment( typeof(theinspection.expirydate) == "string" ?
-            Number(theinspection.expirydate) : (theinspection.expirydate)
-          ).format("D")}-${moment(typeof(theinspection.expirydate) == "string" ?  Number(theinspection.expirydate) : (theinspection.expirydate)).format(
+          <div className="right flex crrr">{`${moment((theinspection.expirydate)
+          ).format("D")}-${moment((theinspection.expirydate)).format(
             "MM"
-          )}-${moment(typeof(theinspection.expirydate) == "string" ? Number(theinspection.expirydate) : (theinspection.expirydate)).format("YYYY")}`}</div>
+          )}-${moment((theinspection.expirydate)).format("YYYY")}`}</div>
         </div>
+       
       </div>
-    </div>
+      </>
+      )
+    }
+
+    </div> 
   );
 };
 

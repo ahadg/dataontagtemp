@@ -406,7 +406,11 @@ const NfcManagment = () => {
               <div className="rit flex aix">
                 <button
                   className="cleanbtn add-btn  flex aic"
-                  onClick={(e) => setOpen(true)}
+                  onClick={(e) => {
+                    setOpen(true)
+                    setsyncfusionselected("")
+                   
+                  }}
                 >
                   <div className="ico">
                     <RoundAdd />
@@ -502,7 +506,8 @@ const NfcManagment = () => {
                       <div
                         className="ico-copy flex aic jc"
                         onClick={(e) => {
-                          setsyncfusionselected(edittagdata?.tagIds?.syncfusiondetails?.syncfusionselected)
+                          setsyncfusionselected(item?.tagIds?.syncfusiondetails?.syncfusionselected)
+                          setschedulartitle(`${item?.family?.deviceName}-${item?.subfamily?.subfamilyname}-${item?.controlpoint?.controlpointname}`)
                           setedittagdata(item);
                           setopennfctag(true);
                           setcloneddata(item);
@@ -512,7 +517,9 @@ const NfcManagment = () => {
                       </div>
                       <div
                         onClick={() => {
-                          setsyncfusionselected(edittagdata?.tagIds?.syncfusiondetails?.syncfusionselected)
+                          setsyncfusionselected(item?.tagIds?.syncfusiondetails?.syncfusionselected)
+                          console.log("itemmmm",item)
+                          setschedulartitle(`${item?.family?.deviceName}-${item?.subfamily?.subfamilyname}-${item?.controlpoint?.controlpointname}`)
                           setedittagdata(item);
                           setOpen3(true);
                         }}
@@ -611,7 +618,7 @@ const NfcManagment = () => {
               <CloseIcon />
             </div>
           </div>
-          <SyncfusionCalender setOpen5={setOpen5} setsyncfusionselected={setsyncfusionselected} />
+          <SyncfusionCalender setOpen5={setOpen5} setsyncfusionselected={setsyncfusionselected} syncfusionselected={syncfusionselected}/>
         </div>
       </Modal>
     </div>

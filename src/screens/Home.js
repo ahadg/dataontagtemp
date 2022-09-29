@@ -464,7 +464,7 @@ const Home = ({ location }) => {
                     <div className="issue-action flex aic">
                       <div
                         onClick={() =>
-                          sendfixrequest(item.issue, item?.checkDesc, {
+                          sendfixrequest(item?.issue, item?.checkDesc, {
                             checkid: selectedcheck?._id,
                             index,
                           })

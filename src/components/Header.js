@@ -210,8 +210,9 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
                 if (notiTab == "Unread" && item.read == false) {
                   return (
                     <div
-                      onClick={() => {
+                      onClick={(e) => {
                         console.log("clicked");
+                        e.stopPropagation();
                         if (!item.read) {
                           updatereadstatus(item._id,item);
                         }
@@ -252,7 +253,8 @@ const Header = ({ title, hideRightbar, rightbarIcon }) => {
                 } else if (notiTab == "all") {
                   return (
                     <div
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.stopPropagation();
                         if (item?.details?.checkid) {
                           history.push(
                             `/?checkid=${

@@ -76,17 +76,22 @@ const UsersManagment = () => {
     console.log('selectedCompany',selectedCompany)
     let listtobefiltered = [...userList]
     if(selectedCompany){
-      listtobefiltered = listtobefiltered.filter(
-        (item) => {
-          console.log('item',item)
-          if(item?.userType == "companyadmin" || item?.userType == "superadmin" ||  item?.userType == "maintaineradmin"){
-          return item?.companyName == selectedCompany.companyName
+      if(selectedCompany?.companyname != "All companies"){
+        listtobefiltered = listtobefiltered.filter(
+          (item) => {
+            console.log('itemmmmm',item)
+            let bool = false;
+            item?.assignedcompanies?.map((item) => {
+              console.log("checkingg",item?.companyname,selectedCompany.companyname)
+              if(item?.companyname == selectedCompany.companyname){
+               
+                bool = true
+              }
+            })
+              return bool
           }
-          else {
-            return item.createdBy?.companyName == selectedCompany.companyName
-          }
-        }
-      );
+        );
+      }
     }
     if (search != undefined) {
       let thesearch  = search.toLowerCase()
@@ -455,7 +460,7 @@ const UsersManagment = () => {
                         className={`block flex aic abs ${hide ? "show" : ""}`}
                       >
                         <div className="manue flex aic col anim">
-                          {companies?.map((item, index) => (
+                          {[{companyname : "All companies"},...companies]?.map((item, index) => (
                             <div
                               key={index}
                               className="slt flex aic"
@@ -644,14 +649,17 @@ const UsersManagment = () => {
                   <FilterIcon />
                 </div>
                 <div className="row-item">Name</div>
-                <div className="row-item">Company Name</div>
+                <div className="row-item">Company Names</div>
                 <div className="row-item">Email</div>
                 <div className="row-item">Phone Number</div>
                 <div className="row-item">Role</div>
                 <div className="row-item">Action</div>
               </div>
-              {filteruserList?.map((item, index) => (
-                <div className="tbl-row flex aic" key={index}>
+              {filteruserList?.map((item, index) => {
+                if(item?.id == user._id) {
+                  return
+                }
+                return ( <div className="tbl-row flex aic" key={index}>
                   <div className="row-item">
                     <div className="ico-bg flex aic jc">
                       <img  
@@ -660,7 +668,10 @@ const UsersManagment = () => {
                     </div>
                   </div>
                   <div className="row-item font">{item.userName}</div>
-                  <div className="row-item font">{item.userType == "companyadmin" || item.userType == "superadmin" || item.userType == "maintaineruser" ? item.companyName : item.createdBy ? item.createdBy?.companyName : item.CompanyName}</div>
+                  <div className="row-item font">{item?.assignedcompanies?.map((item,index) => {
+                    return index == 0 ? `${item?.companyname}` : `,${item?.companyname}`
+                  })}
+                  </div>
                   <div className="row-item font">{item.email}</div>
                   <div className="row-item font">{item.mobile}</div>
                   <div className="row-item font">{item.userType}</div>
@@ -682,8 +693,8 @@ const UsersManagment = () => {
                       <DeleteIcon />
                     </div>
                   </div>
-                </div>
-              ))}
+                </div> )
+               })}
               </div>
             }
 

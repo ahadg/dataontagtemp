@@ -1,9 +1,9 @@
 name: dataontag CI
 on:
   push:
-    branches: [main]
-  push:
-    branches: [main]
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 jobs:
   build:
     runs-on: ubuntu-latest
